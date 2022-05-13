@@ -48,8 +48,8 @@ public class Acteur {
         return id;
     }
 
-    public void seDeplace(int direction){
-
+    public String getNom() {
+        return nom;
     }
 
 
