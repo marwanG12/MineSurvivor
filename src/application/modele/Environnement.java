@@ -30,12 +30,12 @@ public class Environnement {
         33, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 35
     };
 
-    private ArrayList<Acteur> acteurs;
+    private ArrayList<Entite> entites;
     private IntegerProperty nbTours;
 
     public Environnement() {
         this.nbTours = new SimpleIntegerProperty(0);
-        this.acteurs= new ArrayList<>();
+        this.entites= new ArrayList<>();
     }
 
     public IntegerProperty getNbTours(){
@@ -46,12 +46,12 @@ public class Environnement {
         this.nbTours.setValue(n);
     }
 
-    public ArrayList<Acteur> getActeurs() {
-        return acteurs;
+    public ArrayList<Entite> getActeurs() {
+        return entites;
     }
 
-    public Acteur getActeur(String id) {
-        for(Acteur a:this.acteurs){
+    public Entite getActeur(String id) {
+        for(Entite a:this.entites){
             if(a.getId().equals(id)){
                 return a;
             }
@@ -60,8 +60,8 @@ public class Environnement {
     }
 
 
-    public void ajouter(Acteur a){
-        acteurs.add(a);
+    public void ajouter(Entite a){
+        entites.add(a);
     }
 
     public int getNbTiles() {

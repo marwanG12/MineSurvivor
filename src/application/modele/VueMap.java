@@ -35,8 +35,8 @@ public class VueMap {
                 tilepane.getChildren().add(ciel);
             }
 
-            }
         }
+    }
 }
 
 
