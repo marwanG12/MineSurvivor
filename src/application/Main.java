@@ -14,7 +14,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			BorderPane root = FXMLLoader.load(getClass().getResource("vue/vue.fxml"));
-			Scene scene = new Scene(root,960,640);
+			git Scene scene = new Scene(root,960,640);
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
