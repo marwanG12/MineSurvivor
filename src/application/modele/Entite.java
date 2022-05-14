@@ -4,14 +4,14 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 
-public class Acteur {
+public class Entite {
     private String nom;
     private IntegerProperty x,y;
     protected Environnement env;
     public static int compteur=0;
     private String id;
 
-    public Acteur(int x, int y, Environnement env, String nom) {
+    public Entite(int x, int y, Environnement env, String nom) {
         this.nom = nom;
         this.x = new SimpleIntegerProperty(x);
         this.y = new SimpleIntegerProperty(y);
@@ -48,8 +48,8 @@ public class Acteur {
         return id;
     }
 
-    public void seDeplace(int direction){
-
+    public String getNom() {
+        return nom;
     }
 
 
