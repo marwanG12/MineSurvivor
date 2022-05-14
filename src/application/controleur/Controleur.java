@@ -47,10 +47,13 @@ public class Controleur implements Initializable {
         borderpane.setOnKeyPressed(ke -> {
             if(ke.getCode() == KeyCode.RIGHT || ke.getCode() == KeyCode.D) {
                 joueur.setX(joueur.getX()+16);
+                perso.updatePerso("RIGHT");
             } else if (ke.getCode() == KeyCode.LEFT || ke.getCode() == KeyCode.Q) {
                 joueur.setX(joueur.getX()-16);
+                perso.updatePerso("LEFT");
             } else if (ke.getCode() == KeyCode.UP || ke.getCode() == KeyCode.Z) {
                 joueur.setY(joueur.getY()-64);
+                perso.updatePerso("UP");
             }
         });
     }
