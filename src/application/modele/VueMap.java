@@ -1,14 +1,17 @@
 package application.modele;
 
+import java.util.ArrayList;
+
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
+import javafx.scene.shape.Rectangle;
 
 public class VueMap {
 
     private Environnement env;
-
 
     public VueMap(Environnement env) {
         this.env = env;
@@ -26,6 +29,8 @@ public class VueMap {
             int colonne = (env.getCodeTiles(i)%16)-1;
             int y = ligne * 32;
             int x = colonne * 32;
+
+            
 
             if (env.getCodeTiles(i) != 0) {
                 terre.setViewport(new Rectangle2D(x, y, 32, 32));

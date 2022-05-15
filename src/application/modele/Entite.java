@@ -2,6 +2,9 @@ package application.modele;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.geometry.Point2D;
+import javafx.scene.Node;
+import javafx.scene.shape.Rectangle;
 
 
 public class Entite {
@@ -50,6 +53,12 @@ public class Entite {
 
     public String getNom() {
         return nom;
+    }
+
+    public void movePlayerY(int value) {
+    }
+
+    public void jumpPlayer() {
     }
 
 

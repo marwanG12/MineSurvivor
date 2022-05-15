@@ -2,6 +2,8 @@ package application.modele;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.Node;
+import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 
@@ -31,6 +33,7 @@ public class Environnement {
     };
 
     private ArrayList<Entite> entites;
+    private ArrayList<Node> platform;
     private IntegerProperty nbTours;
 
     public Environnement() {
@@ -74,6 +77,23 @@ public class Environnement {
 
     public int getCodeTiles(int code) {
         return map[code];
+    }
+
+
+    public ArrayList<Node> getNode() {
+        for (int i=0; i < this.getNbTiles(); i++) {
+            int ligne = this.getCodeTiles(i)/16;
+            int colonne = (this.getCodeTiles(i)%16)-1;
+            int y = ligne * 32;
+            int x = colonne * 32;
+            if (this.getCodeTiles(i) != 0) {
+                Rectangle coord = new Rectangle(32, 32);
+                coord.setTranslateX(x);
+                coord.setTranslateX(y);
+                platform.add(coord);
+            }
+        }
+        return platform;
     }
 
 }
