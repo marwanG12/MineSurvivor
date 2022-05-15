@@ -12,7 +12,7 @@ public class VueJoueur {
     private Image perso;
     private ImageView viewperso;
 
-    public VueJoueur(Entite joueur) {
+    public VueJoueur(Entite joueur, Environnement env) {
         this.joueur = joueur;
         perso = new Image("application/images/Knights/sprite2.png");
         viewperso = new ImageView(perso);
@@ -33,6 +33,9 @@ public class VueJoueur {
         switch (action) {
             case "UP":
                 viewperso.setViewport(new Rectangle2D(20, 15, 44, 45));
+                break;
+            case "UP2":
+                viewperso.setViewport(new Rectangle2D(150, 15, 44, 45));
                 break;
             case "LEFT":
                 viewperso.setViewport(new Rectangle2D(18, 80, 44, 45));

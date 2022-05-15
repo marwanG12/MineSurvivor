@@ -27,6 +27,8 @@ public class VueMap {
             int y = ligne * 32;
             int x = colonne * 32;
 
+            
+
             if (env.getCodeTiles(i) != 0) {
                 terre.setViewport(new Rectangle2D(x, y, 32, 32));
                 tilepane.getChildren().add(terre);

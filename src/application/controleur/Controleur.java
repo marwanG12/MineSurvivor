@@ -51,11 +51,12 @@ public class Controleur implements Initializable {
         env = new Environnement();
         joueur = new Joueur(208, 468, env);
         terrain = new VueMap(env);
-        perso = new VueJoueur(joueur);        
+        perso = new VueJoueur(joueur, env);        
 
 
         terrain.afficheMap(tilepane);
         perso.affichePerso(borderpane);
+
 
         borderpane.setOnKeyPressed(ke -> {
             if(ke.getCode() == KeyCode.RIGHT || ke.getCode() == KeyCode.D) {
@@ -111,8 +112,30 @@ public class Controleur implements Initializable {
                 };
                 timer.start();
             } else if (ke.getCode() == KeyCode.UP || ke.getCode() == KeyCode.Z) {
-                joueur.setY(joueur.getY()-64);
-                perso.updatePerso("UP");
+                AnimationTimer timer = new AnimationTimer() {
+                    private long lastUpdate = 0;
+                    @Override
+                    public void handle(long now) {
+                        if (now - lastUpdate >= 500_000_00) { // delay de 1000 ms
+                            if (l == 1) {
+                                perso.updatePerso("UP");
+                                l++;
+                            } else {
+                                perso.updatePerso("UP2");
+                                l--;
+                            }         
+                            joueur.setY(joueur.getY()-16);
+                            lastUpdate = now;
+                            fps++;
+                        }
+                        if (fps == 3) {
+                            perso.updatePerso("STATIC");
+                            stop();
+                            fps = 0;
+                        }                    
+                    }
+                };
+                timer.start();
             }
         });
 
@@ -158,10 +181,5 @@ public class Controleur implements Initializable {
     @FXML
     public void update (KeyEvent event) {
     }
-
-    @FXML
-    public void click (MouseEvent event) {
-    }
-
 
 }
