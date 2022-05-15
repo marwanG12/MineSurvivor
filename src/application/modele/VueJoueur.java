@@ -41,15 +41,18 @@ public class VueJoueur {
                 viewperso.setViewport(new Rectangle2D(18, 80, 44, 45));
                 viewperso.setScaleX(-1);
                 break;
-            case "LEFT2":
-                viewperso.setViewport(new Rectangle2D(150, 80, 44, 45));
-                break;
             case "RIGHT":
                 viewperso.setViewport(new Rectangle2D(18, 80, 44, 45));
                 viewperso.setScaleX(1);
                 break;
-            case "RIGHT2":
-                viewperso.setViewport(new Rectangle2D(150, 80, 44, 45));
+            case "RUN2":
+                viewperso.setViewport(new Rectangle2D(145, 80, 44, 45));
+                break;
+            case "RUN3":
+                viewperso.setViewport(new Rectangle2D(395, 80, 44, 45));
+                break;
+            case "RUN4":
+                viewperso.setViewport(new Rectangle2D(525, 77, 44, 45));
                 break;
             case "STATIC":
                 viewperso.setViewport(new Rectangle2D(20, 150, 44, 45));
