@@ -14,7 +14,7 @@ public class VueJoueur {
 
     public VueJoueur(Entite joueur, Environnement env) {
         this.joueur = joueur;
-        perso = new Image("application/images/Knights/sprite2.png");
+        perso = new Image("application/images/Knights/sprite2.PNG");
         viewperso = new ImageView(perso);
     }
 

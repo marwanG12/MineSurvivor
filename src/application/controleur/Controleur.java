@@ -6,6 +6,7 @@ import application.modele.Joueur;
 import application.modele.VueJoueur;
 import application.modele.VueMap;
 import javafx.animation.AnimationTimer;
+import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -28,8 +29,7 @@ public class Controleur implements Initializable {
     private VueJoueur perso;
     private int r=1, l=1, h=1;
     private int fps = 0;
-
-    
+    private Timeline tl;
 
     @FXML
     private TilePane tilepane;
@@ -42,11 +42,11 @@ public class Controleur implements Initializable {
         env = new Environnement();
         joueur = new Joueur(208, 468, env);
         terrain = new VueMap(env);
-        perso = new VueJoueur(joueur, env);        
-
+        perso = new VueJoueur(joueur, env);  
 
         terrain.afficheMap(tilepane);
         perso.affichePerso(borderpane);
+
 
 
         borderpane.setOnKeyPressed(ke -> {
@@ -74,6 +74,7 @@ public class Controleur implements Initializable {
                             }
                             if (fps == 5) {
                                 perso.updatePerso("STATIC");
+                                joueur.verifGravite();
                                 stop();
                                 fps = 0;
                                 r = 1;   
@@ -81,6 +82,7 @@ public class Controleur implements Initializable {
                         }
                     };
                     timer.start();
+                    joueur.verifGravite();
                 }
             } else if (ke.getCode() == KeyCode.LEFT || ke.getCode() == KeyCode.Q) {
                 if (fps == 0) {
@@ -106,6 +108,7 @@ public class Controleur implements Initializable {
                             }
                             if (fps == 5) {
                                 perso.updatePerso("STATIC");
+                                joueur.verifGravite();
                                 stop();
                                 fps = 0;
                                 l = 1;   
@@ -113,15 +116,15 @@ public class Controleur implements Initializable {
                         }
                     };
                     timer.start();
+                    joueur.verifGravite();
                 }
-
-
             } else if (ke.getCode() == KeyCode.UP || ke.getCode() == KeyCode.Z) {
+                if (joueur.isCanJump()) {
                     AnimationTimer timer = new AnimationTimer() {
                         private long lastUpdate = 0;
                         @Override
                         public void handle(long now) {
-                            if (now - lastUpdate >= 1000_000_00) { // delay de 1000 ms
+                            if (now - lastUpdate >= 1000_000_00) { // delay
                                 if (l == 1) {
                                     perso.updatePerso("UP");
                                     l++;
@@ -129,19 +132,22 @@ public class Controleur implements Initializable {
                                     perso.updatePerso("UP2");
                                     l--;
                                 }      
-                                joueur.setY(joueur.getY()-16);   
+                                joueur.setY(joueur.getY()-48);   
+                                joueur.verifGravite();
                                 lastUpdate = now;
                                 fps++;
                             }
                             if (fps == 3) {
                                 perso.updatePerso("STATIC");
+                                joueur.verifGravite();
                                 stop();
                                 fps = 0;
                             }                    
                         }
                     };
                     timer.start();
-                
+                    joueur.verifGravite();
+                }
             }
         });
 
@@ -171,6 +177,7 @@ public class Controleur implements Initializable {
                                 }
                                 if (fps == 5) {
                                     perso.updatePerso("STATIC");
+                                    joueur.verifGravite();
                                     stop();
                                     fps = 0;    
                                     h = 1;   
@@ -182,6 +189,10 @@ public class Controleur implements Initializable {
                 }
             }
         });
+        joueur.verifGravite();
+        joueur.graviteAnimation();
+        tl = joueur.getTimeline();      
+        tl.play();
     }
 
     public void attendre(int millis) {
