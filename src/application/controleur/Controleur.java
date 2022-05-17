@@ -29,9 +29,6 @@ public class Controleur implements Initializable {
     private Entite joueur;
     private VueMap terrain;
     private VueJoueur perso;
-    private int r=1, l=1, h=1;
-    private int fps = 0;
-    private Timeline tl;
     private Timeline gameLoop;
     private int temps;
 
@@ -53,12 +50,19 @@ public class Controleur implements Initializable {
         perso.affichePerso(borderpane);
 
         borderpane.setOnKeyPressed(ke -> {
+            joueur.limiteMap();
             if(ke.getCode() == KeyCode.RIGHT || ke.getCode() == KeyCode.D) {
-                perso.animationMouvement("RIGHT");
-                joueur.verifGravite();
+                if (joueur.isLimitemap() != "RIGHT") {
+                    joueur.setLimitemap("");
+                    perso.animationMouvement("RIGHT");
+                    joueur.verifGravite();
+                }
             } else if (ke.getCode() == KeyCode.LEFT || ke.getCode() == KeyCode.Q) {
-                perso.animationMouvement("LEFT");
-                joueur.verifGravite();
+                if (joueur.isLimitemap() != "LEFT") {
+                    joueur.setLimitemap("");
+                    perso.animationMouvement("LEFT");
+                    joueur.verifGravite();
+                }
             } else if (ke.getCode() == KeyCode.UP || ke.getCode() == KeyCode.Z) {
                 if (joueur.isCanJump()) {
                     perso.animationMouvement("UP");

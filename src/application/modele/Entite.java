@@ -13,6 +13,7 @@ public class Entite {
     private String id;
     private boolean ciel = false;
     private boolean canJump = true;
+    private String limitemap;
 
 
 
@@ -85,6 +86,22 @@ public class Entite {
         } else {
             ciel = false;
             canJump = true;
+        }
+    }
+
+    public void setLimitemap(String limitemap) {
+        this.limitemap = limitemap;
+    }
+
+    public String isLimitemap() {
+        return limitemap;
+    }
+
+    public void limiteMap() {
+        if(getX() + 32 >= 30*32) {
+            limitemap = "RIGHT";
+        } else if (getX() - 32 < 0) {
+            limitemap = "LEFT";
         }
     }
 
