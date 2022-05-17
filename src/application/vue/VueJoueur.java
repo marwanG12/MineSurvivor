@@ -1,5 +1,8 @@
-package application.modele;
+package application.vue;
 
+import application.modele.Entite;
+import application.modele.Environnement;
+import javafx.animation.AnimationTimer;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
@@ -11,6 +14,10 @@ public class VueJoueur {
     private Entite joueur;
     private Image perso;
     private ImageView viewperso;
+    private int fps = 0;
+    private int img = 1;
+
+
 
     public VueJoueur(Entite joueur, Environnement env) {
         this.joueur = joueur;
@@ -69,6 +76,62 @@ public class VueJoueur {
             case "HIT4":
                 viewperso.setViewport(new Rectangle2D(635, 10, 70, 45));
                 break;
+            default :
+                break;
+        }
+    }
+
+    public void unMouvement (String mouvement) {
+        if (img == 1) {
+            updatePerso(mouvement);
+            img++;
+        } else {
+            if (mouvement != "UP") {
+                if (mouvement != "HIT") {
+                    updatePerso("RUN" + img);
+                } else {
+                    updatePerso(mouvement + img);
+                }
+                if (img == 4) {
+                    img = 1;
+                } else {
+                    img++;
+                }
+            } else {
+                if (img == 1) {
+                    updatePerso("UP");
+                    img++;
+                } else {
+                    updatePerso("UP" + img);
+                    img--;
+                }
+            }
+        }
+        joueur.seDeplace(mouvement);
+    }
+
+    public void animationMouvement(String mouvement) {
+        if (fps == 0) {
+            AnimationTimer timer = new AnimationTimer() {
+                private long lastUpdate = 0;
+                @Override
+                public void handle(long now) {
+                    if (now - lastUpdate >= 750_000_00) { // delay
+                        unMouvement(mouvement);
+                        lastUpdate = now;
+                        fps++;
+                    }
+                    if (fps == 5) {
+                        updatePerso("STATIC");
+                        joueur.verifGravite();
+                        stop();
+                        fps = 0;
+                        img = 1;
+                    }
+                }
+            };
+            timer.start();
+            joueur.verifGravite();
         }
     }
 
