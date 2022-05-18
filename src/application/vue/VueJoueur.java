@@ -29,6 +29,7 @@ public class VueJoueur {
         viewperso.xProperty().bind(joueur.getXProperty());
         viewperso.yProperty().bind(joueur.getYProperty());
         viewperso.setViewport(new Rectangle2D(20, 150, 32, 45));
+        viewperso.setFitHeight(joueur.getHeight());
         borderpane.getChildren().add(viewperso);
     }
 
@@ -62,7 +63,7 @@ public class VueJoueur {
                 viewperso.setViewport(new Rectangle2D(532, 77, joueur.getWidth(), 45));
                 break;
             case "STATIC":
-                viewperso.setViewport(new Rectangle2D(20, 150, 32, 45));
+                viewperso.setViewport(new Rectangle2D(20, 150, joueur.getWidth(), 45));
                 break;
             case "HIT":
                 viewperso.setViewport(new Rectangle2D(275, 10, 44, 45));
@@ -111,9 +112,37 @@ public class VueJoueur {
             img++;
         } else {
             verifJump(jump, right, left);
+            if (mouvement == "UP") {
+                if (img == 1) {
+                    updatePerso("UP");
+                    img++;
+                } else {
+                    updatePerso("UP" + img);
+                    img--;
+                }
+            } else if (mouvement.indexOf("HIT") != -1) {
+                updatePerso(mouvement + img);
+                if (img == 4) {
+                    img = 1;
+                } else {
+                    img++;
+                }
+            } else {
+                updatePerso("RUN" + img);
+                if (img == 4) {
+                    img = 1;
+                } else {
+                    img++;
+                }
+            }
+            /*
             if (mouvement != "UP") {
                 if (mouvement != "HIT") {
-                    updatePerso("RUN" + img);
+                    if (mouvement != "RUN") {
+                        updatePerso("RUN" + img);
+                    } else {
+                        updatePerso("UP" + img);
+                    }
                 } else {
                     updatePerso(mouvement + img);
                 }
@@ -130,7 +159,7 @@ public class VueJoueur {
                     updatePerso("UP" + img);
                     img--;
                 }
-            }
+            }*/
         }
         verifJump(jump, right, left);
         joueur.seDeplace(mouvement);

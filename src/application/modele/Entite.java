@@ -1,6 +1,8 @@
 package application.modele;
 
 
+import javax.swing.Spring;
+
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -54,18 +56,18 @@ public class Entite {
     public void seDeplace(String direction) {
         switch (direction) {
             case "RIGHT" :
-                this.setX(this.getX() + 4);
+                this.setX(this.getX() + 8);
                 break;
             case "RIGHT-UP" :
-                this.setX(this.getX() + 24);
                 this.setY(this.getY() - 24);
+                this.setX(this.getX() + 24);
                 break;
             case "LEFT" :
-                this.setX(this.getX() - 4);
+                this.setX(this.getX() - 8);
                 break;
             case "LEFT-UP" :
-                this.setX(this.getX() - 24);
                 this.setY(this.getY() - 24);
+                this.setX(this.getX() - 24);
                 break;
             case "UP" :
                 this.setY(this.getY() - 16);
@@ -76,20 +78,28 @@ public class Entite {
     }
 
     public void verifGravite() {
-        if (env.getTile((getX()/32) + (getY()/29*30)) == 00) {
-            ciel = true;
-            canJump = false;
+        int spriteX = getX()/32;
+        int spriteY = getY()/32;
+        int tile = (spriteY * 30) + spriteX + 30;
+        int tile2 = (spriteY * 30) + ((getX()+16)/32) + 30;
+        if (env.getTile(tile) == 00) {
+            if (env.getTile(tile) - env.getTile(tile) == 0) {
+                ciel = true;
+                canJump = false;    
+            }
         } else {
             ciel = false;
             canJump = true;
         }
     }
 
+    
+
 
     public void setLimitemap(String limitemap) {
         this.limitemap = limitemap;
     }
-
+ 
     public String isLimitemap() {
         return limitemap;
     }
