@@ -1,13 +1,10 @@
-package application.modele;
+package application.vue;
 
-import java.util.ArrayList;
-
+import application.modele.Environnement;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
-import javafx.scene.shape.Rectangle;
 
 public class VueMap {
 
@@ -25,14 +22,12 @@ public class VueMap {
             ImageView terre = new ImageView(tileset);
             ImageView ciel = new ImageView(tileset2);
 
-            int ligne = env.getCodeTiles(i)/16;
-            int colonne = (env.getCodeTiles(i)%16)-1;
+            int ligne = env.getTile(i)/16;
+            int colonne = (env.getTile(i)%16)-1;
             int y = ligne * 32;
             int x = colonne * 32;
 
-            
-
-            if (env.getCodeTiles(i) != 0) {
+            if (env.getTile(i) != 0) {
                 terre.setViewport(new Rectangle2D(x, y, 32, 32));
                 tilepane.getChildren().add(terre);
             } else {

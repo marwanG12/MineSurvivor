@@ -1,0 +1,4 @@
+.tilepane {
+  -fx-background-image: url("background.gif");
+  -fx-background-size: cover;
+}
