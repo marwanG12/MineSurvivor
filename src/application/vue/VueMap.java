@@ -1,14 +1,10 @@
 package application.vue;
 
-import java.util.ArrayList;
-
 import application.modele.Environnement;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
-import javafx.scene.shape.Rectangle;
 
 public class VueMap {
 

@@ -3,12 +3,10 @@ package application.vue;
 import application.modele.Entite;
 import application.modele.Environnement;
 import javafx.animation.AnimationTimer;
-import javafx.animation.TranslateTransition;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.util.Duration;
 
 public class VueJoueur {
     private Entite joueur;
@@ -16,19 +14,21 @@ public class VueJoueur {
     private ImageView viewperso;
     private int fps = 0;
     private int img = 1;
+    private String mouvement;
+    private boolean left = false, right = false, jump = false;
 
 
 
     public VueJoueur(Entite joueur, Environnement env) {
         this.joueur = joueur;
-        perso = new Image("application/images/Knights/sprite2.PNG");
+        perso = new Image("application/images/Knights/sprite1.PNG");
         viewperso = new ImageView(perso);
     }
 
     public void affichePerso(BorderPane borderpane) {
         viewperso.xProperty().bind(joueur.getXProperty());
         viewperso.yProperty().bind(joueur.getYProperty());
-        viewperso.setViewport(new Rectangle2D(20, 150, 44, 45));
+        viewperso.setViewport(new Rectangle2D(20, 150, 32, 45));
         borderpane.getChildren().add(viewperso);
     }
 
@@ -39,30 +39,30 @@ public class VueJoueur {
     public void updatePerso(String action) {
         switch (action) {
             case "UP":
-                viewperso.setViewport(new Rectangle2D(20, 15, 44, 45));
+                viewperso.setViewport(new Rectangle2D(28, 15, joueur.getWidth(), 45));
                 break;
             case "UP2":
-                viewperso.setViewport(new Rectangle2D(150, 15, 44, 45));
+                viewperso.setViewport(new Rectangle2D(158, 15, joueur.getWidth(), 45));
                 break;
             case "LEFT":
-                viewperso.setViewport(new Rectangle2D(18, 80, 44, 45));
+                viewperso.setViewport(new Rectangle2D(26, 80, joueur.getWidth(), 45));
                 viewperso.setScaleX(-1);
                 break;
             case "RIGHT":
-                viewperso.setViewport(new Rectangle2D(18, 80, 44, 45));
+                viewperso.setViewport(new Rectangle2D(26, 80, joueur.getWidth(), 45));
                 viewperso.setScaleX(1);
                 break;
             case "RUN2":
-                viewperso.setViewport(new Rectangle2D(145, 80, 44, 45));
+                viewperso.setViewport(new Rectangle2D(155, 80, joueur.getWidth(), 45));
                 break;
             case "RUN3":
-                viewperso.setViewport(new Rectangle2D(395, 80, 44, 45));
+                viewperso.setViewport(new Rectangle2D(408, 80, joueur.getWidth(), 45));
                 break;
             case "RUN4":
-                viewperso.setViewport(new Rectangle2D(525, 77, 44, 45));
+                viewperso.setViewport(new Rectangle2D(532, 77, joueur.getWidth(), 45));
                 break;
             case "STATIC":
-                viewperso.setViewport(new Rectangle2D(20, 150, 44, 45));
+                viewperso.setViewport(new Rectangle2D(20, 150, 32, 45));
                 break;
             case "HIT":
                 viewperso.setViewport(new Rectangle2D(275, 10, 44, 45));
@@ -81,11 +81,36 @@ public class VueJoueur {
         }
     }
 
-    public void unMouvement (String mouvement) {
+    public void verifJump(boolean j, boolean r, boolean l) {
+        if (j == true) {
+            jump = true;
+        } else if (r == true) {
+            right = true;
+        } else if (l == true) {
+            left = true;
+        }
+
+        if (jump == true && right == true) {
+            mouvement = "RIGHT-UP";
+            jump = false;
+            right = false;
+        } else if (jump == true && left == true) {
+            mouvement = "LEFT-UP";
+            jump = false;
+            left = false;
+        } else if (jump == true) {
+            mouvement = "UP";
+            jump = false;
+        }
+    }
+
+    public void unMouvement (String mvt) {
         if (img == 1) {
+            mouvement = mvt;
             updatePerso(mouvement);
             img++;
         } else {
+            verifJump(jump, right, left);
             if (mouvement != "UP") {
                 if (mouvement != "HIT") {
                     updatePerso("RUN" + img);
@@ -107,6 +132,7 @@ public class VueJoueur {
                 }
             }
         }
+        verifJump(jump, right, left);
         joueur.seDeplace(mouvement);
     }
 
@@ -116,13 +142,17 @@ public class VueJoueur {
                 private long lastUpdate = 0;
                 @Override
                 public void handle(long now) {
-                    if (now - lastUpdate >= 750_000_00) { // delay
+                    if (now - lastUpdate >= 500_000_00) { // delay
                         unMouvement(mouvement);
                         lastUpdate = now;
                         fps++;
                     }
                     if (fps == 5) {
+                        verifJump(jump, right, left);
                         updatePerso("STATIC");
+                        jump = false;
+                        left = false;
+                        right = false;
                         joueur.verifGravite();
                         stop();
                         fps = 0;
@@ -131,7 +161,6 @@ public class VueJoueur {
                 }
             };
             timer.start();
-            joueur.verifGravite();
         }
     }
 

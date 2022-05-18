@@ -5,7 +5,6 @@ import application.modele.Environnement;
 import application.modele.Joueur;
 import application.vue.VueJoueur;
 import application.vue.VueMap;
-import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.EventHandler;
@@ -32,7 +31,6 @@ public class Controleur implements Initializable {
     private Timeline gameLoop;
     private int temps;
 
-
     @FXML
     private TilePane tilepane;
 
@@ -53,18 +51,21 @@ public class Controleur implements Initializable {
             joueur.limiteMap();
             if(ke.getCode() == KeyCode.RIGHT || ke.getCode() == KeyCode.D) {
                 if (joueur.isLimitemap() != "RIGHT") {
-                    joueur.setLimitemap("");
+                    perso.verifJump(false, true, false);
+                    joueur.setLimitemap("NONE");
                     perso.animationMouvement("RIGHT");
                     joueur.verifGravite();
                 }
             } else if (ke.getCode() == KeyCode.LEFT || ke.getCode() == KeyCode.Q) {
                 if (joueur.isLimitemap() != "LEFT") {
-                    joueur.setLimitemap("");
+                    perso.verifJump(false, false, true);
+                    joueur.setLimitemap("NONE");
                     perso.animationMouvement("LEFT");
                     joueur.verifGravite();
                 }
             } else if (ke.getCode() == KeyCode.UP || ke.getCode() == KeyCode.Z) {
                 if (joueur.isCanJump()) {
+                    perso.verifJump(true, false, false);
                     perso.animationMouvement("UP");
                 }
             }
@@ -89,9 +90,7 @@ public class Controleur implements Initializable {
         gameLoop.setCycleCount(Timeline.INDEFINITE);
         KeyFrame kf = new KeyFrame(
                 // on définit le FPS (nbre de frame par seconde)
-                Duration.seconds(0.007),
-                // on définit ce qui se passe à chaque frame
-                // c'est un eventHandler d'ou le lambda
+                Duration.seconds(0.003),
                 (ev ->{
                     if (joueur.isCiel() == true) {
                         joueur.setY(joueur.getY()+1);

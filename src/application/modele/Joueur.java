@@ -2,9 +2,8 @@ package application.modele;
 
 public class Joueur extends Entite {
 
-
     public Joueur(int x, int y, Environnement env) {
-        super(x, y, env, "Sucre");
+        super(x, y, env, "Héro");
     }
 
 

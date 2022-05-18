@@ -8,14 +8,13 @@ import javafx.beans.property.SimpleIntegerProperty;
 public class Entite {
     private String nom;
     private IntegerProperty x,y;
+    private int width=32, height=32;
     protected Environnement env;
     public static int compteur=0;
     private String id;
     private boolean ciel = false;
     private boolean canJump = true;
     private String limitemap;
-
-
 
     public Entite(int x, int y, Environnement env, String nom) {
         this.nom = nom;
@@ -27,52 +26,49 @@ public class Entite {
     }
 
 
-    public  int getX() {
-        return x.getValue();
-    }
+    public  int getX() { return x.getValue(); }
 
-    public IntegerProperty getXProperty() {
-        return x;
-    }
+    public  int getY() { return y.getValue(); }
 
-    public  void setX(int n){
-        x.setValue(n);
-    }
+    public IntegerProperty getXProperty() { return x; }
 
-    public  int getY() {
-        return y.getValue();
-    }
+    public IntegerProperty getYProperty() { return y; }
 
-    public boolean isCiel() {
-        return ciel;
-    }
+    public void setX(int n){ x.setValue(n); }
 
+    public void setY(int n){ y.setValue(n); }
 
-    public IntegerProperty getYProperty() {
-        return y;
-    }
-    public  void setY(int n){
-        y.setValue(n);
-    }
+    public int getWidth() { return width; }
 
-    public String getId() {
-        return id;
-    }
+    public int getHeight() { return height; }
+    
+    public String getId() { return id; }
 
-    public String getNom() {
-        return nom;
-    }
+    public String getNom() { return nom; }
+
+    public boolean isCiel() { return ciel; }
+
+    public boolean isCanJump() { return canJump; }
+
 
     public void seDeplace(String direction) {
         switch (direction) {
             case "RIGHT" :
-                this.setX(this.getX() + 8);
+                this.setX(this.getX() + 4);
+                break;
+            case "RIGHT-UP" :
+                this.setX(this.getX() + 24);
+                this.setY(this.getY() - 24);
                 break;
             case "LEFT" :
-                this.setX(this.getX() - 8);
+                this.setX(this.getX() - 4);
+                break;
+            case "LEFT-UP" :
+                this.setX(this.getX() - 24);
+                this.setY(this.getY() - 24);
                 break;
             case "UP" :
-                this.setY(this.getY() - 32);
+                this.setY(this.getY() - 16);
                 break;
             default :
                 break;
@@ -89,6 +85,7 @@ public class Entite {
         }
     }
 
+
     public void setLimitemap(String limitemap) {
         this.limitemap = limitemap;
     }
@@ -104,11 +101,6 @@ public class Entite {
             limitemap = "LEFT";
         }
     }
-
-    public boolean isCanJump() {
-        return canJump;
-    }
-
 
     @Override
     public String toString() {
