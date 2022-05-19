@@ -102,6 +102,12 @@ public class Controleur implements Initializable {
         gameLoop.getKeyFrames().add(kf);
     }
 
+/*    borderpane.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+        int codeTuile = ((int) event.getY()) / 32*32 +((int) event.getX())/16;
+        env.enleveTuile(codeTuile);
+        joueur.verifGravite();
+        vue.modifierTuile(codeTuile);
+    });*/
 
 
 

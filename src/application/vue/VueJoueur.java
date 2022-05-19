@@ -63,7 +63,7 @@ public class VueJoueur {
                 viewperso.setViewport(new Rectangle2D(532, 77, joueur.getWidth(), 45));
                 break;
             case "STATIC":
-                viewperso.setViewport(new Rectangle2D(20, 150, joueur.getWidth(), 45));
+                viewperso.setViewport(new Rectangle2D(29, 150, joueur.getWidth(), 45));
                 break;
             case "HIT":
                 viewperso.setViewport(new Rectangle2D(275, 10, 44, 45));
@@ -112,7 +112,7 @@ public class VueJoueur {
             img++;
         } else {
             verifJump(jump, right, left);
-            if (mouvement == "UP") {
+            if (mouvement.indexOf("UP") != -1) {
                 if (img == 1) {
                     updatePerso("UP");
                     img++;
@@ -135,32 +135,8 @@ public class VueJoueur {
                     img++;
                 }
             }
-            /*
-            if (mouvement != "UP") {
-                if (mouvement != "HIT") {
-                    if (mouvement != "RUN") {
-                        updatePerso("RUN" + img);
-                    } else {
-                        updatePerso("UP" + img);
-                    }
-                } else {
-                    updatePerso(mouvement + img);
-                }
-                if (img == 4) {
-                    img = 1;
-                } else {
-                    img++;
-                }
-            } else {
-                if (img == 1) {
-                    updatePerso("UP");
-                    img++;
-                } else {
-                    updatePerso("UP" + img);
-                    img--;
-                }
-            }*/
         }
+
         verifJump(jump, right, left);
         joueur.seDeplace(mouvement);
     }
@@ -171,7 +147,7 @@ public class VueJoueur {
                 private long lastUpdate = 0;
                 @Override
                 public void handle(long now) {
-                    if (now - lastUpdate >= 500_000_00) { // delay
+                    if (now - lastUpdate >= 750_000_00) { // delay
                         unMouvement(mouvement);
                         lastUpdate = now;
                         fps++;

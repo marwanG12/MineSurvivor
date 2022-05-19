@@ -14,7 +14,10 @@ public class Entite {
     protected Environnement env;
     public static int compteur=0;
     private String id;
+    private boolean right = true; // direction du sprite à droite
     private boolean ciel = false;
+    private boolean terreR = false;
+    private boolean terreL = false;
     private boolean canJump = true;
     private String limitemap;
 
@@ -54,19 +57,28 @@ public class Entite {
 
 
     public void seDeplace(String direction) {
+        colision();
         switch (direction) {
             case "RIGHT" :
-                this.setX(this.getX() + 8);
+                right = true;
+                if (terreR == false) {
+                    this.setX(this.getX() + 8);
+                }
                 break;
             case "RIGHT-UP" :
-                this.setY(this.getY() - 24);
+                right = true;
+                this.setY(this.getY() - 32);
                 this.setX(this.getX() + 24);
                 break;
             case "LEFT" :
-                this.setX(this.getX() - 8);
+                right = false;
+                if (terreL == false) {
+                    this.setX(this.getX() - 8);
+                }
                 break;
             case "LEFT-UP" :
-                this.setY(this.getY() - 24);
+                right = false;
+                this.setY(this.getY() - 32);
                 this.setX(this.getX() - 24);
                 break;
             case "UP" :
@@ -78,18 +90,61 @@ public class Entite {
     }
 
     public void verifGravite() {
-        int spriteX = getX()/32;
+        int minX = getX();
+        int maxX = getX() + 24;
+
+        int spriteX = minX/32;
+        int sprite2X = maxX/32;
+
         int spriteY = getY()/32;
+
         int tile = (spriteY * 30) + spriteX + 30;
-        int tile2 = (spriteY * 30) + ((getX()+16)/32) + 30;
-        if (env.getTile(tile) == 00) {
-            if (env.getTile(tile) - env.getTile(tile) == 0) {
+        int tileSuivante = (spriteY * 30) + sprite2X + 30;
+
+        if (right) {
+            if (env.getTile(tile) == 00 && env.getTile(tileSuivante) == 00) {
                 ciel = true;
-                canJump = false;    
+                canJump = false;
+            } else {
+                ciel = false;
+                canJump = true;
             }
         } else {
-            ciel = false;
-            canJump = true;
+            minX = getX() + 8;
+            maxX = getX() + 32;
+            spriteX = minX/32;
+            sprite2X = maxX/32;
+
+            tile = (spriteY * 30) + spriteX + 30;
+            tileSuivante = (spriteY * 30) + sprite2X + 30;
+
+            if (env.getTile(tile) == 00 && env.getTile(tileSuivante) == 00) {
+                ciel = true;
+                canJump = false;
+            } else {
+                ciel = false;
+                canJump = true;
+            }
+        }
+
+    }
+
+    public void colision() {
+        int spriteX = getX()/32;
+        int spriteY = getY()/32;
+        int tileL = (spriteY * 30) + spriteX + 1;
+        int tileR = (spriteY * 30) + spriteX - 1;
+
+        if (env.getTile(tileL) != 0) {
+            terreR = true;
+        } else {
+            terreR = false;
+        }
+
+        if (env.getTile(tileR) != 0) {
+            terreL = true;
+        } else {
+            terreL = false;
         }
     }
 
