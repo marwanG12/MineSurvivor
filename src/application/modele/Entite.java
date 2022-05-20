@@ -68,7 +68,7 @@ public class Entite {
             case "RIGHT-UP" :
                 right = true;
                 this.setY(this.getY() - 32);
-                this.setX(this.getX() + 24);
+                this.setX(this.getX() + 32);
                 break;
             case "LEFT" :
                 right = false;
@@ -79,7 +79,7 @@ public class Entite {
             case "LEFT-UP" :
                 right = false;
                 this.setY(this.getY() - 32);
-                this.setX(this.getX() - 24);
+                this.setX(this.getX() - 32);
                 break;
             case "UP" :
                 this.setY(this.getY() - 16);
@@ -132,16 +132,16 @@ public class Entite {
     public void colision() {
         int spriteX = getX()/32;
         int spriteY = getY()/32;
-        int tileL = (spriteY * 30) + spriteX + 1;
-        int tileR = (spriteY * 30) + spriteX - 1;
+        int tileR = (spriteY * 30) + spriteX + 1;
+        int tileL = (spriteY * 30) + spriteX;
 
-        if (env.getTile(tileL) != 0) {
+        if (env.getTile(tileR) != 0) {
             terreR = true;
         } else {
             terreR = false;
         }
 
-        if (env.getTile(tileR) != 0) {
+        if (env.getTile(tileL) != 0) {
             terreL = true;
         } else {
             terreL = false;
