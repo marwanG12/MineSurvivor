@@ -16,8 +16,7 @@ public class Entite {
     private String id;
     private boolean right = true; // direction du sprite à droite
     private boolean ciel = false;
-    private boolean terreR = false;
-    private boolean terreL = false;
+    private boolean terreR = false, terreL = false, terreU = false;
     private boolean canJump = true;
     private String limitemap;
 
@@ -67,8 +66,10 @@ public class Entite {
                 break;
             case "RIGHT-UP" :
                 right = true;
-                this.setY(this.getY() - 32);
                 this.setX(this.getX() + 32);
+                if (terreU == false) {
+                    this.setY(this.getY() - 32);
+                }
                 break;
             case "LEFT" :
                 right = false;
@@ -78,11 +79,15 @@ public class Entite {
                 break;
             case "LEFT-UP" :
                 right = false;
-                this.setY(this.getY() - 32);
                 this.setX(this.getX() - 32);
+                if (terreU == false) {
+                    this.setY(this.getY() - 32);
+                }
                 break;
             case "UP" :
-                this.setY(this.getY() - 16);
+                if (terreU == false) {
+                    this.setY(this.getY() - 16);
+                }
                 break;
             default :
                 break;
@@ -134,6 +139,7 @@ public class Entite {
         int spriteY = getY()/32;
         int tileR = (spriteY * 30) + spriteX + 1;
         int tileL = (spriteY * 30) + spriteX;
+        int tileU = (spriteY * 30) + spriteX - 30;
 
         if (env.getTile(tileR) != 0) {
             terreR = true;
@@ -145,6 +151,12 @@ public class Entite {
             terreL = true;
         } else {
             terreL = false;
+        }
+
+        if (env.getTile(tileU) != 0) {
+            terreU = true;
+        } else {
+            terreU = false;
         }
     }
 
