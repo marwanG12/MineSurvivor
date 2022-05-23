@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 
 public class Entite {
+
     private String nom;
     private IntegerProperty x,y;
     private int width=32, height=32;
