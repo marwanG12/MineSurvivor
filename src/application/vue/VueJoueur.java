@@ -15,14 +15,15 @@ public class VueJoueur {
     private int fps = 0;
     private int img = 1;
     private String mouvement;
-    private boolean left = false, right = false, jump = false;
-
-
 
     public VueJoueur(Entite joueur, Environnement env) {
         this.joueur = joueur;
         perso = new Image("application/images/Knights/sprite1.PNG");
         viewperso = new ImageView(perso);
+    }
+
+    public ImageView viewperso() {
+        return viewperso;
     }
 
     public void affichePerso(BorderPane borderpane) {
@@ -31,10 +32,6 @@ public class VueJoueur {
         viewperso.setViewport(new Rectangle2D(20, 150, 32, 45));
         viewperso.setFitHeight(joueur.getHeight());
         borderpane.getChildren().add(viewperso);
-    }
-
-    public ImageView viewperso() {
-        return viewperso;
     }
 
     public void updatePerso(String action) {
@@ -82,36 +79,12 @@ public class VueJoueur {
         }
     }
 
-    public void verifJump(boolean j, boolean r, boolean l) {
-        if (j == true) {
-            jump = true;
-        } else if (r == true) {
-            right = true;
-        } else if (l == true) {
-            left = true;
-        }
-
-        if (jump == true && right == true) {
-            mouvement = "RIGHT-UP";
-            jump = false;
-            right = false;
-        } else if (jump == true && left == true) {
-            mouvement = "LEFT-UP";
-            jump = false;
-            left = false;
-        } else if (jump == true) {
-            mouvement = "UP";
-            jump = false;
-        }
-    }
-
     public void unMouvement (String mvt) {
         if (img == 1) {
             mouvement = mvt;
             updatePerso(mouvement);
             img++;
         } else {
-            verifJump(jump, right, left);
             if (mouvement.indexOf("UP") != -1) {
                 if (img == 1) {
                     updatePerso("UP");
@@ -136,9 +109,7 @@ public class VueJoueur {
                 }
             }
         }
-
-        verifJump(jump, right, left);
-        joueur.seDeplace(mouvement);
+        joueur.seDeplace();
     }
 
     public void animationMouvement(String mouvement) {
@@ -153,11 +124,7 @@ public class VueJoueur {
                         fps++;
                     }
                     if (fps == 5) {
-                        verifJump(jump, right, left);
                         updatePerso("STATIC");
-                        jump = false;
-                        left = false;
-                        right = false;
                         joueur.verifGravite();
                         stop();
                         fps = 0;

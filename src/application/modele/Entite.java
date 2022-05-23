@@ -8,15 +8,17 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 
 public class Entite {
+
     private String nom;
     private IntegerProperty x,y;
     private int width=32, height=32;
     protected Environnement env;
     public static int compteur=0;
     private String id;
-    private boolean right = true; // direction du sprite à droite
-    private boolean ciel = false;
+
+    private boolean right = false, left = false, up = false;
     private boolean terreR = false, terreL = false, terreU = false;
+    private boolean ciel = false;
     private boolean canJump = true;
     private String limitemap;
 
@@ -30,17 +32,17 @@ public class Entite {
     }
 
 
-    public  int getX() { return x.getValue(); }
+    public int getX() { return x.getValue(); }
 
-    public  int getY() { return y.getValue(); }
+    public int getY() { return y.getValue(); }
 
     public IntegerProperty getXProperty() { return x; }
 
     public IntegerProperty getYProperty() { return y; }
 
-    public void setX(int n){ x.setValue(n); }
+    public void setX(int n) { x.setValue(n); }
 
-    public void setY(int n){ y.setValue(n); }
+    public void setY(int n) { y.setValue(n); }
 
     public int getWidth() { return width; }
 
@@ -54,44 +56,47 @@ public class Entite {
 
     public boolean isCanJump() { return canJump; }
 
+    public boolean isRight() { return right; }
 
-    public void seDeplace(String direction) {
+    public void setRight(boolean right) { this.right = right; }
+
+    public boolean isLeft() { return left; }
+
+    public void setLeft(boolean left) { this.left = left; }
+
+    public boolean isUp() { return up; }
+
+    public void setUp(boolean up) { this.up = up; }
+
+    public void setLimitemap(String limitemap) { this.limitemap = limitemap; }
+ 
+    public String isLimitemap() { return limitemap; }
+
+
+
+    public void seDeplace() {
         colision();
-        switch (direction) {
-            case "RIGHT" :
-                right = true;
-                if (terreR == false) {
-                    this.setX(this.getX() + 8);
+        if (right) {
+            if (terreR == false) {
+                this.setX(this.getX() + 12);
+            }
+        }
+
+        if (left) {
+            if (terreL == false) {
+                this.setX(this.getX() - 12);
+            }
+        }
+
+        if (up) {
+            if (terreU == false) {
+                this.setY(this.getY() - 18);
+                if (canJump) {
+                    up = false;
                 }
-                break;
-            case "RIGHT-UP" :
-                right = true;
-                this.setX(this.getX() + 32);
-                if (terreU == false) {
-                    this.setY(this.getY() - 32);
-                }
-                break;
-            case "LEFT" :
-                right = false;
-                if (terreL == false) {
-                    this.setX(this.getX() - 8);
-                }
-                break;
-            case "LEFT-UP" :
-                right = false;
-                this.setX(this.getX() - 32);
-                if (terreU == false) {
-                    this.setY(this.getY() - 32);
-                }
-                break;
-            case "UP" :
-                if (terreU == false) {
-                    this.setY(this.getY() - 16);
-                }
-                break;
-            default :
-                break;
-         }
+            }
+            up = false;
+        }
     }
 
     public void verifGravite() {
@@ -106,7 +111,7 @@ public class Entite {
         int tile = (spriteY * 30) + spriteX + 30;
         int tileSuivante = (spriteY * 30) + sprite2X + 30;
 
-        if (right) {
+        if (right) { //Selon la direction du sprite sa largeur change car le sprite ne prend pas toute l'image 
             if (env.getTile(tile) == 00 && env.getTile(tileSuivante) == 00) {
                 ciel = true;
                 canJump = false;
@@ -160,24 +165,15 @@ public class Entite {
         }
     }
 
-    
-
-
-    public void setLimitemap(String limitemap) {
-        this.limitemap = limitemap;
-    }
- 
-    public String isLimitemap() {
-        return limitemap;
-    }
 
     public void limiteMap() {
         if(getX() + 32 >= 30*32) {
             limitemap = "RIGHT";
-        } else if (getX() - 32 < 0) {
+        } else if (getX() + 32 < 0) {
             limitemap = "LEFT";
         }
     }
+
 
     @Override
     public String toString() {
