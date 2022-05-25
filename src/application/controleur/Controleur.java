@@ -60,12 +60,6 @@ public class Controleur implements Initializable {
                     joueur.setLimitemap("NONE");
                     vueJoueur.animationMouvement("RIGHT");
                     break;
-                case UP: 
-                    if (!joueur.isUp() && joueur.isCanJump()) {
-                        joueur.setUp(true);
-                        vueJoueur.animationMouvement("UP");
-                    }         
-                    break;
                 default: 
                     break;
             }
@@ -80,7 +74,10 @@ public class Controleur implements Initializable {
                     joueur.setRight(false);
                     break;
                 case UP: 
-                    joueur.setUp(false); 
+                    if (!joueur.isUp() && joueur.isCanJump()) {
+                        joueur.setUp(true);
+                        vueJoueur.animationMouvement("UP");
+                    }         
                     break;
                 default: 
                     break;           

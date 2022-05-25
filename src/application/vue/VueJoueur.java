@@ -129,6 +129,7 @@ public class VueJoueur {
                         stop();
                         fps = 0;
                         img = 1;
+                        joueur.setUp(false);
                     }
                 }
             };

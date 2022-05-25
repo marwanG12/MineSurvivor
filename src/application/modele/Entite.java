@@ -1,8 +1,4 @@
 package application.modele;
-
-
-import javax.swing.Spring;
-
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -20,6 +16,7 @@ public class Entite {
     private boolean terreR = false, terreL = false, terreU = false;
     private boolean ciel = false;
     private boolean canJump = true;
+    private int count;
     private String limitemap;
 
     public Entite(int x, int y, Environnement env, String nom) {
@@ -82,7 +79,7 @@ public class Entite {
             }
         }
 
-        if (left) {
+        if (left) {  
             if (terreL == false) {
                 this.setX(this.getX() - 12);
             }
@@ -91,27 +88,28 @@ public class Entite {
         if (up) {
             if (terreU == false) {
                 this.setY(this.getY() - 18);
+                count++;
                 if (canJump) {
-                    up = false;
+                    canJump = false;
                 }
             }
-            up = false;
+            if (count == 4) {
+                up = false;
+                count = 0;
+            }
         }
     }
 
     public void verifGravite() {
-        int minX = getX();
-        int maxX = getX() + 24;
+        int minX = (getX())/32;
+        int maxX = (getX() + 24)/32;
 
-        int spriteX = minX/32;
-        int sprite2X = maxX/32;
+        int posY = getY()/32;
 
-        int spriteY = getY()/32;
+        int tile = (posY * 30) + minX + 30;
+        int tileSuivante = (posY * 30) + maxX + 30; //Si le personnage se trouve entre les 2 tuiles
 
-        int tile = (spriteY * 30) + spriteX + 30;
-        int tileSuivante = (spriteY * 30) + sprite2X + 30;
-
-        if (right) { //Selon la direction du sprite sa largeur change car le sprite ne prend pas toute l'image 
+        if (right) { //Selon la direction du joueur sa largeur change car le joueur ne prend pas toute l'image 
             if (env.getTile(tile) == 00 && env.getTile(tileSuivante) == 00) {
                 ciel = true;
                 canJump = false;
@@ -120,13 +118,11 @@ public class Entite {
                 canJump = true;
             }
         } else {
-            minX = getX() + 8;
-            maxX = getX() + 32;
-            spriteX = minX/32;
-            sprite2X = maxX/32;
+            minX = (getX() + 8)/32;
+            maxX = (getX() + 32)/32;
 
-            tile = (spriteY * 30) + spriteX + 30;
-            tileSuivante = (spriteY * 30) + sprite2X + 30;
+            tile = (posY * 30) + minX + 30;
+            tileSuivante = (posY * 30) + maxX + 30;
 
             if (env.getTile(tile) == 00 && env.getTile(tileSuivante) == 00) {
                 ciel = true;
@@ -140,11 +136,11 @@ public class Entite {
     }
 
     public void colision() {
-        int spriteX = getX()/32;
-        int spriteY = getY()/32;
-        int tileR = (spriteY * 30) + spriteX + 1;
-        int tileL = (spriteY * 30) + spriteX;
-        int tileU = (spriteY * 30) + spriteX - 30;
+        int posX = getX()/32;
+        int posY = getY()/32;
+        int tileR = (posY * 30) + posX + 1; //Tuile à droite de l'entite
+        int tileL = (posY * 30) + posX; //Tuile à gauche de l'entite
+        int tileU = (posY * 30) + posX - 30; //Tuile en haut de l'entite
 
         if (env.getTile(tileR) != 0) {
             terreR = true;
