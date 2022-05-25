@@ -119,6 +119,7 @@ public class VueJoueur {
                 @Override
                 public void handle(long now) {
                     if (now - lastUpdate >= 750_000_00) { // delay
+                        joueur.colision();
                         unMouvement(mouvement);
                         lastUpdate = now;
                         fps++;

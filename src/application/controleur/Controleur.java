@@ -10,7 +10,6 @@ import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -54,6 +53,7 @@ public class Controleur implements Initializable {
                     joueur.setLeft(true);
                     joueur.setLimitemap("NONE");
                     vueJoueur.animationMouvement("LEFT");
+                    
                     break;
                 case RIGHT: 
                     joueur.setRight(true);

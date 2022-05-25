@@ -109,38 +109,34 @@ public class Entite {
         int tile = (posY * 30) + minX + 30;
         int tileSuivante = (posY * 30) + maxX + 30; //Si le personnage se trouve entre les 2 tuiles
 
-        if (right) { //Selon la direction du joueur sa largeur change car le joueur ne prend pas toute l'image 
-            if (env.getTile(tile) == 00 && env.getTile(tileSuivante) == 00) {
-                ciel = true;
-                canJump = false;
-            } else {
-                ciel = false;
-                canJump = true;
-            }
-        } else {
+        if (left) { //Selon la direction du joueur sa largeur change car le joueur ne prend pas toute l'image 
             minX = (getX() + 8)/32;
             maxX = (getX() + 32)/32;
 
             tile = (posY * 30) + minX + 30;
             tileSuivante = (posY * 30) + maxX + 30;
+        } 
 
-            if (env.getTile(tile) == 00 && env.getTile(tileSuivante) == 00) {
-                ciel = true;
-                canJump = false;
-            } else {
-                ciel = false;
-                canJump = true;
-            }
+        if (env.getTile(tile) == 00 && env.getTile(tileSuivante) == 00) {
+            ciel = true;
+            canJump = false;
+        } else {
+            ciel = false;
+            canJump = true;
         }
-
     }
 
     public void colision() {
         int posX = getX()/32;
+        int maxX = (getX() + 24)/32;
         int posY = getY()/32;
+        int maxY = (getY() + 32)/32;
         int tileR = (posY * 30) + posX + 1; //Tuile à droite de l'entite
+        int tileRSuivante = (maxY * 30) + posX + 1;
         int tileL = (posY * 30) + posX; //Tuile à gauche de l'entite
+        int tileLSuivante = (maxY * 30) + posX;
         int tileU = (posY * 30) + posX - 30; //Tuile en haut de l'entite
+        int tileUSuivante =  (posY * 30) + maxX - 30;
 
         if (env.getTile(tileR) != 0) {
             terreR = true;
@@ -154,7 +150,14 @@ public class Entite {
             terreL = false;
         }
 
-        if (env.getTile(tileU) != 0) {
+        if (left) {
+            posX = (getX() + 8)/32;
+            maxX = (getX() + 32)/32;
+            tileU = (posY * 30) + posX - 30;
+            tileUSuivante = (posY * 30) + maxX - 30;
+        } 
+
+        if (env.getTile(tileU) != 0 || env.getTile(tileUSuivante) != 0) {
             terreU = true;
         } else {
             terreU = false;
