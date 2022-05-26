@@ -14,6 +14,7 @@ public class VueJoueur {
     private ImageView viewperso;
     private int fps = 0;
     private int img = 1;
+    private int timerUp = 0;
     private String mouvement;
 
     public VueJoueur(Entite joueur, Environnement env) {
@@ -79,19 +80,31 @@ public class VueJoueur {
         }
     }
 
+    public void verifJumpParabole() {
+        if ((joueur.isUp() && (joueur.isRight() || joueur.isLeft())) || timerUp > 0) {
+            if (timerUp == 0) {
+                fps = 0;
+                img = 2;
+            }
+            timerUp++;
+            mouvement = "UP";
+        }
+    } 
+
     public void unMouvement (String mvt) {
         if (img == 1) {
             mouvement = mvt;
             updatePerso(mouvement);
             img++;
         } else {
-            if (mouvement.indexOf("UP") != -1) {
-                if (img == 1) {
+            verifJumpParabole();
+            if (mouvement.contains("UP")) {
+                if (img == 3) {
                     updatePerso("UP");
-                    img++;
+                    img--;
                 } else {
                     updatePerso("UP" + img);
-                    img--;
+                    img++;
                 }
             } else if (mouvement.indexOf("HIT") != -1) {
                 updatePerso(mouvement + img);
@@ -121,6 +134,7 @@ public class VueJoueur {
                     if (now - lastUpdate >= 750_000_00) { // delay
                         joueur.colision();
                         unMouvement(mouvement);
+                        verifJumpParabole();
                         lastUpdate = now;
                         fps++;
                     }
@@ -130,6 +144,7 @@ public class VueJoueur {
                         stop();
                         fps = 0;
                         img = 1;
+                        timerUp = 0;
                         joueur.setUp(false);
                     }
                 }
