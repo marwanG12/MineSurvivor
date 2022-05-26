@@ -13,7 +13,7 @@ public class Entite {
     private String id;
 
     private boolean right = false, left = false, up = false;
-    private boolean terreR = false, terreL = false, terreU = false;
+    private boolean terreR = false, terreL = false, terreU = false, terreUR = false, terreUL = false;
     private boolean ciel = false;
     private boolean canJump = true;
     private int count;
@@ -74,19 +74,19 @@ public class Entite {
     public void seDeplace() {
         colision();
         if (right) {
-            if (terreR == false) {
+            if (!terreR) {
                 this.setX(this.getX() + 12);
             }
         }
 
         if (left) {  
-            if (terreL == false) {
+            if (!terreL) {
                 this.setX(this.getX() - 12);
             }
         }
 
         if (up) {
-            if (terreU == false) {
+            if (!terreU) {
                 this.setY(this.getY() - 18);
                 count++;
                 if (canJump) {
@@ -132,19 +132,26 @@ public class Entite {
         int posY = getY()/32;
         int maxY = (getY() + 32)/32;
         int tileR = (posY * 30) + posX + 1; //Tuile à droite de l'entite
-        int tileRSuivante = (maxY * 30) + posX + 1;
+        int tileRB = (maxY * 30) + posX + 1;
         int tileL = (posY * 30) + posX; //Tuile à gauche de l'entite
-        int tileLSuivante = (maxY * 30) + posX;
+        int tileLB = (maxY * 30) + posX;
         int tileU = (posY * 30) + posX - 30; //Tuile en haut de l'entite
-        int tileUSuivante =  (posY * 30) + maxX - 30;
+        int tileUB =  (posY * 30) + maxX - 30; 
 
-        if (env.getTile(tileR) != 0) {
+        int ligneR = tileR/30;
+        int yTileR = ligneR * 32;
+
+        int ligneL = tileL/30;
+        int yTileL = ligneL * 32;
+
+
+        if (env.getTile(tileR) != 0 || (yTileR < getY()  && env.getTile(tileRB) != 0 && env.getTile(tileR) == 0)) {
             terreR = true;
         } else {
             terreR = false;
         }
 
-        if (env.getTile(tileL) != 0) {
+        if (env.getTile(tileL) != 0 || (yTileL < getY() && env.getTile(tileLB) != 0 && env.getTile(tileL) == 0)) {
             terreL = true;
         } else {
             terreL = false;
@@ -154,10 +161,10 @@ public class Entite {
             posX = (getX() + 8)/32;
             maxX = (getX() + 32)/32;
             tileU = (posY * 30) + posX - 30;
-            tileUSuivante = (posY * 30) + maxX - 30;
+            tileUB = (posY * 30) + maxX - 30;
         } 
 
-        if (env.getTile(tileU) != 0 || env.getTile(tileUSuivante) != 0) {
+        if (env.getTile(tileU) != 0 || env.getTile(tileUB) != 0) {
             terreU = true;
         } else {
             terreU = false;

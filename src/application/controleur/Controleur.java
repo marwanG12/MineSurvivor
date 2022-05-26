@@ -41,7 +41,7 @@ public class Controleur implements Initializable {
         env = new Environnement();
         joueur = new Joueur(208, 468, env);
         vueMap = new VueMap(env);
-        vueJoueur = new VueJoueur(joueur, env);  
+        vueJoueur = new VueJoueur(joueur, env);
 
         vueMap.afficheMap(tilepane);
         vueJoueur.affichePerso(borderpane);
