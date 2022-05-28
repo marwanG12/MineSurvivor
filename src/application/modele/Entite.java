@@ -132,17 +132,14 @@ public class Entite {
         int posY = getY()/32;
         int maxY = (getY() + 32)/32;
         int tileR = (posY * 30) + posX + 1; //Tuile à droite de l'entite
-        int tileRB = (maxY * 30) + posX + 1;
+        int tileRB = (maxY * 30) + posX + 1; //Tuile en bas à droite de l'entite
         int tileL = (posY * 30) + posX; //Tuile à gauche de l'entite
-        int tileLB = (maxY * 30) + posX;
+        int tileLB = (maxY * 30) + posX; //Tuile en bas à gauche de l'entite
         int tileU = (posY * 30) + posX - 30; //Tuile en haut de l'entite
         int tileUB =  (posY * 30) + maxX - 30; 
 
-        int ligneR = tileR/30;
-        int yTileR = ligneR * 32;
-
-        int ligneL = tileL/30;
-        int yTileL = ligneL * 32;
+        int yTileR = (tileR/30) * 32;
+        int yTileL = (tileL/30) * 32;
 
 
         if (env.getTile(tileR) != 0 || (yTileR < getY()  && env.getTile(tileRB) != 0 && env.getTile(tileR) == 0)) {
