@@ -1,8 +1,4 @@
 package application.modele;
-
-
-import javax.swing.Spring;
-
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -15,10 +11,12 @@ public class Entite {
     protected Environnement env;
     public static int compteur=0;
     private String id;
-    private boolean right = true; // direction du sprite à droite
+
+    private boolean right = false, left = false, up = false;
+    private boolean terreR = false, terreL = false, terreU = false, terreUR = false, terreUL = false;
     private boolean ciel = false;
-    private boolean terreR = false, terreL = false, terreU = false;
     private boolean canJump = true;
+    private int count;
     private String limitemap;
 
     public Entite(int x, int y, Environnement env, String nom) {
@@ -31,22 +29,22 @@ public class Entite {
     }
 
 
-    public  int getX() { return x.getValue(); }
+    public int getX() { return x.getValue(); }
 
-    public  int getY() { return y.getValue(); }
+    public int getY() { return y.getValue(); }
 
     public IntegerProperty getXProperty() { return x; }
 
     public IntegerProperty getYProperty() { return y; }
 
-    public void setX(int n){ x.setValue(n); }
+    public void setX(int n) { x.setValue(n); }
 
-    public void setY(int n){ y.setValue(n); }
+    public void setY(int n) { y.setValue(n); }
 
     public int getWidth() { return width; }
 
     public int getHeight() { return height; }
-    
+
     public String getId() { return id; }
 
     public String getNom() { return nom; }
@@ -55,130 +53,130 @@ public class Entite {
 
     public boolean isCanJump() { return canJump; }
 
+    public boolean isRight() { return right; }
 
-    public void seDeplace(String direction) {
+    public void setRight(boolean right) { this.right = right; }
+
+    public boolean isLeft() { return left; }
+
+    public void setLeft(boolean left) { this.left = left; }
+
+    public boolean isUp() { return up; }
+
+    public void setUp(boolean up) { this.up = up; }
+
+    public void setLimitemap(String limitemap) { this.limitemap = limitemap; }
+
+    public String isLimitemap() { return limitemap; }
+
+
+
+    public void seDeplace() {
         colision();
-        switch (direction) {
-            case "RIGHT" :
-                right = true;
-                if (terreR == false) {
-                    this.setX(this.getX() + 8);
-                }
-                break;
-            case "RIGHT-UP" :
-                right = true;
-                this.setX(this.getX() + 32);
-                if (terreU == false) {
-                    this.setY(this.getY() - 32);
-                }
-                break;
-            case "LEFT" :
-                right = false;
-                if (terreL == false) {
-                    this.setX(this.getX() - 8);
-                }
-                break;
-            case "LEFT-UP" :
-                right = false;
-                this.setX(this.getX() - 32);
-                if (terreU == false) {
-                    this.setY(this.getY() - 32);
-                }
-                break;
-            case "UP" :
-                if (terreU == false) {
-                    this.setY(this.getY() - 16);
-                }
-                break;
-            default :
-                break;
-         }
-    }
-
-    public void verifGravite() {
-        int minX = getX();
-        int maxX = getX() + 24;
-
-        int spriteX = minX/32;
-        int sprite2X = maxX/32;
-
-        int spriteY = getY()/32;
-
-        int tile = (spriteY * 30) + spriteX + 30;
-        int tileSuivante = (spriteY * 30) + sprite2X + 30;
-
         if (right) {
-            if (env.getTile(tile) == 00 && env.getTile(tileSuivante) == 00) {
-                ciel = true;
-                canJump = false;
-            } else {
-                ciel = false;
-                canJump = true;
-            }
-        } else {
-            minX = getX() + 8;
-            maxX = getX() + 32;
-            spriteX = minX/32;
-            sprite2X = maxX/32;
-
-            tile = (spriteY * 30) + spriteX + 30;
-            tileSuivante = (spriteY * 30) + sprite2X + 30;
-
-            if (env.getTile(tile) == 00 && env.getTile(tileSuivante) == 00) {
-                ciel = true;
-                canJump = false;
-            } else {
-                ciel = false;
-                canJump = true;
+            if (!terreR) {
+                this.setX(this.getX() + 12);
             }
         }
 
+        if (left) {
+            if (!terreL) {
+                this.setX(this.getX() - 12);
+            }
+        }
+
+        if (up) {
+            if (!terreU) {
+                this.setY(this.getY() - 18);
+                count++;
+                if (canJump) {
+                    canJump = false;
+                }
+            }
+            if (count == 4) {
+                up = false;
+                count = 0;
+            }
+        }
+    }
+
+    public void verifGravite() {
+        int minX = (getX())/32;
+        int maxX = (getX() + 24)/32;
+
+        int posY = getY()/32;
+
+        int tile = (posY * 30) + minX + 30;
+        int tileSuivante = (posY * 30) + maxX + 30; //Si le personnage se trouve entre les 2 tuiles
+
+        if (left) { //Selon la direction du joueur sa largeur change car le joueur ne prend pas toute l'image
+            minX = (getX() + 8)/32;
+            maxX = (getX() + 32)/32;
+
+            tile = (posY * 30) + minX + 30;
+            tileSuivante = (posY * 30) + maxX + 30;
+        }
+
+        if (env.getTile(tile) == 00 && env.getTile(tileSuivante) == 00) {
+            ciel = true;
+            canJump = false;
+        } else {
+            ciel = false;
+            canJump = true;
+        }
     }
 
     public void colision() {
-        int spriteX = getX()/32;
-        int spriteY = getY()/32;
-        int tileR = (spriteY * 30) + spriteX + 1;
-        int tileL = (spriteY * 30) + spriteX;
-        int tileU = (spriteY * 30) + spriteX - 30;
+        int posX = getX()/32;
+        int maxX = (getX() + 24)/32;
+        int posY = getY()/32;
+        int maxY = (getY() + 32)/32;
+        int tileR = (posY * 30) + posX + 1; //Tuile à droite de l'entite
+        int tileRB = (maxY * 30) + posX + 1; //Tuile en bas à droite de l'entite
+        int tileL = (posY * 30) + posX; //Tuile à gauche de l'entite
+        int tileLB = (maxY * 30) + posX; //Tuile en bas à gauche de l'entite
+        int tileU = (posY * 30) + posX - 30; //Tuile en haut de l'entite
+        int tileUB =  (posY * 30) + maxX - 30;
 
-        if (env.getTile(tileR) != 0) {
+        int yTileR = (tileR/30) * 32;
+        int yTileL = (tileL/30) * 32;
+
+
+        if (env.getTile(tileR) != 0 || (yTileR < getY()  && env.getTile(tileRB) != 0 && env.getTile(tileR) == 0)) {
             terreR = true;
         } else {
             terreR = false;
         }
 
-        if (env.getTile(tileL) != 0) {
+        if (env.getTile(tileL) != 0 || (yTileL < getY() && env.getTile(tileLB) != 0 && env.getTile(tileL) == 0)) {
             terreL = true;
         } else {
             terreL = false;
         }
 
-        if (env.getTile(tileU) != 0) {
+        if (left) {
+            posX = (getX() + 8)/32;
+            maxX = (getX() + 32)/32;
+            tileU = (posY * 30) + posX - 30;
+            tileUB = (posY * 30) + maxX - 30;
+        }
+
+        if (env.getTile(tileU) != 0 || env.getTile(tileUB) != 0) {
             terreU = true;
         } else {
             terreU = false;
         }
     }
 
-    
-
-
-    public void setLimitemap(String limitemap) {
-        this.limitemap = limitemap;
-    }
- 
-    public String isLimitemap() {
-        return limitemap;
-    }
 
     public void limiteMap() {
         if(getX() + 32 >= 30*32) {
             limitemap = "RIGHT";
-        } else if (getX() - 32 < 0) {
+        } else if (getX() + 32 < 0) {
             limitemap = "LEFT";
         }
     }
+
 
     @Override
     public String toString() {

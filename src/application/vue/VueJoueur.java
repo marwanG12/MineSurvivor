@@ -14,15 +14,17 @@ public class VueJoueur {
     private ImageView viewperso;
     private int fps = 0;
     private int img = 1;
+    private int timerUp = 0;
     private String mouvement;
-    private boolean left = false, right = false, jump = false;
-
-
 
     public VueJoueur(Entite joueur, Environnement env) {
         this.joueur = joueur;
         perso = new Image("application/images/Knights/sprite1.PNG");
         viewperso = new ImageView(perso);
+    }
+
+    public ImageView viewperso() {
+        return viewperso;
     }
 
     public void affichePerso(BorderPane borderpane) {
@@ -31,10 +33,6 @@ public class VueJoueur {
         viewperso.setViewport(new Rectangle2D(20, 150, 32, 45));
         viewperso.setFitHeight(joueur.getHeight());
         borderpane.getChildren().add(viewperso);
-    }
-
-    public ImageView viewperso() {
-        return viewperso;
     }
 
     public void updatePerso(String action) {
@@ -82,26 +80,14 @@ public class VueJoueur {
         }
     }
 
-    public void verifJump(boolean j, boolean r, boolean l) {
-        if (j == true) {
-            jump = true;
-        } else if (r == true) {
-            right = true;
-        } else if (l == true) {
-            left = true;
-        }
-
-        if (jump == true && right == true) {
-            mouvement = "RIGHT-UP";
-            jump = false;
-            right = false;
-        } else if (jump == true && left == true) {
-            mouvement = "LEFT-UP";
-            jump = false;
-            left = false;
-        } else if (jump == true) {
+    public void verifJumpParabole() {
+        if ((joueur.isUp() && (joueur.isRight() || joueur.isLeft())) || timerUp > 0) {
+            if (timerUp == 0) {
+                fps = 0;
+                img = 2;
+            }
+            timerUp++;
             mouvement = "UP";
-            jump = false;
         }
     }
 
@@ -111,14 +97,14 @@ public class VueJoueur {
             updatePerso(mouvement);
             img++;
         } else {
-            verifJump(jump, right, left);
-            if (mouvement.indexOf("UP") != -1) {
-                if (img == 1) {
+            verifJumpParabole();
+            if (mouvement.contains("UP")) {
+                if (img == 3) {
                     updatePerso("UP");
-                    img++;
+                    img--;
                 } else {
                     updatePerso("UP" + img);
-                    img--;
+                    img++;
                 }
             } else if (mouvement.indexOf("HIT") != -1) {
                 updatePerso(mouvement + img);
@@ -136,9 +122,7 @@ public class VueJoueur {
                 }
             }
         }
-
-        verifJump(jump, right, left);
-        joueur.seDeplace(mouvement);
+        joueur.seDeplace();
     }
 
     public void animationMouvement(String mouvement) {
@@ -148,20 +132,20 @@ public class VueJoueur {
                 @Override
                 public void handle(long now) {
                     if (now - lastUpdate >= 750_000_00) { // delay
+                        joueur.colision();
                         unMouvement(mouvement);
+                        verifJumpParabole();
                         lastUpdate = now;
                         fps++;
                     }
                     if (fps == 5) {
-                        verifJump(jump, right, left);
                         updatePerso("STATIC");
-                        jump = false;
-                        left = false;
-                        right = false;
                         joueur.verifGravite();
                         stop();
                         fps = 0;
                         img = 1;
+                        timerUp = 0;
+                        joueur.setUp(false);
                     }
                 }
             };
