@@ -10,7 +10,6 @@ import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -26,8 +25,8 @@ import java.util.ResourceBundle;
 public class Controleur implements Initializable {
     private Environnement env;
     private Entite joueur;
-    private VueMap terrain;
-    private VueJoueur perso;
+    private VueMap vueMap;
+    private VueJoueur vueJoueur;
     private Timeline gameLoop;
     private int temps;
 
@@ -41,33 +40,47 @@ public class Controleur implements Initializable {
     public void initialize (URL location, ResourceBundle resources) {
         env = new Environnement();
         joueur = new Joueur(208, 468, env);
-        terrain = new VueMap(env);
-        perso = new VueJoueur(joueur, env);  
+        vueMap = new VueMap(env);
+        vueJoueur = new VueJoueur(joueur, env);
 
-        terrain.afficheMap(tilepane);
-        perso.affichePerso(borderpane);
+        vueMap.afficheMap(tilepane);
+        vueJoueur.affichePerso(borderpane);
 
-        borderpane.setOnKeyPressed(ke -> {
+        borderpane.setOnKeyPressed(e -> {
             joueur.limiteMap();
-            if(ke.getCode() == KeyCode.RIGHT || ke.getCode() == KeyCode.D) {
-                if (joueur.isLimitemap() != "RIGHT") {
-                    perso.verifJump(false, true, false);
+            switch(e.getCode()) {
+                case LEFT:
+                    joueur.setLeft(true);
                     joueur.setLimitemap("NONE");
-                    perso.animationMouvement("RIGHT");
-                    joueur.verifGravite();
-                }
-            } else if (ke.getCode() == KeyCode.LEFT || ke.getCode() == KeyCode.Q) {
-                if (joueur.isLimitemap() != "LEFT") {
-                    perso.verifJump(false, false, true);
+                    vueJoueur.animationMouvement("LEFT");
+                    
+                    break;
+                case RIGHT: 
+                    joueur.setRight(true);
                     joueur.setLimitemap("NONE");
-                    perso.animationMouvement("LEFT");
-                    joueur.verifGravite();
-                }
-            } else if (ke.getCode() == KeyCode.UP || ke.getCode() == KeyCode.Z) {
-                if (joueur.isCanJump()) {
-                    perso.verifJump(true, false, false);
-                    perso.animationMouvement("UP");
-                }
+                    vueJoueur.animationMouvement("RIGHT");
+                    break;
+                default: 
+                    break;
+            }
+        });
+
+        borderpane.setOnKeyReleased(e -> {
+            switch(e.getCode()) {
+                case LEFT:
+                    joueur.setLeft(false);
+                    break;
+                case RIGHT: 
+                    joueur.setRight(false);
+                    break;
+                case UP: 
+                    if (!joueur.isUp() && joueur.isCanJump()) {
+                        joueur.setUp(true);
+                        vueJoueur.animationMouvement("UP");
+                    }         
+                    break;
+                default: 
+                    break;           
             }
         });
 
@@ -75,7 +88,7 @@ public class Controleur implements Initializable {
             @Override
             public void handle(MouseEvent event) {
                 if(event.getButton() == MouseButton.PRIMARY){
-                    perso.animationMouvement("HIT");
+                    vueJoueur.animationMouvement("HIT");
                 }
             }
         });
