@@ -4,8 +4,8 @@ public class Armure extends Item{
 
     private double PVdefence;
 
-    public Armure(int id, String nom, double defence) {
-        super(id, nom);
+    public Armure(String nom, double defence) {
+        super(nom);
         this.PVdefence=defence;
     }
 

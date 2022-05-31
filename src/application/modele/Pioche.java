@@ -4,8 +4,8 @@ public class Pioche extends Armes{
 
     private double efficacité;
 
-    public Pioche(int id, String nom, double degats, double efficacité) {
-        super(id, nom, 0.5);
+    public Pioche(String nom, double degats, double efficacité) {
+        super(nom, 0.5);
         this.efficacité=efficacité;
     }
 
