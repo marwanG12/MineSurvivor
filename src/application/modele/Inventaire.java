@@ -15,6 +15,10 @@ public class Inventaire {
         items.add(item);
     }
 
+    public void craft() {
+
+    }
+
     public void addRessource(Ressource ressouce){
         ressources.add(ressouce);
     }

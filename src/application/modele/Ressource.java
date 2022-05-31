@@ -1,12 +1,14 @@
 package application.modele;
 
 public class Ressource {
-    private int id;
+    private int id = 0;
     private String nom;
+    private int nombre;
 
-    public Ressource(int id,String nom) {
-        this.id=id;
-        this.nom=nom;
+    public Ressource(String nomn, int nombre) {
+        id++;
+        this.nom = nom;
+        this.nombre = nombre;
     }
 
     public int getId() {
@@ -15,5 +17,9 @@ public class Ressource {
 
     public String getNom() {
         return nom;
+    }
+
+    public int getNombre() {
+        return nombre;
     }
 }

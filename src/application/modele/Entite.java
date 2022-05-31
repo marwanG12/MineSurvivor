@@ -13,7 +13,7 @@ public class Entite {
     private String id;
 
     private boolean right = false, left = false, up = false;
-    private boolean terreR = false, terreL = false, terreU = false, terreUR = false, terreUL = false;
+    private boolean terreR = false, terreL = false, terreU = false;
     private boolean ciel = false;
     private boolean canJump = true;
     private int count;

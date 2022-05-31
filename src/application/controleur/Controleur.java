@@ -2,6 +2,7 @@ package application.controleur;
 
 import application.modele.Entite;
 import application.modele.Environnement;
+import application.modele.Inventaire;
 import application.modele.Joueur;
 import application.vue.VueJoueur;
 import application.vue.VueMap;
@@ -25,6 +26,7 @@ import java.util.ResourceBundle;
 public class Controleur implements Initializable {
     private Environnement env;
     private Entite joueur;
+    private Inventaire inventaire;
     private VueMap vueMap;
     private VueJoueur vueJoueur;
     private Timeline gameLoop;
@@ -39,7 +41,8 @@ public class Controleur implements Initializable {
     @Override
     public void initialize (URL location, ResourceBundle resources) {
         env = new Environnement();
-        joueur = new Joueur(208, 468, env);
+        inventaire = new Inventaire();
+        joueur = new Joueur(208, 468, env, inventaire);
         vueMap = new VueMap(env);
         vueJoueur = new VueJoueur(joueur, env);
 
