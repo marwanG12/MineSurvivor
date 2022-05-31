@@ -2,7 +2,7 @@ package application.modele;
 
 public class Epée extends Armes{
 
-    public Epée(int id, String nom, double degats) {
-        super(id, nom, 1);
+    public Epée(String nom, double degats) {
+        super(nom, 1);
     }
 }

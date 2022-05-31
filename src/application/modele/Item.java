@@ -1,11 +1,10 @@
 package application.modele;
 
 public class Item {
-    private int id;
+    private int id = 0;
     private String nom;
-
-    public Item(int id,String nom) {
-        this.id=id;
+    public Item(String nom) {
+        id++;
         this.nom=nom;
     }
 
