@@ -29,7 +29,7 @@ public class Controleur implements Initializable {
     private VueJoueur vueJoueur;
     private Timeline gameLoop;
     private int temps;
-    private Inventaire inventaire;
+
 
     @FXML
     private TilePane tilepane;
