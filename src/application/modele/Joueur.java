@@ -9,6 +9,8 @@ public class Joueur extends Entite {
         this.inventaire = inventaire;
     }
 
+    
+
 
 
     @Override

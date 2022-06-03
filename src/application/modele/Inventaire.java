@@ -1,20 +1,17 @@
 package application.modele;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class Inventaire {
-    private ArrayList<Item> items;
-    private ArrayList<Ressource> ressources;
-    private Ressource pierre;
-    private Ressource bois;
-    private Ressource fer;
-    private Ressource fil;
-    private Ressource monnaie;
 
+    public ObservableList<Item> items;
 
     public Inventaire(){
-        items=new ArrayList<Item>(7);
-        ressources=new ArrayList<Ressource>(6);
+        items = FXCollections.observableArrayList();
     }
 
     public void addItem(Item item){
@@ -22,29 +19,16 @@ public class Inventaire {
     }
 
     public void initialize() {
-        pierre = new Ressource("Pierre", 0);
-        bois = new Ressource("Bois", 0);
-        fer = new Ressource("Fer", 0);
-        fil = new Ressource("Fil", 0);
-        monnaie = new Ressource("Monnaie", 0);
-        ressources.add(pierre);
-        ressources.add(bois);
-        ressources.add(fer);
-        ressources.add(fil);
-        ressources.add(monnaie);
+        items.setAll(
+            new Epee("Epee", 1), 
+            new Pioche("Pioche", 1, 1));
     }
-
-    public void craft(String item) {
-    }
-
-    public void addRessource(Ressource ressouce){
-        ressources.add(ressouce);
-    }
-
-    public void removeItem(Item item){
-        for (int i=0; i<items.size(); i++){
-            if(items.get(i).getId()== item.getId())
-                items.remove(i);
+    
+    public void removeItem(Item i){
+        for (Item item : items) {
+            if (item.getId() == i.getId()) {
+                items.remove(item);
+            }
         }
     }
 }
