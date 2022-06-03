@@ -7,6 +7,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 
 public class VueJoueur {
     private Entite joueur;
@@ -27,12 +28,12 @@ public class VueJoueur {
         return viewperso;
     }
 
-    public void affichePerso(BorderPane borderpane) {
+    public void affichePerso(Pane pane) {
         viewperso.xProperty().bind(joueur.getXProperty());
         viewperso.yProperty().bind(joueur.getYProperty());
         viewperso.setViewport(new Rectangle2D(20, 150, 32, 45));
         viewperso.setFitHeight(joueur.getHeight());
-        borderpane.getChildren().add(viewperso);
+        pane.getChildren().add(viewperso);
     }
 
     public void updatePerso(String action) {

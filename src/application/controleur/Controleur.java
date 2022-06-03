@@ -13,6 +13,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.util.Duration;
 
@@ -37,6 +38,9 @@ public class Controleur implements Initializable {
     @FXML
     private BorderPane borderpane;
 
+    @FXML
+    private Pane pane;
+
     @Override
     public void initialize (URL location, ResourceBundle resources) {
         env = new Environnement();
@@ -46,7 +50,7 @@ public class Controleur implements Initializable {
         vueJoueur = new VueJoueur(joueur, env);
         inventaire = new Inventaire();
         vueMap.afficheMap(tilepane);
-        vueJoueur.affichePerso(borderpane);
+        getVueJoueur().affichePerso(pane);
 
         borderpane.setOnKeyPressed(e -> {
             joueur.limiteMap();
@@ -107,6 +111,10 @@ public class Controleur implements Initializable {
         joueur.verifGravite();
         initAnimation();
         gameLoop.play();
+    }
+
+    private VueJoueur getVueJoueur() {
+        return vueJoueur;
     }
 
     private void initAnimation() {
