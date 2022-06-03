@@ -5,22 +5,24 @@ import application.modele.Item;
 import javafx.beans.Observable;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 
 public class VueInventaire {
 
     public Item item;
-    public ObservableList<Item> items;
     public Inventaire inventaire;
+    public Image img_inventaire;
+    public ImageView img_view;
     public TilePane tilepane;
-    public Pane pane;
 
     public VueInventaire() {
+        this.inventaire = inventaire;
+        img_inventaire = new Image("application/images/case.jpg");
+        img_view = new ImageView(img_inventaire);
     }
 
-    public void afficherInventaire() {
-        
-    }
 
 }

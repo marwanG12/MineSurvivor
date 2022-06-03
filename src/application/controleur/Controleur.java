@@ -1,13 +1,11 @@
 package application.controleur;
 
-import application.modele.Entite;
-import application.modele.Environnement;
-import application.modele.Inventaire;
-import application.modele.Joueur;
+import application.modele.*;
 import application.vue.VueJoueur;
 import application.vue.VueMap;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.ListChangeListener;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -31,6 +29,7 @@ public class Controleur implements Initializable {
     private VueJoueur vueJoueur;
     private Timeline gameLoop;
     private int temps;
+    private Inventaire inventaire;
 
     @FXML
     private TilePane tilepane;
@@ -45,7 +44,7 @@ public class Controleur implements Initializable {
         joueur = new Joueur(208, 468, env, inventaire);
         vueMap = new VueMap(env);
         vueJoueur = new VueJoueur(joueur, env);
-
+        inventaire = new Inventaire();
         vueMap.afficheMap(tilepane);
         vueJoueur.affichePerso(borderpane);
 
@@ -92,6 +91,16 @@ public class Controleur implements Initializable {
             public void handle(MouseEvent event) {
                 if(event.getButton() == MouseButton.PRIMARY){
                     vueJoueur.animationMouvement("HIT");
+                }
+            }
+        });
+        inventaire.items.addListener((ListChangeListener<Item>) c -> {
+            while (c.next()) {
+                for (Item item : c.getAddedSubList()) {
+                    System.out.println("Add Item");
+                }
+                for (Item item : c.getRemoved()) {
+                    System.out.println("Del Item");
                 }
             }
         });
