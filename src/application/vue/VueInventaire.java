@@ -2,18 +2,11 @@ package application.vue;
 
 import java.util.ArrayList;
 
-import application.modele.Bloc;
-import application.modele.Epee;
 import application.modele.Inventaire;
 import application.modele.Item;
-import application.modele.Pioche;
-import javafx.beans.Observable;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.TilePane;
 
 public class VueInventaire {
 
@@ -84,7 +77,7 @@ public class VueInventaire {
     public void initializeInv(){
         for (int c = 0; c < sizeMini; c++){
             createBox((10 + (28*c)), 10, 32, 32);
-            for (Item item : inventaire.getItems()) {
+            for (Item item : inventaire.getListeItems()) {
                 if (item.getId() == c) {
                     createItem(item, (12 + (28*c)), 12, 28, 28);
                 }
@@ -98,9 +91,9 @@ public class VueInventaire {
             for (int c = 0; c < nColonne; c++) {
                 createBox((315 + (70*c)), (200 + (70 * l)), box_size, box_size);
                 int id = c + (l*nColonne);
-                if (id < inventaire.getItems().size()) {
-                    if (inventaire.getItems().get(id) != null) {
-                        createItem(inventaire.getItems().get(id), (320 + (70*c)), (205 + (70 * l)), 55, 55);
+                if (id < inventaire.getListeItems().size()) {
+                    if (inventaire.getListeItems().get(id) != null) {
+                        createItem(inventaire.getListeItems().get(id), (320 + (70*c)), (205 + (70 * l)), 55, 55);
                     }
                 }
             }
@@ -116,7 +109,7 @@ public class VueInventaire {
             }
         }
         for (ImageView img : listItem) {
-            if (listItem.indexOf(img) >= inventaire.getItems().size()) {
+            if (listItem.indexOf(img) >= inventaire.getListeItems().size()) {
                 removeItem(img);
             }
         }

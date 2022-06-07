@@ -5,6 +5,7 @@ public class Item {
     private int id=0;
     private String nom;
     private String url;
+    private boolean enMain = false;
 
     public Item(String nom, String url) {
         id=count++;
@@ -24,5 +25,9 @@ public class Item {
         return url;
     }
 
-    
+    public boolean setEnMain(){
+        return this.enMain = true;
+    }
+
+
 }

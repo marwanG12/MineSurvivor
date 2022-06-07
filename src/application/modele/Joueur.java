@@ -9,7 +9,9 @@ public class Joueur extends Entite {
         this.inventaire = inventaire;
     }
 
-    
+    public Inventaire getInventaire(){
+        return this.inventaire;
+    }
 
 
 

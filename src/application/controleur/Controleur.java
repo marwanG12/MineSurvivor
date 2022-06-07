@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
 
 public class Controleur implements Initializable {
     private Environnement env;
-    private Entite joueur;
+    private Joueur joueur;
     private Inventaire inventaire;
     private VueMap vueMap;
     private VueJoueur vueJoueur;
@@ -47,14 +47,15 @@ public class Controleur implements Initializable {
     public void initialize (URL location, ResourceBundle resources) {
         env = new Environnement();
         inventaire = new Inventaire();
+        inventaire.initialize();
         joueur = new Joueur(208, 468, env, inventaire);
         vueMap = new VueMap(env);
         vueJoueur = new VueJoueur(joueur, env);
-        inventaire = new Inventaire();
-        inventaire.initialize();
+       // inventaire = new Inventaire();
         vueInventaire = new VueInventaire(inventaire, pane);
         vueMap.afficheMap(tilepane);
         getVueJoueur().affichePerso(pane);
+
 
         borderpane.setOnKeyPressed(e -> {
             joueur.limiteMap();
@@ -76,6 +77,21 @@ public class Controleur implements Initializable {
                     joueur.setLimitemap("NONE");
                     vueJoueur.animationMouvement("RIGHT");
                     break;
+
+                case F1:
+                    joueur.getInventaire().selectItem(joueur.getInventaire().getListeItems().get(0));
+                    break;
+
+                case F2:
+                    joueur.getInventaire().selectItem(joueur.getInventaire().getListeItems().get(1));
+                    break;
+
+                case F3:
+                    joueur.getInventaire().selectItem(joueur.getInventaire().getListeItems().get(2));
+                    break;
+
+                case F4:
+                    joueur.getInventaire().selectItem(joueur.getInventaire().getListeItems().get(3));
                 default:
                     break;
             }
@@ -108,7 +124,7 @@ public class Controleur implements Initializable {
                 }
             }
         });
-        inventaire.getItems().addListener((ListChangeListener<Item>) c -> {
+        inventaire.getListeItems().addListener((ListChangeListener<Item>) c -> {
             while (c.next()) {
                 for (Item item : c.getAddedSubList()) {
                     //vueInventaire.createItem(item, x, y, width, height);
