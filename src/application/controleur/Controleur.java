@@ -1,6 +1,7 @@
 package application.controleur;
 
 import application.modele.*;
+import application.vue.VueInventaire;
 import application.vue.VueJoueur;
 import application.vue.VueMap;
 import javafx.animation.KeyFrame;
@@ -28,6 +29,7 @@ public class Controleur implements Initializable {
     private Inventaire inventaire;
     private VueMap vueMap;
     private VueJoueur vueJoueur;
+    private VueInventaire vueInventaire;
     private Timeline gameLoop;
     private int temps;
 
@@ -49,6 +51,8 @@ public class Controleur implements Initializable {
         vueMap = new VueMap(env);
         vueJoueur = new VueJoueur(joueur, env);
         inventaire = new Inventaire();
+        inventaire.initialize();
+        vueInventaire = new VueInventaire(inventaire, pane);
         vueMap.afficheMap(tilepane);
         getVueJoueur().affichePerso(pane);
 
@@ -59,7 +63,13 @@ public class Controleur implements Initializable {
                     joueur.setLeft(true);
                     joueur.setLimitemap("NONE");
                     vueJoueur.animationMouvement("LEFT");
-
+                    break;
+                case E: 
+                    if (vueInventaire.isOpen()) {
+                        vueInventaire.close();
+                    } else {
+                        vueInventaire.open();
+                    }
                     break;
                 case RIGHT:
                     joueur.setRight(true);
@@ -98,13 +108,13 @@ public class Controleur implements Initializable {
                 }
             }
         });
-        inventaire.items.addListener((ListChangeListener<Item>) c -> {
+        inventaire.getItems().addListener((ListChangeListener<Item>) c -> {
             while (c.next()) {
                 for (Item item : c.getAddedSubList()) {
-                    System.out.println("Add Item");
+                    //vueInventaire.createItem(item, x, y, width, height);
                 }
                 for (Item item : c.getRemoved()) {
-                    System.out.println("Del Item");
+                    //vueInventaire.removeItem(item);
                 }
             }
         });

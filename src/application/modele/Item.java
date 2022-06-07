@@ -1,11 +1,15 @@
 package application.modele;
 
 public class Item {
-    private int id = 0;
+    private static int count = 0;
+    private int id=0;
     private String nom;
-    public Item(String nom) {
-        id++;
+    private String url;
+
+    public Item(String nom, String url) {
+        id=count++;
         this.nom=nom;
+        this.url = url;
     }
 
     public int getId() {
@@ -15,4 +19,10 @@ public class Item {
     public String getNom() {
         return nom;
     }
+
+    public String getUrl() {
+        return url;
+    }
+
+    
 }

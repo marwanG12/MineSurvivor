@@ -7,8 +7,8 @@ public class Armes extends Item {
     private double degats;
     private ArrayList<Ressource> ressources;
 
-    public Armes(String nom, double degats) {
-        super(nom);
+    public Armes(String nom, double degats, String url) {
+        super(nom, url);
         this.degats=degats;
     }
 
