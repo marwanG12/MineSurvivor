@@ -56,7 +56,6 @@ public class Controleur implements Initializable {
     public void initialize (URL location, ResourceBundle resources) {
         env = new Environnement();
         inventaire = new Inventaire();
-        inventaire.initialize();
         joueur = new Joueur(208, 468, env, inventaire);
         vueMap = new VueMap(env);
         vueJoueur = new VueJoueur(joueur, env);
