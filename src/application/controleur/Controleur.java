@@ -10,12 +10,15 @@ import javafx.collections.ListChangeListener;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 
@@ -33,15 +36,21 @@ public class Controleur implements Initializable {
     private Timeline gameLoop;
     private int temps;
 
-
+    
     @FXML
     private TilePane tilepane;
+
+    @FXML
+    private Label title;
 
     @FXML
     private BorderPane borderpane;
 
     @FXML
     private Pane pane;
+
+    @FXML 
+    private ImageView background;
 
     @Override
     public void initialize (URL location, ResourceBundle resources) {
@@ -52,7 +61,7 @@ public class Controleur implements Initializable {
         vueJoueur = new VueJoueur(joueur, env);
         inventaire = new Inventaire();
         inventaire.initialize();
-        vueInventaire = new VueInventaire(inventaire, pane);
+        vueInventaire = new VueInventaire(inventaire, pane, title, background);
         vueMap.afficheMap(tilepane);
         getVueJoueur().affichePerso(pane);
 
@@ -69,6 +78,13 @@ public class Controleur implements Initializable {
                         vueInventaire.close();
                     } else {
                         vueInventaire.open();
+                    }
+                    break;
+                case H:
+                    try {
+                        inventaire.addItem(new Epee("Diams", 1));
+                    } catch (Exception exception) {
+                        System.out.println("Limite d'Item atteinte !");
                     }
                     break;
                 case RIGHT:
@@ -104,17 +120,32 @@ public class Controleur implements Initializable {
             @Override
             public void handle(MouseEvent event) {
                 if(event.getButton() == MouseButton.PRIMARY){
-                    vueJoueur.animationMouvement("HIT");
+                    if (vueInventaire.isOpen()) {
+                        inventaire.selectItem((int)event.getX(), (int)event.getY());
+                    } else {
+                        vueJoueur.animationMouvement("HIT");
+                    }
+                } else if (event.getButton() == MouseButton.SECONDARY) {
+                    if (vueInventaire.isOpen()) {
+                        inventaire.selectItem((int)event.getX(), (int)event.getY());
+                        inventaire.removeItem();
+                    }
                 }
             }
         });
         inventaire.getItems().addListener((ListChangeListener<Item>) c -> {
             while (c.next()) {
                 for (Item item : c.getAddedSubList()) {
-                    //vueInventaire.createItem(item, x, y, width, height);
+                    vueInventaire.initializeInv();
+                    if (vueInventaire.isOpen()) {
+                        vueInventaire.open();
+                    }
                 }
                 for (Item item : c.getRemoved()) {
-                    //vueInventaire.removeItem(item);
+                    vueInventaire.initializeInv();
+                    if (vueInventaire.isOpen()) {
+                        vueInventaire.open();
+                    }
                 }
             }
         });

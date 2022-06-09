@@ -2,39 +2,48 @@ package application.vue;
 
 import java.util.ArrayList;
 
-import application.modele.Bloc;
-import application.modele.Epee;
 import application.modele.Inventaire;
 import application.modele.Item;
-import application.modele.Pioche;
-import javafx.beans.Observable;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.TilePane;
+import javafx.scene.text.Text;
 
 public class VueInventaire {
 
     private int sizeMini = 4; //Nombre de case pour le mini inventaire
-    private int nLigne = 2;
-    private int nColonne = 5;
-    private int box_size = 64;
     private Inventaire inventaire;
+    private int nLigne;
+    private int nColonne;
+    private int box_size = 64;
     private ArrayList<ImageView> listItem;
     private ArrayList<ImageView> listBox;
-    ImageView background;
+
     private Pane pane;
     private boolean isOpen = false;
 
-    public VueInventaire(Inventaire inventaire, Pane pane) {
+    private Label title;
+    private ImageView background;
+
+    public VueInventaire(Inventaire inventaire, Pane pane, Label title, ImageView background) {
+
         this.inventaire = inventaire;
         this.pane = pane;
+        this.background = background;
+        this.title = title;
+    
+        nLigne = inventaire.getLigne();
+        nColonne = inventaire.getColonne();
         listItem = new ArrayList<ImageView>();
         listBox = new ArrayList<ImageView>();
-        background = new ImageView(new Image("application/images/background.png"));
+        this.background.setImage(new Image("application/images/background.png"));
+
         initializeInv();
+
+        this.title.setVisible(false);
+        this.background.setVisible(false);
     }
 
     public boolean isOpen() {
@@ -42,11 +51,8 @@ public class VueInventaire {
     }
 
     public void initBackground(int x, int y, int width, int height) {
-        background.setFitWidth(width);
-        background.setFitHeight(height);
-        background.setLayoutX(x);
-        background.setLayoutY(y); 
-        this.pane.getChildren().add(background);
+        title.setVisible(true);
+        background.setVisible(true);
     }
 
     public void createBox(int x, int y, int width, int height) {
@@ -82,6 +88,14 @@ public class VueInventaire {
     }
 
     public void initializeInv(){
+        title.setVisible(false);
+        background.setVisible(false);
+        for (ImageView img : listBox) {
+            removeBox(img);
+        }
+        for (ImageView img : listItem) {
+            removeItem(img);
+        }        
         for (int c = 0; c < sizeMini; c++){
             createBox((10 + (28*c)), 10, 32, 32);
             for (Item item : inventaire.getItems()) {
@@ -96,11 +110,11 @@ public class VueInventaire {
         initBackground(290, 110, 400, 400);
         for (int l = 0; l < nLigne; l++) {
             for (int c = 0; c < nColonne; c++) {
-                createBox((315 + (70*c)), (200 + (70 * l)), box_size, box_size);
+                createBox((315 + (70*c)), (220 + (70 * l)), box_size, box_size);
                 int id = c + (l*nColonne);
                 if (id < inventaire.getItems().size()) {
                     if (inventaire.getItems().get(id) != null) {
-                        createItem(inventaire.getItems().get(id), (320 + (70*c)), (205 + (70 * l)), 55, 55);
+                        createItem(inventaire.getItems().get(id), inventaire.getItems().get(id).getX() + 5, inventaire.getItems().get(id).getY() + 5, 50, 50);
                     }
                 }
             }
@@ -109,7 +123,8 @@ public class VueInventaire {
     }
     
     public void close() {
-        this.pane.getChildren().remove(background);
+        title.setVisible(false);
+        background.setVisible(false);
         for (ImageView img : listBox) {
             if(listBox.indexOf(img) >= sizeMini) {
                 removeBox(img);
