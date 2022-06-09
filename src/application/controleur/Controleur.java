@@ -28,7 +28,7 @@ import java.util.ResourceBundle;
 
 public class Controleur implements Initializable {
     private Environnement env;
-    private Entite joueur;
+    private Joueur joueur;
     private Inventaire inventaire;
     private VueMap vueMap;
     private VueJoueur vueJoueur;
@@ -56,6 +56,7 @@ public class Controleur implements Initializable {
     public void initialize (URL location, ResourceBundle resources) {
         env = new Environnement();
         inventaire = new Inventaire();
+        inventaire.initialize();
         joueur = new Joueur(208, 468, env, inventaire);
         vueMap = new VueMap(env);
         vueJoueur = new VueJoueur(joueur, env);
@@ -64,6 +65,7 @@ public class Controleur implements Initializable {
         vueInventaire = new VueInventaire(inventaire, pane, title, background);
         vueMap.afficheMap(tilepane);
         getVueJoueur().affichePerso(pane);
+
 
         borderpane.setOnKeyPressed(e -> {
             joueur.limiteMap();
@@ -91,8 +93,6 @@ public class Controleur implements Initializable {
                     joueur.setRight(true);
                     joueur.setLimitemap("NONE");
                     vueJoueur.animationMouvement("RIGHT");
-                    break;
-                default:
                     break;
             }
         });
