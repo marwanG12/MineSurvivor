@@ -14,7 +14,7 @@
             <TilePane fx:id="tilepane" focusTraversable="true" onKeyPressed="#update" prefColumns="30" prefHeight="640.0" prefRows="20" prefTileHeight="32.0" prefTileWidth="32.0" prefWidth="960.0" />
             <ImageView fx:id="background" fitHeight="400.0" fitWidth="400.0" layoutX="290.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
             </ImageView>
-            <Label fx:id="title" layoutX="448.0" layoutY="177.0" prefHeight="24.0" prefWidth="110.0" text="INVENTAIRE" textFill="#262626">
+            <Label fx:id="title" layoutX="448.0" layoutY="177.0" opacity="0.75" prefHeight="24.0" prefWidth="110.0" text="INVENTAIRE" textFill="#262626">
                <font>
                   <Font name="Arial Black" size="13.0" />
                </font>

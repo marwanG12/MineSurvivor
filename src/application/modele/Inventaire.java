@@ -1,5 +1,7 @@
 package application.modele;
 
+import java.time.chrono.IsoChronology;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -11,6 +13,9 @@ public class Inventaire {
     private int ligne = 2;
     private int colonne = 5;
 
+    public Inventaire(){
+        items = FXCollections.observableArrayList();
+    }
 
     public Item getCurrentItem() {
         return currentItem;
@@ -24,17 +29,24 @@ public class Inventaire {
         return colonne;
     }
 
-    public Inventaire(){
-        items = FXCollections.observableArrayList();
-    }
-
     public ObservableList<Item> getItems() { return items; }
+
+    public void checkId() {
+        int i = 0;
+        for (Item item : items) {
+            if (items.indexOf(item) != item.getId()) {
+                item.setId(items.indexOf(item));
+                item.initPosition();
+            }
+        }
+    }
 
     public void addItem(Item item) throws Exception {
         if (items.size() == limiteItem) {
             throw new Exception();
         } else {
             items.add(item);
+            checkId();
         }
     }
 
@@ -50,10 +62,14 @@ public class Inventaire {
         items.remove(currentItem);
         for (Item item : items) {
             if (item.getId() > id) {
-                item.setId(item.getId()-1);
-                item.setCount(item.getCount()-1);
+                if (item.getId() == id+1) {
+                    Item.setCount(Item.getCount()-1);
+                }
+                item.setId(items.indexOf(item));
+                item.initPosition();
             } 
         }
+        checkId();
     }
 
     public void selectItem(int x, int y) {

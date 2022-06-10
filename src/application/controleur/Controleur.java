@@ -134,22 +134,17 @@ public class Controleur implements Initializable {
         inventaire.getItems().addListener((ListChangeListener<Item>) c -> {
             while (c.next()) {
                 for (Item item : c.getAddedSubList()) {
-                    vueInventaire.initializeInv();
                     if (vueInventaire.isOpen()) {
-                        vueInventaire.open();
+                        vueInventaire.close();
+                    } else {
+                        vueInventaire.refresh();
                     }
                 }
                 for (Item item : c.getRemoved()) {
-                    vueInventaire.initializeInv();
                     if (vueInventaire.isOpen()) {
-                        vueInventaire.open();
-                    }
-                }
-
-                if (c.wasUpdated()) {
-                    vueInventaire.initializeInv();
-                    if (vueInventaire.isOpen()) {
-                        vueInventaire.open();
+                        vueInventaire.close();
+                    } else {
+                        vueInventaire.refresh();
                     }
                 }
             }
