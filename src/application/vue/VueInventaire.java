@@ -4,12 +4,10 @@ import java.util.ArrayList;
 
 import application.modele.Inventaire;
 import application.modele.Item;
-import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
 
 public class VueInventaire {
 
@@ -115,6 +113,9 @@ public class VueInventaire {
                 if (id < inventaire.getItems().size()) {
                     if (inventaire.getItems().get(id) != null) {
                         createItem(inventaire.getItems().get(id), inventaire.getItems().get(id).getX() + 5, inventaire.getItems().get(id).getY() + 5, 50, 50);
+                        System.out.println("Item ID = " + inventaire.getItems().get(id).getId());
+                        System.out.println("x = " + inventaire.getItems().get(id).getX());
+                        System.out.println("y = " + inventaire.getItems().get(id).getY());
                     }
                 }
             }
@@ -123,18 +124,7 @@ public class VueInventaire {
     }
     
     public void close() {
-        title.setVisible(false);
-        background.setVisible(false);
-        for (ImageView img : listBox) {
-            if(listBox.indexOf(img) >= sizeMini) {
-                removeBox(img);
-            }
-        }
-        for (ImageView img : listItem) {
-            if (listItem.indexOf(img) >= inventaire.getItems().size()) {
-                removeItem(img);
-            }
-        }
+        initializeInv();
         isOpen = false;
     }
 

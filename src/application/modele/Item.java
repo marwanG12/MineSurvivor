@@ -21,6 +21,14 @@ public class Item {
         this.url = url;
     }
 
+    public static int getCount() {
+        return count;
+    }
+
+    public static void setCount(int count) {
+        Item.count = count;
+    }
+
     public int getX() {
         return x;
     }
@@ -31,6 +39,10 @@ public class Item {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNom() {

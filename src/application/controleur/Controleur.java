@@ -18,7 +18,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
-import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 
@@ -141,6 +140,13 @@ public class Controleur implements Initializable {
                     }
                 }
                 for (Item item : c.getRemoved()) {
+                    vueInventaire.initializeInv();
+                    if (vueInventaire.isOpen()) {
+                        vueInventaire.open();
+                    }
+                }
+
+                if (c.wasUpdated()) {
                     vueInventaire.initializeInv();
                     if (vueInventaire.isOpen()) {
                         vueInventaire.open();

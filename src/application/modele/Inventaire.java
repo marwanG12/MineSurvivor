@@ -46,7 +46,14 @@ public class Inventaire {
     }
     
     public void removeItem(){
+        int id = currentItem.getId();
         items.remove(currentItem);
+        for (Item item : items) {
+            if (item.getId() > id) {
+                item.setId(item.getId()-1);
+                item.setCount(item.getCount()-1);
+            } 
+        }
     }
 
     public void selectItem(int x, int y) {
@@ -62,6 +69,7 @@ public class Inventaire {
                     vide = true;
                 }
             }
+
             for (int i=1; i <= ligne; i++) {
                 if (y > (64 * i) && y < ((64 * i) + (6*i))) {
                     vide = true;
