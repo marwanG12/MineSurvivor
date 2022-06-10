@@ -1,134 +1,3 @@
-/*package application.vue;
-
-import java.util.ArrayList;
-
-import application.modele.Inventaire;
-import application.modele.Item;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
-
-public class VueInventaire {
-
-    private int sizeMini = 4; //Nombre de case pour le mini inventaire
-    private Inventaire inventaire;
-    private int nLigne = 2;
-    private int nColonne = 5;
-    private int box_size = 64;
-    private ArrayList<ImageView> listItem;
-    private ArrayList<ImageView> listBox;
-
-    private Pane pane;
-    private boolean isOpen = false;
-
-    private Label title;
-    private ImageView background;
-
-    public VueInventaire(Inventaire inventaire, Pane pane, Label title, ImageView background) {
-
-        this.inventaire = inventaire;
-        this.pane = pane;
-        this.background = background;
-        this.title = title;
-    
-        nLigne = inventaire.getLigne();
-        nColonne = inventaire.getColonne();
-        listItem = new ArrayList<ImageView>();
-        listBox = new ArrayList<ImageView>();
-        this.background.setImage(new Image("application/images/background.png"));
-
-        initializeInv();
-
-        this.title.setVisible(false);
-        this.background.setVisible(false);
-    }
-
-    public boolean isOpen() {
-        return isOpen;
-    }
-
-    public void initBackground(int x, int y, int width, int height) {
-        title.setVisible(true);
-        background.setVisible(true);
-    }
-
-    public void createBox(int x, int y, int width, int height) {
-        ImageView box = new ImageView(new Image("application/images/case.jpg"));
-        box.setFitWidth(width);
-        box.setFitHeight(height);
-        box.setLayoutX(x);
-        box.setLayoutY(y); 
-        this.pane.getChildren().add(box);
-        listBox.add(box);
-    }
-
-    public void createItem(Item item, int x, int y, int width, int height) {
-        ImageView itemV = new ImageView(new Image(item.getUrl()));
-        itemV.setFitWidth(width);
-        itemV.setFitHeight(height);
-        itemV.setLayoutX(x);
-        itemV.setLayoutY(y); 
-        this.pane.getChildren().add(itemV);
-        listItem.add(itemV);
-    }
-
-    public void removeItem(Item item) {
-        this.pane.getChildren().remove(listItem.get(item.getId()));
-    }
-
-    public void removeItem(ImageView item) {
-        this.pane.getChildren().remove(item);
-    }
-
-    public void removeBox(ImageView box) {
-        this.pane.getChildren().remove(box);
-    }
-
-    public void initializeInv(){
-        title.setVisible(false);
-        background.setVisible(false);
-        //A changer creer une nouvelle pane
-        for (ImageView img : listBox) {
-            removeBox(img);
-        }
-        for (ImageView img : listItem) {
-            removeItem(img);
-        }  
-        listBox.clear();      
-        listItem.clear();
-        for (int c = 0; c < sizeMini; c++){
-            createBox((10 + (28*c)), 10, 32, 32);
-            if (c < inventaire.getItems().size()) {
-                createItem(inventaire.getItems().get(c), (12 + (28*c)), 12, 28, 28);
-            }
-        }
-    }
-
-    public void open() {
-        initBackground(290, 110, 400, 400);
-        for (int l = 0; l < nLigne; l++) {
-            for (int c = 0; c < nColonne; c++) {
-                createBox((315 + (70*c)), (220 + (70 * l)), box_size, box_size);
-                int i = c + (l*inventaire.getColonne());
-                if (i < inventaire.getItems().size()) {
-                    createItem(inventaire.getItems().get(i), inventaire.getItems().get(i).getX() + 5, inventaire.getItems().get(i).getY() + 5, box_size - 14, box_size - 14);
-                    System.out.println("Item ID = " + inventaire.getItems().get(i).getId());
-                    System.out.println("x = " + inventaire.getItems().get(i).getX());
-                    System.out.println("y = " + inventaire.getItems().get(i).getY());                   
-                }
-            }
-        }
-        isOpen = true;
-    }
-    
-    public void close() {
-        initializeInv();
-        isOpen = false;
-    }
-
-}*/
-
 package application.vue;
 
 import java.util.ArrayList;
@@ -183,24 +52,14 @@ public class VueInventaire {
         background.setVisible(true);
     }
 
-    public void createBox(int x, int y, int width, int height) {
-        ImageView box = new ImageView(new Image("application/images/case.jpg"));
+    public void createImage(int x, int y, int width, int height, ArrayList<ImageView> list, String url) {
+        ImageView box = new ImageView(new Image(url));
         box.setFitWidth(width);
         box.setFitHeight(height);
         box.setLayoutX(x);
         box.setLayoutY(y); 
         this.pane.getChildren().add(box);
-        listBox.add(box);
-    }
-
-    public void createItem(Item item, int x, int y, int width, int height, ArrayList<ImageView> list) {
-        ImageView itemV = new ImageView(new Image(item.getUrl()));
-        itemV.setFitWidth(width);
-        itemV.setFitHeight(height);
-        itemV.setLayoutX(x);
-        itemV.setLayoutY(y); 
-        this.pane.getChildren().add(itemV);
-        list.add(itemV);
+        list.add(box);
     }
 
     public void removeImage(ImageView image) {
@@ -220,17 +79,14 @@ public class VueInventaire {
         clear(listItemMax);
         clear(listItemMini);
         clear(listBox);
-        if (listItemMax.size() == 0 && listItemMini.size() == 0 && listBox.size() == 0) {
-            System.out.println("clear bien effectué");
-        }
         initialize();
     }
 
     public void initialize(){ //Initiliazation du mini inventaire
-        for (int c = 0; c < sizeMini; c++){
-            createBox((10 + (28*c)), 10, 32, 32);
-            if (c < inventaire.getItems().size()) {
-                createItem(inventaire.getItems().get(c), (12 + (28*c)), 12, 28, 28, listItemMini);
+        for (int i = 0; i < sizeMini; i++){
+            createImage((10 + (28*i)), 10, 32, 32, listBox, "application/images/case.jpg");
+            if (i < inventaire.getItems().size()) {
+                createImage((12 + (28*i)), 12, 28, 28, listItemMini, inventaire.getItems().get(i).getUrl());
             }
         }
     }
@@ -239,23 +95,13 @@ public class VueInventaire {
         initBackground(290, 110, 400, 400);
         for (int l = 0; l < nLigne; l++) {
             for (int c = 0; c < nColonne; c++) {
-                createBox((315 + (70*c)), (220 + (70 * l)), box_size, box_size);
-                // int i = c + (l*inventaire.getColonne());
-                // if (i < inventaire.getItems().size()) {
-                //     createItem(inventaire.getItems().get(i), inventaire.getItems().get(i).getX() + 5, inventaire.getItems().get(i).getY() + 5, box_size - 14, box_size - 14, listItemMax);
-                //     System.out.println("Item ID = " + inventaire.getItems().get(i).getId());
-                //     System.out.println("x = " + inventaire.getItems().get(i).getX());
-                //     System.out.println("y = " + inventaire.getItems().get(i).getY());                   
-                // }
+                createImage((315 + (70*c)), (220 + (70 * l)), box_size, box_size, listBox, "application/images/case.jpg");
             }
         }
 
-        for (int c = 0; c < 10; c++){
-            if (c < inventaire.getItems().size()) {
-                createItem(inventaire.getItems().get(c), inventaire.getItems().get(c).getX() + 5, inventaire.getItems().get(c).getY() + 5, box_size - 14, box_size - 14, listItemMax);
-                System.out.println("id = " + inventaire.getItems().get(c).getId());
-                System.out.println("x = " + inventaire.getItems().get(c).getX());
-                System.out.println("y = " + inventaire.getItems().get(c).getY());
+        for (int i = 0; i < 10; i++){
+            if (i < inventaire.getItems().size()) {
+                createImage(inventaire.getItems().get(i).getX() + 5, inventaire.getItems().get(i).getY() + 5, box_size - 14, box_size - 14, listItemMax, inventaire.getItems().get(i).getUrl());
             }
         }
         isOpen = true;
