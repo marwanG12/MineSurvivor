@@ -1,5 +1,7 @@
 package application;
 
+import java.security.interfaces.EdECKey;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -19,7 +21,6 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
-
 	public static void main(String[] args) {
 		launch(args);
 	}

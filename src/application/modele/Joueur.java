@@ -2,9 +2,17 @@ package application.modele;
 
 public class Joueur extends Entite {
 
-    public Joueur(int x, int y, Environnement env) {
+    private Inventaire inventaire;
+
+    public Joueur(int x, int y, Environnement env, Inventaire inventaire) {
         super(x, y, env, "Héro");
+        this.inventaire = inventaire;
     }
+
+    public Inventaire getInventaire(){
+        return this.inventaire;
+    }
+
 
 
     @Override
