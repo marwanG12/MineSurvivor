@@ -11,7 +11,7 @@
 
 <BorderPane fx:id="borderpane" prefHeight="640.0" prefWidth="960.0" style="-fx-background-color: #E1F9E9;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.Controleur">
    <center>
-      <Pane fx:id="pane" focusTraversable="true" prefHeight="662.0" prefWidth="960.0" BorderPane.alignment="CENTER">
+      <Pane fx:id="pane" focusTraversable="true" prefHeight="640.0" prefWidth="960.0" BorderPane.alignment="CENTER">
          <children>
             <TilePane fx:id="tilepane" focusTraversable="true" onKeyPressed="#update" prefColumns="30" prefHeight="640.0" prefRows="20" prefTileHeight="32.0" prefTileWidth="32.0" prefWidth="960.0" />
             <ImageView fx:id="background" fitHeight="400.0" fitWidth="400.0" layoutX="290.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">

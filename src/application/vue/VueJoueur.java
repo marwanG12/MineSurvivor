@@ -19,7 +19,7 @@ public class VueJoueur {
 
     public VueJoueur(Entite joueur, Environnement env) {
         this.joueur = joueur;
-        perso = new Image("application/images/Knights/sprite1.PNG");
+        perso = new Image(joueur.getUrl());
         viewperso = new ImageView(perso);
     }
 
@@ -122,7 +122,6 @@ public class VueJoueur {
                 }
             }
         }
-        joueur.seDeplace();
     }
 
     public void animationMouvement(String mouvement) {

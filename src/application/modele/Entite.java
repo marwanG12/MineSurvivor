@@ -1,4 +1,6 @@
 package application.modele;
+import java.util.Random;
+
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -18,12 +20,15 @@ public class Entite {
     private boolean canJump = true;
     private int count;
     private String limitemap;
+    private boolean limitemap2;
+    private String url;
 
-    public Entite(int x, int y, Environnement env, String nom) {
+    public Entite(int x, int y, Environnement env, String nom, String url) {
         this.nom = nom;
         this.x = new SimpleIntegerProperty(x);
         this.y = new SimpleIntegerProperty(y);
-        this.env=env;
+        this.env = env;
+        this.url = url;
         this.id="A"+compteur;
         compteur++;
     }
@@ -66,27 +71,30 @@ public class Entite {
     public void setUp(boolean up) { this.up = up; }
 
     public void setLimitemap(String limitemap) { this.limitemap = limitemap; }
+    public void setLimitemap(boolean limitemap) { this.limitemap2 = limitemap; }
 
     public String isLimitemap() { return limitemap; }
-
+    public boolean isLimitemap2() { return limitemap2; }
+    public String getUrl() { return url; }
 
 
     public void seDeplace() {
         colision();
+        limiteMap();
         if (right) {
-            if (!terreR) {
-                this.setX(this.getX() + 12);
+            if (!terreR && limitemap != "right") {
+                this.setX(this.getX() + 6);
             }
         }
 
         if (left) {
-            if (!terreL) {
-                this.setX(this.getX() - 12);
+            if (!terreL  && limitemap != "left") {
+                this.setX(this.getX() - 6);
             }
         }
 
         if (up) {
-            if (!terreU) {
+            if (!terreU && limitemap != "top") {
                 this.setY(this.getY() - 18);
                 count++;
                 if (canJump) {
@@ -170,12 +178,49 @@ public class Entite {
 
 
     public void limiteMap() {
-        if(getX() + 32 >= 30*32) {
-            limitemap = "RIGHT";
-        } else if (getX() + 32 < 0) {
-            limitemap = "LEFT";
+        limitemap = "none";
+        if(getX() + width >= env.getWidth()) {
+            limitemap = "right";
+        } else if (getX() < 0) {
+            limitemap = "left";
+        } else if (getY() < 0) {
+            limitemap = "top";
+        } else if (getY() + height > env.getHeight()) {
+            limitemap = "bottom";
         }
     }
+
+    public static boolean reussitProba(double pourcent){
+		double x= Math.random();
+		double pp=pourcent/100;
+		return (x<=pp);
+	}
+
+    public void tirerDirection(){
+        double alea = Math.random();
+        if (alea < 0.45) {
+            right = false;
+            left = true;
+        } else if (alea > 0.45) {
+            left = false;
+            right = true;
+        } else {
+            up = true;
+        }
+    }
+
+    public void seDeplaceAlea(){
+		if(reussitProba(20)){
+			tirerDirection();
+		}
+        seDeplace();
+	}
+
+    public void agit() {
+        seDeplaceAlea();
+    }
+
+
 
 
     @Override

@@ -30,21 +30,31 @@ public class Environnement {
             33, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 35
     };
 
-    private ArrayList<Entite> entites;
+    private int width = 960;
+    private int height = 640;
+
+    private ArrayList<Entite> pnj;
     private IntegerProperty nbTours;
 
     public Environnement() {
         this.nbTours = new SimpleIntegerProperty(0);
-        this.entites= new ArrayList<>();
+        this.pnj= new ArrayList<Entite>();
+        initializeEntite();
+    }
+
+    public void initializeEntite() {
+        pnj.add(new Necromancer(200, 0, this, "necromancier"));
+        pnj.add(new Necromancer(400, 0, this, "necromancier"));
+        pnj.add(new Necromancer(300, 0, this, "necromancier"));
     }
 
     public IntegerProperty getNbTours() { return this.nbTours; }
 
-    public ArrayList<Entite> getActeurs() { return entites; }
+    public ArrayList<Entite> getEntites() { return pnj; }
 
     public  void setNbTours(int n){ this.nbTours.setValue(n); }
 
-    public void addEntite(Entite a){ entites.add(a); }
+    public void addEntite(Entite a){ pnj.add(a); }
 
     public int getNbTiles() { return map.length; }
 
@@ -52,8 +62,8 @@ public class Environnement {
 
     public int getTile(int code) { return map[code]; }
 
-    public Entite getActeur(String id) {
-        for(Entite a:this.entites){
+    public Entite getEntite(String id) {
+        for(Entite a:this.pnj){
             if(a.getId().equals(id)){
                 return a;
             }
@@ -62,6 +72,14 @@ public class Environnement {
     }
     public void enleveTuile(int codeTuile){
         map[codeTuile] = 0;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
 }

@@ -4,6 +4,7 @@ import application.modele.*;
 import application.vue.VueInventaire;
 import application.vue.VueJoueur;
 import application.vue.VueMap;
+import application.vue.VuePnj;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ListChangeListener;
@@ -33,10 +34,10 @@ public class Controleur implements Initializable {
     private VueMap vueMap;
     private VueJoueur vueJoueur;
     private VueInventaire vueInventaire;
+    private VuePnj vuePnj;
     private Timeline gameLoop;
     private int temps;
 
-    
     @FXML
     private TilePane tilepane;
 
@@ -64,7 +65,7 @@ public class Controleur implements Initializable {
     public void initialize (URL location, ResourceBundle resources) {
         env = new Environnement();
         inventaire = new Inventaire();
-        joueur = new Joueur(208, 468, env, inventaire);
+        joueur = new Joueur(208, 0, env, inventaire);
         vueMap = new VueMap(env);
         vueJoueur = new VueJoueur(joueur, env);
         inventaire = new Inventaire();
@@ -72,16 +73,15 @@ public class Controleur implements Initializable {
         images.add(image1); images.add(image2); images.add(image3); images.add(image4);
         labels.add(label1); labels.add(label2); labels.add(label3); labels.add(label4);
         vueInventaire = new VueInventaire(inventaire, pane, title, background, images, labels);
+        vuePnj = new VuePnj(env.getEntites(), pane);
         vueMap.afficheMap(tilepane);
         getVueJoueur().affichePerso(pane);
 
 
         borderpane.setOnKeyPressed(e -> {
-            joueur.limiteMap();
             switch(e.getCode()) {
                 case LEFT:
                     joueur.setLeft(true);
-                    joueur.setLimitemap("NONE");
                     vueJoueur.animationMouvement("LEFT");
                     break;
                 case E: 
@@ -100,7 +100,6 @@ public class Controleur implements Initializable {
                     break;
                 case RIGHT:
                     joueur.setRight(true);
-                    joueur.setLimitemap("NONE");
                     vueJoueur.animationMouvement("RIGHT");
                     break;
             }
@@ -183,6 +182,9 @@ public class Controleur implements Initializable {
         });
 
         joueur.verifGravite();
+        for (Entite pnj : env.getEntites()) {
+            pnj.verifGravite();
+        }
         initAnimation();
         gameLoop.play();
     }
@@ -199,9 +201,32 @@ public class Controleur implements Initializable {
                 // on définit le FPS (nbre de frame par seconde)
                 Duration.seconds(0.003),
                 (ev ->{
+                    if (joueur.isCanJump()) {
+                        joueur.verifGravite();
+
+                    }
                     if (joueur.isCiel() == true) {
                         joueur.setY(joueur.getY()+1);
                         joueur.verifGravite();
+                    }
+                
+                    for (Entite pnj : env.getEntites()) {
+                        if (pnj.isCiel() == true) {
+                            pnj.setY(joueur.getY()+1);
+                            pnj.verifGravite();
+                        }
+                    }
+
+                    if (temps%15 == 0 ) {
+                        joueur.seDeplace();
+                    }
+
+                    
+                    if (temps%30 == 0) {
+                        for (Entite pnj : env.getEntites()) {
+                            pnj.agit();
+                            pnj.verifGravite();
+                        }
                     }
                     temps++;
                 })
