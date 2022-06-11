@@ -32,21 +32,22 @@ public class VueInventaire {
         this.pane = pane;
         this.background = background;
         this.title = title;
-    
-        nLigne = inventaire.getLigne();
-        nColonne = inventaire.getColonne();
-        listItemMini = new ArrayList<ImageView>();
-        listItemMax = new ArrayList<ImageView>();
         this.listRessource = listRessources;
         this.listLabel = listLabel;
+    
+        listItemMini = new ArrayList<ImageView>();
+        listItemMax = new ArrayList<ImageView>();
         listBox = new ArrayList<ImageView>();
-        this.background.setImage(new Image("application/images/background.png"));
-        for (ImageView ressource : listRessource) {
-            ressource.setImage(new Image(inventaire.getRessources().get(listRessource.indexOf(ressource)).getUrl()));
-            ressource.setVisible(false);
-        }
-        for (Label label : this.listLabel) label.setVisible(false);
+
+        nLigne = inventaire.getLigne();
+        nColonne = inventaire.getColonne();
+
+        addBox();
         initialize();
+
+        this.background.setImage(new Image("application/images/background.png"));
+        for (ImageView ressource : listRessource) { ressource.setImage(new Image(inventaire.getRessources().get(listRessource.indexOf(ressource)).getUrl())); ressource.setVisible(false); }
+        for (Label label : this.listLabel) label.setVisible(false);
         this.title.setVisible(false);
         this.background.setVisible(false);
     }
@@ -89,15 +90,28 @@ public class VueInventaire {
         background.setVisible(false);
         for (ImageView ressource : listRessource) ressource.setVisible(false);
         for (Label label : listLabel) label.setVisible(false);
+        for (ImageView box : listBox) box.setVisible(false);
         clear(listItemMax);
         clear(listItemMini);
-        clear(listBox);
         initialize();
+    }
+
+    public void addBox() {
+        String url = "application/images/case.jpg";
+        for (int i = 0; i < sizeMini; i++){
+            createImage((10 + (28*i)), 10, 32, 32, listBox, url);
+        }
+        for (int l = 0; l < nLigne; l++) {
+            for (int c = 0; c < nColonne; c++) {
+                createImage((315 + (70*c)), (220 + (70 * l)), box_size, box_size, listBox, url);
+            }
+        }
+        for (ImageView box : listBox) box.setVisible(false);
     }
 
     public void initialize(){ //Initiliazation du mini inventaire
         for (int i = 0; i < sizeMini; i++){
-            createImage((10 + (28*i)), 10, 32, 32, listBox, "application/images/case.jpg");
+            listBox.get(i).setVisible(true);
             if (i < inventaire.getItems().size()) {
                 createImage((12 + (28*i)), 12, 28, 28, listItemMini, inventaire.getItems().get(i).getUrl());
             }
@@ -106,13 +120,8 @@ public class VueInventaire {
 
     public void open() { //Open le grand inventaire
         initBackground(290, 110, 400, 400);
-        for (int l = 0; l < nLigne; l++) {
-            for (int c = 0; c < nColonne; c++) {
-                createImage((315 + (70*c)), (220 + (70 * l)), box_size, box_size, listBox, "application/images/case.jpg");
-            }
-        }
-
-        for (int i = 0; i < 10; i++){
+        for (int i = 0; i < (nColonne*nLigne); i++){
+            listBox.get(i+sizeMini).setVisible(true);
             if (i < inventaire.getItems().size()) {
                 createImage(inventaire.getItems().get(i).getX() + 5, inventaire.getItems().get(i).getY() + 5, box_size - 14, box_size - 14, listItemMax, inventaire.getItems().get(i).getUrl());
             }
