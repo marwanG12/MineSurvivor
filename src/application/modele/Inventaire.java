@@ -1,13 +1,12 @@
 package application.modele;
 
-import java.time.chrono.IsoChronology;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Inventaire {
 
     private ObservableList<Item> items;
+    private ObservableList<Ressource> ressources;
     private int limiteItem = 10;
     private Item currentItem;
     private int ligne = 2;
@@ -15,24 +14,32 @@ public class Inventaire {
 
     public Inventaire(){
         items = FXCollections.observableArrayList();
+        ressources = FXCollections.observableArrayList();
     }
 
-    public Item getCurrentItem() {
-        return currentItem;
-    }
+    public Item getCurrentItem() { return currentItem; }
 
-    public int getLigne() {
-        return ligne;
-    }
+    public int getLigne() { return ligne; }
 
-    public int getColonne() {
-        return colonne;
-    }
+    public int getColonne() { return colonne; }
 
     public ObservableList<Item> getItems() { return items; }
 
+    public ObservableList<Ressource> getRessources() { return ressources; }
+
+    public void initialize() {
+        items.setAll(
+            new Epee("Epee", 1), 
+            new Bloc("Bloc"), 
+            new Pioche("Pioche", 1, 1));
+        ressources.setAll(
+            new Pierre("Pierre", 0),
+            new Piece("Pièce", 0),
+            new Bois("Bois", 0),
+            new Fer("Fer", 0));
+    }
+
     public void checkId() {
-        int i = 0;
         for (Item item : items) {
             if (items.indexOf(item) != item.getId()) {
                 item.setId(items.indexOf(item));
@@ -50,11 +57,12 @@ public class Inventaire {
         }
     }
 
-    public void initialize() {
-        items.setAll(
-            new Epee("Epee", 1), 
-            new Bloc("Bloc"), 
-            new Pioche("Pioche", 1, 1));
+    public void addRessource(Ressource r) {
+        for (Ressource ressource : ressources) {
+            if (r == ressource) {
+                r.setNombre(r.getNombre()+1);
+            }
+        }
     }
     
     public void removeItem(){

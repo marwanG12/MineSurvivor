@@ -22,6 +22,7 @@ import javafx.util.Duration;
 
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 
@@ -51,6 +52,14 @@ public class Controleur implements Initializable {
     @FXML 
     private ImageView background;
 
+    @FXML
+    private ImageView image1, image2, image3, image4;
+    private ArrayList<ImageView> images = new ArrayList<ImageView>();
+
+    @FXML
+    private Label label1, label2, label3, label4;
+    private ArrayList<Label> labels = new ArrayList<Label>();
+
     @Override
     public void initialize (URL location, ResourceBundle resources) {
         env = new Environnement();
@@ -60,7 +69,9 @@ public class Controleur implements Initializable {
         vueJoueur = new VueJoueur(joueur, env);
         inventaire = new Inventaire();
         inventaire.initialize();
-        vueInventaire = new VueInventaire(inventaire, pane, title, background);
+        images.add(image1); images.add(image2); images.add(image3); images.add(image4);
+        labels.add(label1); labels.add(label2); labels.add(label3); labels.add(label4);
+        vueInventaire = new VueInventaire(inventaire, pane, title, background, images, labels);
         vueMap.afficheMap(tilepane);
         getVueJoueur().affichePerso(pane);
 
@@ -82,7 +93,7 @@ public class Controleur implements Initializable {
                     break;
                 case H:
                     try {
-                        inventaire.addItem(new Epee("Diams", 1));
+                        inventaire.addItem(new Epee("Epee Diams", 1));
                     } catch (Exception exception) {
                         System.out.println("Limite d'Item atteinte !");
                     }
@@ -149,6 +160,28 @@ public class Controleur implements Initializable {
                 }
             }
         });
+
+        inventaire.getRessources().addListener((ListChangeListener<Ressource>) c -> {
+            while (c.next()) {
+                for (Ressource item : c.getAddedSubList()) {
+                    if (vueInventaire.isOpen()) {
+                        vueInventaire.close();
+                        vueInventaire.open();
+                    } else {
+                        vueInventaire.refresh();
+                    }
+                }
+                for (Ressource item : c.getRemoved()) {
+                    if (vueInventaire.isOpen()) {
+                        vueInventaire.close();
+                        vueInventaire.open();
+                    } else {
+                        vueInventaire.refresh();
+                    }
+                }
+            }
+        });
+
         joueur.verifGravite();
         initAnimation();
         gameLoop.play();

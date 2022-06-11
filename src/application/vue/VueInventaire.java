@@ -16,8 +16,9 @@ public class VueInventaire {
     private int sizeMini = 4; //Nombre de case pour le petit inventaire
     private int nLigne = 2, nColonne = 5;
     private int box_size = 64;
-    private ArrayList<ImageView> listItemMini, listItemMax; //Image des items du petit inventaire et grand inventaire
+    private ArrayList<ImageView> listItemMini, listItemMax, listRessource; //Image des items du petit inventaire et grand inventaire
     private ArrayList<ImageView> listBox; //Images des cases des inventaires
+    private ArrayList<Label> listLabel;
 
     private Pane pane;
     private boolean isOpen = false;
@@ -25,7 +26,7 @@ public class VueInventaire {
     private Label title;
     private ImageView background;
 
-    public VueInventaire(Inventaire inventaire, Pane pane, Label title, ImageView background) {
+    public VueInventaire(Inventaire inventaire, Pane pane, Label title, ImageView background, ArrayList<ImageView> listRessources, ArrayList<Label> listLabel) {
 
         this.inventaire = inventaire;
         this.pane = pane;
@@ -36,8 +37,15 @@ public class VueInventaire {
         nColonne = inventaire.getColonne();
         listItemMini = new ArrayList<ImageView>();
         listItemMax = new ArrayList<ImageView>();
+        this.listRessource = listRessources;
+        this.listLabel = listLabel;
         listBox = new ArrayList<ImageView>();
         this.background.setImage(new Image("application/images/background.png"));
+        for (ImageView ressource : listRessource) {
+            ressource.setImage(new Image(inventaire.getRessources().get(listRessource.indexOf(ressource)).getUrl()));
+            ressource.setVisible(false);
+        }
+        for (Label label : this.listLabel) label.setVisible(false);
         initialize();
         this.title.setVisible(false);
         this.background.setVisible(false);
@@ -50,6 +58,11 @@ public class VueInventaire {
     public void initBackground(int x, int y, int width, int height) {
         title.setVisible(true);
         background.setVisible(true);
+        for (ImageView ressource : listRessource) ressource.setVisible(true);
+        for (Label label : listLabel) {
+            label.setVisible(true);
+            label.setText(": " + inventaire.getRessources().get(listLabel.indexOf(label)).getNombre());
+        }
     }
 
     public void createImage(int x, int y, int width, int height, ArrayList<ImageView> list, String url) {
@@ -67,15 +80,15 @@ public class VueInventaire {
     }
 
     public void clear(ArrayList<ImageView> list) {
-        for (ImageView img : list) {
-            removeImage(img);
-        }
+        for (ImageView img : list) removeImage(img);
         list.clear();
     }
 
     public void refresh() { //Ferme les 2 inventaire puis ouvre le mini inventaire
         title.setVisible(false);
         background.setVisible(false);
+        for (ImageView ressource : listRessource) ressource.setVisible(false);
+        for (Label label : listLabel) label.setVisible(false);
         clear(listItemMax);
         clear(listItemMini);
         clear(listBox);

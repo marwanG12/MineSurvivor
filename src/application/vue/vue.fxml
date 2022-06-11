@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.text.Font?>
@@ -19,6 +21,54 @@
                   <Font name="Arial Black" size="13.0" />
                </font>
             </Label>
+            <HBox layoutX="333.0" layoutY="411.0" prefHeight="38.0" prefWidth="76.0">
+               <children>
+                  <ImageView fx:id="image1" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin></ImageView>
+                  <Label fx:id="label1" opacity="0.85" prefHeight="38.0" prefWidth="112.0" text=" : " textFill="#a8a8a8">
+                     <font>
+                        <Font name="Arial Bold" size="13.0" />
+                     </font>
+                  </Label>
+               </children></HBox>
+            <HBox layoutX="499.0" layoutY="411.0" prefHeight="38.0" prefWidth="75.0">
+               <children>
+                  <ImageView fx:id="image2" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin></ImageView>
+                  <Label fx:id="label2" opacity="0.85" prefHeight="38.0" prefWidth="112.0" text=" : " textFill="#ffdd00">
+                     <font>
+                        <Font name="Arial Bold" size="13.0" />
+                     </font>
+                  </Label>
+               </children></HBox>
+            <HBox layoutX="416.0" layoutY="411.0" prefHeight="38.0" prefWidth="75.0">
+               <children>
+                  <ImageView fx:id="image3" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin></ImageView>
+                  <Label fx:id="label3" opacity="0.85" prefHeight="38.0" prefWidth="112.0" text=" : " textFill="#86653c">
+                     <font>
+                        <Font name="Arial Bold" size="13.0" />
+                     </font>
+                  </Label>
+               </children></HBox>
+            <HBox layoutX="583.0" layoutY="411.0" prefHeight="38.0" prefWidth="75.0">
+               <children>
+                  <ImageView fx:id="image4" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin></ImageView>
+                  <Label fx:id="label4" opacity="0.85" prefHeight="38.0" prefWidth="112.0" text=" : " textFill="#d7d7d7">
+                     <font>
+                        <Font name="Arial Bold" size="13.0" />
+                     </font>
+                  </Label>
+               </children></HBox>
          </children>
       </Pane>
    </center>
