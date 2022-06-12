@@ -24,6 +24,10 @@ public class Item {
         x = 315 + (colonne * 70);
         y = 220 + (ligne * 70);
     }
+
+    public double getDegats(){
+        return 0;
+    }
     
     public static int getCount() {
         return count;

@@ -3,11 +3,12 @@ package application.vue;
 import java.util.ArrayList;
 
 import application.modele.Inventaire;
-import application.modele.Item;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 public class VueInventaire {
 
@@ -19,6 +20,7 @@ public class VueInventaire {
     private ArrayList<ImageView> listItemMini, listItemMax, listRessource; //Image des items du petit inventaire et grand inventaire
     private ArrayList<ImageView> listBox; //Images des cases des inventaires
     private ArrayList<Label> listLabel;
+    private Rectangle borderCurrentItem;
 
     private Pane pane;
     private boolean isOpen = false;
@@ -88,6 +90,7 @@ public class VueInventaire {
     public void refresh() { //Ferme les 2 inventaire puis ouvre le mini inventaire
         title.setVisible(false);
         background.setVisible(false);
+        borderCurrentItem.setVisible(false);
         for (ImageView ressource : listRessource) ressource.setVisible(false);
         for (Label label : listLabel) label.setVisible(false);
         for (ImageView box : listBox) box.setVisible(false);
@@ -96,7 +99,23 @@ public class VueInventaire {
         initialize();
     }
 
-    public void addBox() {
+    public void addBorder() { //Creer 2 bordure pour les 2 inventaires pour le currentItem
+        Rectangle borderCurrentItemMini = new Rectangle(10, 11, 30, 30);
+        borderCurrentItemMini.setFill(Color.TRANSPARENT);
+        borderCurrentItemMini.setStroke(Color.web("B48347"));
+        borderCurrentItemMini.setStrokeWidth(3);
+
+        borderCurrentItem = new Rectangle(316, 222, 60, 60);
+        borderCurrentItem.setFill(Color.TRANSPARENT);
+        borderCurrentItem.setStroke(Color.web("B48347"));
+        borderCurrentItem.setStrokeWidth(4);
+        this.pane.getChildren().add(borderCurrentItem);
+        this.pane.getChildren().add(borderCurrentItemMini);
+        borderCurrentItem.setVisible(false);
+        for (ImageView box : listBox) box.setVisible(false);
+    }
+
+    public void addBox() { //Ajoutes les differentes cases des 2 inventaires avec le contour du currentItem
         String url = "application/images/case.jpg";
         for (int i = 0; i < sizeMini; i++){
             createImage((10 + (28*i)), 10, 32, 32, listBox, url);
@@ -106,8 +125,9 @@ public class VueInventaire {
                 createImage((315 + (70*c)), (220 + (70 * l)), box_size, box_size, listBox, url);
             }
         }
-        for (ImageView box : listBox) box.setVisible(false);
+        addBorder();
     }
+
 
     public void initialize(){ //Initiliazation du mini inventaire
         for (int i = 0; i < sizeMini; i++){
@@ -120,6 +140,7 @@ public class VueInventaire {
 
     public void open() { //Open le grand inventaire
         initBackground(290, 110, 400, 400);
+        borderCurrentItem.setVisible(true);
         for (int i = 0; i < (nColonne*nLigne); i++){
             listBox.get(i+sizeMini).setVisible(true);
             if (i < inventaire.getItems().size()) {

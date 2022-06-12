@@ -3,14 +3,25 @@ package application.modele;
 public class Necromancer extends Entite {
 
     private static String url = "application/images/Necromancier.png";
-    private double pv = 5;
     
     public Necromancer(int x, int y, Environnement env, String nom) {
-        super(x, y, env, nom, url);
+        super(2, x, y, env, nom, url);
     }
 
-    public double getPv() {
-        return pv;
+    @Override
+    public void agit() {
+        seDeplaceAlea();
+        verifGravite();
+        Entite e = this.checkEntite(32);
+        if (e instanceof Joueur) {
+            if (reussitProba(20)) {
+                env.getJoueur().decrementerPv(0.25);
+            }
+            if (env.getJoueur().getPv() == 0) {
+                env.getJoueur().meurt();
+            }
+        }
+        
     }
 
     public String getUrl() {

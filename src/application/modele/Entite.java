@@ -1,7 +1,9 @@
 package application.modele;
 import java.util.Random;
 
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 
@@ -9,30 +11,40 @@ public class Entite {
 
     private String nom;
     private IntegerProperty x,y;
+    private DoubleProperty pv;
     private int width=32, height=32;
     protected Environnement env;
-    public static int compteur=0;
-    private String id;
+    public static int count=0;
+    private int id;
+    private boolean dead = false;
 
     private boolean right = false, left = false, up = false;
+    private boolean posL = false, posR = true;
     private boolean terreR = false, terreL = false, terreU = false;
     private boolean ciel = false;
     private boolean canJump = true;
-    private int count;
     private String limitemap;
     private boolean limitemap2;
     private String url;
 
-    public Entite(int x, int y, Environnement env, String nom, String url) {
+    public Entite(int pv, int x, int y, Environnement env, String nom, String url) {
+        this.pv = new SimpleDoubleProperty(pv);
         this.nom = nom;
         this.x = new SimpleIntegerProperty(x);
         this.y = new SimpleIntegerProperty(y);
         this.env = env;
         this.url = url;
-        this.id="A"+compteur;
-        compteur++;
+        this.id= count++;
     }
 
+
+    public double getPv() { return pv.getValue(); }
+
+    public DoubleProperty getPvProperty() { return pv; }
+
+    public void decrementerPv(double n) { pv.setValue(pv.getValue()-n); }
+
+    public boolean isDead() { return dead; }
 
     public int getX() { return x.getValue(); }
 
@@ -50,7 +62,7 @@ public class Entite {
 
     public int getHeight() { return height; }
 
-    public String getId() { return id; }
+    public int getId() { return id; }
 
     public String getNom() { return nom; }
 
@@ -85,25 +97,31 @@ public class Entite {
             if (!terreR && limitemap != "right") {
                 this.setX(this.getX() + 6);
             }
-        }
+            posR = true;
+            posL = false;
+        }   
 
         if (left) {
             if (!terreL  && limitemap != "left") {
                 this.setX(this.getX() - 6);
             }
+            posL = true;
+            posR = false;
         }
 
         if (up) {
-            if (!terreU && limitemap != "top") {
-                this.setY(this.getY() - 18);
-                count++;
-                if (canJump) {
-                    canJump = false;
+            if (limitemap != "top") {
+                if (!terreU) {
+                    this.setY(this.getY() - 10);
+                    count++;
+                    if (canJump) {
+                        canJump = false;
+                    }
                 }
-            }
-            if (count == 4) {
-                up = false;
-                count = 0;
+                if (count == 4) {
+                    up = false;
+                    count = 0;
+                }
             }
         }
     }
@@ -198,15 +216,17 @@ public class Entite {
 
     public void tirerDirection(){
         double alea = Math.random();
-        if (alea < 0.45) {
+        if (alea < 0.5) {
             right = false;
             left = true;
-        } else if (alea > 0.45) {
+        } else {
             left = false;
             right = true;
-        } else {
+        } 
+        /* 
+        if (reussitProba(20)) {
             up = true;
-        }
+        }*/
     }
 
     public void seDeplaceAlea(){
@@ -217,15 +237,33 @@ public class Entite {
 	}
 
     public void agit() {
-        seDeplaceAlea();
     }
 
+    public Entite checkEntite(int distance) {
+        if (this instanceof Joueur) {
+            for (Entite e : env.getEntites()) {  
+                if ((e.getX() - this.getX() <= distance) && (e.getX() - this.getX() >= 0) && posR && (e.getY() == this.getY())) {
+                    return e;
+                } else if ((e.getX() - (this.getX()+this.width) >= (-distance)) && (e.getX() - (this.getX()+this.width) <= 0) && posL && (e.getY() == this.getY())) {
+                    return e;
+                }
+            }
+        } else {
+            if ((this.getX() - distance <= env.getJoueur().getX()) && (env.getJoueur().getX() <= this.getX() + distance)  && (env.getJoueur().getY() == this.getY())) {
+                return env.getJoueur();
+            }
+        }
+        return null;
+    }
 
+    public void meurt() {
+        this.dead = true;
+    }
 
 
     @Override
     public String toString() {
-        return "x=" + x + ", y=" + y + ", id=" + id ;
+        return "x=" + x + ", y=" + y + ", id=" + id + ", nom=" + nom + ", pv=" + pv;
     }
 
 }

@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -9,7 +10,7 @@
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderpane" prefHeight="640.0" prefWidth="960.0" style="-fx-background-color: #E1F9E9;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.Controleur">
+<BorderPane fx:id="borderpane" prefHeight="640.0" prefWidth="960.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.Controleur">
    <center>
       <Pane fx:id="pane" focusTraversable="true" prefHeight="640.0" prefWidth="960.0" BorderPane.alignment="CENTER">
          <children>
@@ -39,7 +40,7 @@
                      <HBox.margin>
                         <Insets top="4.0" />
                      </HBox.margin></ImageView>
-                  <Label fx:id="label2" opacity="0.85" prefHeight="38.0" prefWidth="112.0" text=" : " textFill="#ffdd00">
+                  <Label fx:id="label2" opacity="0.85" prefHeight="38.0" prefWidth="112.0" text=" : " textFill="#86653c">
                      <font>
                         <Font name="Arial Bold" size="13.0" />
                      </font>
@@ -51,7 +52,7 @@
                      <HBox.margin>
                         <Insets top="4.0" />
                      </HBox.margin></ImageView>
-                  <Label fx:id="label3" opacity="0.85" prefHeight="38.0" prefWidth="112.0" text=" : " textFill="#86653c">
+                  <Label fx:id="label3" opacity="0.85" prefHeight="38.0" prefWidth="112.0" text=" : " textFill="#ffdd00">
                      <font>
                         <Font name="Arial Bold" size="13.0" />
                      </font>
@@ -69,6 +70,7 @@
                      </font>
                   </Label>
                </children></HBox>
+            <ProgressBar fx:id="progressbar" layoutX="8.0" layoutY="53.0" prefHeight="20.0" prefWidth="118.0" progress="0.0" />
          </children>
       </Pane>
    </center>
