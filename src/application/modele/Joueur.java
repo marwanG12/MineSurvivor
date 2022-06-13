@@ -17,7 +17,7 @@ public class Joueur extends Entite {
     @Override
     public void agit() {
         if (inventaire.getCurrentItem() instanceof Armes) {
-            Entite e = this.checkEntite(64);
+            Entite e = this.checkZone(64);
             if (e != null) {
                 e.decrementerPv(inventaire.getCurrentItem().getDegats());
                 if (e.getPv() == 0) {

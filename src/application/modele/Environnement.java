@@ -38,6 +38,7 @@ public class Environnement {
     private int height = 640;
 
     private ObservableList<Entite> pnj;
+    //private ObservableList<Fire> fires;
     private Inventaire inventaire;
     private Joueur joueur;
     private IntegerProperty nbTours;
@@ -45,6 +46,7 @@ public class Environnement {
     public Environnement(Inventaire inventaire) {
         this.nbTours = new SimpleIntegerProperty(0);
         this.pnj = FXCollections.observableArrayList();
+        //this.fires = FXCollections.observableArrayList();
         this.inventaire = inventaire;
         initializeEntite();
     }
@@ -55,6 +57,10 @@ public class Environnement {
         pnj.add(new Necromancer(300, 32, this, "necromancier"));
         joueur = new Joueur(208, 400, this, inventaire);
     }
+
+    
+
+    //public ObservableList<Fire> getFires() { return fires; }
 
     public Joueur getJoueur() { return joueur; }
 
@@ -91,7 +97,7 @@ public class Environnement {
             }
         }
     }
-    
+
     public void enleveTuile(int codeTuile){
         map[codeTuile] = 0;
     }

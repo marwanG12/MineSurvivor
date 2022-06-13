@@ -230,7 +230,7 @@ public class Entite {
     }
 
     public void seDeplaceAlea(){
-		if(reussitProba(20)){
+		if(reussitProba(5)){
 			tirerDirection();
 		}
         seDeplace();
@@ -239,7 +239,7 @@ public class Entite {
     public void agit() {
     }
 
-    public Entite checkEntite(int distance) {
+    public Entite checkZone(int distance) {
         if (this instanceof Joueur) {
             for (Entite e : env.getEntites()) {  
                 if ((e.getX() - this.getX() <= distance) && (e.getX() - this.getX() >= 0) && posR && (e.getY() == this.getY())) {
@@ -255,6 +255,26 @@ public class Entite {
         }
         return null;
     }
+
+    public boolean isPosL() {
+        return posL;
+    }
+
+
+    public boolean isPosR() {
+        return posR;
+    }
+
+
+    public void setPosL(boolean posL) {
+        this.posL = posL;
+    }
+
+
+    public void setPosR(boolean posR) {
+        this.posR = posR;
+    }
+
 
     public void meurt() {
         this.dead = true;

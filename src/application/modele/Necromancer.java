@@ -12,8 +12,15 @@ public class Necromancer extends Entite {
     public void agit() {
         seDeplaceAlea();
         verifGravite();
-        Entite e = this.checkEntite(32);
+        Entite e = this.checkZone(100);
         if (e instanceof Joueur) {
+            /*Fire fire = new Fire(this, 1, env);
+            env.getFires().add(fire);
+            int compteur = 0;
+            while (fire != null || compteur != 5) {
+                fire.agit();
+                compteur++;
+            }*/
             if (reussitProba(20)) {
                 env.getJoueur().decrementerPv(0.25);
             }
