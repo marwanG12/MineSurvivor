@@ -1,7 +1,5 @@
 package application;
 
-import java.security.interfaces.EdECKey;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;

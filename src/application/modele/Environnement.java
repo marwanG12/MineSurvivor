@@ -2,8 +2,12 @@ package application.modele;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
+
+import javax.lang.model.element.ElementVisitor;
 
 public class Environnement {
 
@@ -30,21 +34,43 @@ public class Environnement {
             33, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 35
     };
 
-    private ArrayList<Entite> entites;
+    private int width = 960;
+    private int height = 640;
+
+    private ObservableList<Entite> pnj;
+    //private ObservableList<Fire> fires;
+    private Inventaire inventaire;
+    private Joueur joueur;
     private IntegerProperty nbTours;
 
-    public Environnement() {
+    public Environnement(Inventaire inventaire) {
         this.nbTours = new SimpleIntegerProperty(0);
-        this.entites= new ArrayList<>();
+        this.pnj = FXCollections.observableArrayList();
+        //this.fires = FXCollections.observableArrayList();
+        this.inventaire = inventaire;
+        initializeEntite();
     }
+
+    public void initializeEntite() {
+        pnj.add(new Necromancer(200, 32, this, "necromancier"));
+        pnj.add(new Necromancer(400, 32, this, "necromancier"));
+        pnj.add(new Necromancer(300, 32, this, "necromancier"));
+        joueur = new Joueur(208, 400, this, inventaire);
+    }
+
+    
+
+    //public ObservableList<Fire> getFires() { return fires; }
+
+    public Joueur getJoueur() { return joueur; }
 
     public IntegerProperty getNbTours() { return this.nbTours; }
 
-    public ArrayList<Entite> getActeurs() { return entites; }
+    public ObservableList<Entite> getEntites() { return pnj; }
 
     public  void setNbTours(int n){ this.nbTours.setValue(n); }
 
-    public void addEntite(Entite a){ entites.add(a); }
+    public void addEntite(Entite a){ pnj.add(a); }
 
     public int getNbTiles() { return map.length; }
 
@@ -52,16 +78,36 @@ public class Environnement {
 
     public int getTile(int code) { return map[code]; }
 
-    public Entite getActeur(String id) {
-        for(Entite a:this.entites){
-            if(a.getId().equals(id)){
+    public Entite getEntite(int id) {
+        for(Entite a : this.pnj) {
+            if (a.getId() == id) {
                 return a;
             }
         }
         return null;
     }
+
+    public void oneRound() {
+        for (Entite e : pnj) {
+            if (e.isDead()) {
+                pnj.remove(e);
+                inventaire.getRessources().get(2).setNombre(inventaire.getRessources().get(2).getNombre()+1);;
+            } else {
+                e.agit();
+            }
+        }
+    }
+
     public void enleveTuile(int codeTuile){
         map[codeTuile] = 0;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
 }

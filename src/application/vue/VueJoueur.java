@@ -3,7 +3,9 @@ package application.vue;
 import application.modele.Entite;
 import application.modele.Environnement;
 import javafx.animation.AnimationTimer;
+import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -16,23 +18,38 @@ public class VueJoueur {
     private int img = 1;
     private int timerUp = 0;
     private String mouvement;
+    private ProgressBar pvBar;
 
-    public VueJoueur(Entite joueur, Environnement env) {
+    public VueJoueur(Entite joueur, Environnement env, Pane pane, ProgressBar pvBar) {
         this.joueur = joueur;
-        perso = new Image("application/images/Knights/sprite1.PNG");
+        perso = new Image(joueur.getUrl());
         viewperso = new ImageView(perso);
+        this.pvBar = pvBar;
+        pvBar.setStyle("-fx-accent: #FF0000;");
+        initializePerso(pane);
+        affichePV();
     }
 
     public ImageView viewperso() {
         return viewperso;
     }
 
-    public void affichePerso(Pane pane) {
+    
+
+    public int getFps() {
+        return fps;
+    }
+
+    public void initializePerso(Pane pane) {
         viewperso.xProperty().bind(joueur.getXProperty());
         viewperso.yProperty().bind(joueur.getYProperty());
         viewperso.setViewport(new Rectangle2D(20, 150, 32, 45));
         viewperso.setFitHeight(joueur.getHeight());
         pane.getChildren().add(viewperso);
+    }
+
+    public void affichePV() {
+        pvBar.progressProperty().bind(joueur.getPvProperty().divide(10));
     }
 
     public void updatePerso(String action) {
@@ -122,7 +139,6 @@ public class VueJoueur {
                 }
             }
         }
-        joueur.seDeplace();
     }
 
     public void animationMouvement(String mouvement) {
@@ -152,5 +168,6 @@ public class VueJoueur {
             timer.start();
         }
     }
+
 
 }

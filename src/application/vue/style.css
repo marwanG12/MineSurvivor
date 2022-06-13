@@ -1,4 +1,5 @@
-.tilepane {
-  -fx-background-image: url("background.gif");
-  -fx-background-size: cover;
+.progress-bar .bar {
+    -fx-accent: #FF0000;
+    -fx-padding: 1px;
+    -fx-background-insets: 0;
 }
