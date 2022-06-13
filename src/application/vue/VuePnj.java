@@ -12,7 +12,7 @@ import javafx.scene.layout.Pane;
 
 public class VuePnj {
     private ObservableList<Entite> listPnj;
-    private ObservableList<Fire> listFire;
+    //private ObservableList<Fire> listFire;
     private ArrayList<ImageView> listImagesPnj;
     //private ArrayList<ImageView> listImagesFire;
     private ArrayList<ProgressBar> listBarPv;
@@ -20,7 +20,7 @@ public class VuePnj {
 
     public VuePnj(ObservableList<Entite> listPnj, /*ObservableList<Fire> listFire,*/ Pane pane) {
         this.listPnj = listPnj;
-        this.listFire = listFire;
+        //this.listFire = listFire;
         this.pane = pane;
         listImagesPnj = new ArrayList<ImageView>();
         //listImagesFire = new ArrayList<ImageView>();
@@ -48,14 +48,15 @@ public class VuePnj {
             listImagesPnj.add(new ImageView(new Image(pnj.getUrl())));
             ProgressBar bar = new ProgressBar();
             bar.setPrefWidth(pnj.getWidth());
-            bar.setPrefHeight(10);
+            bar.setPrefHeight(4);
             bar.layoutXProperty().bind(pnj.getXProperty());
             bar.layoutYProperty().bind(pnj.getYProperty().subtract(10));
-            bar.setStyle("-fx-accent: #FF0000;");
+            bar.getStylesheets().add("application/vue/style.css");
             bar.progressProperty().bind(pnj.getPvProperty().divide(2));
             listBarPv.add(bar);
             pane.getChildren().add(bar);
         }
+
 
         /*for (Entite fire : listFire) { 
             listImagesFire.add(new ImageView(new Image(fire.getUrl())));
