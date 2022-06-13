@@ -75,7 +75,6 @@ public class Controleur implements Initializable {
         vueJoueur = new VueJoueur(env.getJoueur(), env, pane, progressbar);
         vuePnj = new VuePnj(env.getEntites(), /*env.getFires(),*/ pane);
         vueInventaire = new VueInventaire(inventaire, pane, title, background, images, labels);
-
         update();
 
         env.getEntites().addListener((ListChangeListener<Entite>) c -> {
@@ -290,6 +289,10 @@ public class Controleur implements Initializable {
                     } else if (inventaire.getCurrentItem() instanceof Epee) {
                         vueJoueur.animationMouvement("HIT");
                         env.getJoueur().agit();
+                    } else if (inventaire.getCurrentItem() instanceof Bloc) {
+                        env.addBloc((int) event.getX(), (int) event.getY());
+                    } else if (inventaire.getCurrentItem() instanceof Pioche) {
+                        env.deleteBloc((int) event.getX(), (int) event.getY());
                     }
                 } else if (event.getButton() == MouseButton.SECONDARY) {
                     if (vueInventaire.isOpen()) {
