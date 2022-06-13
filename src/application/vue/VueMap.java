@@ -1,7 +1,6 @@
 package application.vue;
 
 import application.modele.Environnement;
-import javafx.css.converter.PaintConverter;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
