@@ -68,7 +68,8 @@ public class VueMap {
     }
     public void addBloc(TilePane tilepane, String id){
         tilepane.getChildren().remove(tilepane.lookup('#' + id));
-        ImageView imgView = new ImageView(tilepierre);
+        ImageView imgView = new ImageView(tileset);
+        imgView.setViewport(new Rectangle2D(352, 128, 32, 32));
         imgView.setId(String.valueOf(id));
         tilepane.getChildren().add(Integer.parseInt(id), imgView);
     }

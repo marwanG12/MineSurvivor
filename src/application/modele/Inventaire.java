@@ -14,6 +14,7 @@ public class Inventaire {
     private int ligne = 2;
     private int colonne = 5;
     private boolean select = false;
+    private boolean remove = false;
 
     public Inventaire(){
         items = FXCollections.observableArrayList();
@@ -72,60 +73,38 @@ public class Inventaire {
     
     public void removeItem(){
         if (currentItem != null && select) {
-            int id = currentItem.getId();
             items.remove(currentItem);
-            for (Item item : items) {
-                if (item.getId() == id+1) {
-                    Item.setCount(Item.getCount()-1);
-                }
-            }
-            if (!items.isEmpty()) {
-                currentItem = items.get(0);
-            } else {
-                currentItem = null;
-            }
             checkId();
             select = false;
+            remove = true;
         }
+        System.out.println(items.toString());
     }
 
-    public void selectItem(int x, int y, boolean remove) {
-        boolean vide = false;
-        int id;
-        if (!items.isEmpty()) {
-            if (x >= items.get(0).getX() && x <= (items.get(0).getX()+70*colonne) && y >= items.get(0).getY() && y <= (items.get(0).getY()+70*ligne)) {
 
-                x -= items.get(0).getX();
-                y -= items.get(0).getY();
-
-                for (int i=1; i <= colonne; i++) {
-                    if (x > (64 * i) && x < ((64 * i) + (6*i))) {
-                        vide = true;
-                    }
-                }
-
-                for (int i=1; i <= ligne; i++) {
-                    if (y > (64 * i) && y < ((64 * i) + (6*i))) {
-                        vide = true;
-                    }
-                }
-                if (!vide) {
-                    id = (y/70) * colonne + (x /64);
-                    if (!items.isEmpty()) {
-                        if (items.size() >= id + 1) {
-                            int i = items.get(id).getId();
-                            currentItem = items.get(i);
-                            if (!remove) {
-                                Collections.swap(items, i, 0);
-                                checkId();
-                                currentItem = items.get(0);
-                            }
-                            select = true;
-                        }
-                    }
-                }
-            }  
+    public void selectItem(Item i, boolean remove) {
+        currentItem = i;
+        if (!remove) {
+            Collections.swap(items, i.getId(), 0);
+            checkId();
         }
+        select = true;
+        System.out.println("Current Item : " + currentItem);
     }
     
+    public boolean isSelect() {
+        return select;
+    }
+
+    public void setSelect(boolean select) {
+        this.select = select;
+    }
+
+    public boolean isRemove() {
+        return remove;
+    }
+
+    public void setRemove(boolean remove) {
+        this.remove = remove;
+    }    
 }

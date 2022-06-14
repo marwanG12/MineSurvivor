@@ -21,8 +21,8 @@ public class Item {
     public void initPosition() {
         int ligne = id/5;
         int colonne = id%5;
-        x = 315 + (colonne * 70);
-        y = 220 + (ligne * 70);
+        x = 35 + (colonne * 70);
+        y = 100 + (ligne * 70);
     }
 
     public double getDegats(){

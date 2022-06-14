@@ -111,9 +111,9 @@ public class Environnement {
     public void addBloc(int x, int y){
         int codeTuile = map[(y / 32) * 30 + (x / 32)];
         System.out.println("X= " + x + "Y= " + y);
+        System.out.println("code tuile : " + codeTuile);
         if (codeTuile == 0) {
-            System.out.println("test");
-            map[(y / 32) * 30 + (x / 32)] = 34;
+            map[(y / 32) * 30 + (x / 32)] = 60;
             addBloc = true;
         }
     }

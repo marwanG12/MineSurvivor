@@ -25,7 +25,7 @@ public class VueJoueur {
         perso = new Image(joueur.getUrl());
         viewperso = new ImageView(perso);
         this.pvBar = pvBar;
-        pvBar.setStyle("-fx-accent: #FF0000;");
+        pvBar.getStylesheets().add("application/vue/style.css");
         initializePerso(pane);
         affichePV();
     }
