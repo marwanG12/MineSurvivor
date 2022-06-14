@@ -42,6 +42,7 @@ public class Environnement {
     private Inventaire inventaire;
     private Joueur joueur;
     private IntegerProperty nbTours;
+    private boolean addBloc = false, deleteBloc = false;
 
     public Environnement(Inventaire inventaire) {
         this.nbTours = new SimpleIntegerProperty(0);
@@ -98,10 +99,24 @@ public class Environnement {
         }
     }
 
-    public void enleveTuile(int codeTuile){
-        map[codeTuile] = 0;
+    public void deleteBloc(int x, int y) {
+        int codeTuile = map[(y / 32) * 30 + (x / 32)];
+        System.out.println("x=" + x + "y"+y);
+        if (codeTuile != 0) {
+            map[(y / 32) * 30 + (x / 32)] = 0;
+            deleteBloc = true;
+        }
     }
 
+    public void addBloc(int x, int y){
+        int codeTuile = map[(y / 32) * 30 + (x / 32)];
+        System.out.println("X= " + x + "Y= " + y);
+        System.out.println("code tuile : " + codeTuile);
+        if (codeTuile == 0) {
+            map[(y / 32) * 30 + (x / 32)] = 60;
+            addBloc = true;
+        }
+    }
     public int getWidth() {
         return width;
     }
@@ -110,4 +125,19 @@ public class Environnement {
         return height;
     }
 
+    public boolean isAddBloc() {
+        return addBloc;
+    }
+
+    public boolean isDeleteBloc() {
+        return deleteBloc;
+    }
+
+    public void setAddBloc(boolean addBloc) {
+        this.addBloc = addBloc;
+    }
+
+    public void setDeleteBloc(boolean deleteBloc) {
+        this.deleteBloc = deleteBloc;
+    }
 }

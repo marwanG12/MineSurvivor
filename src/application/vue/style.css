@@ -1,5 +1,10 @@
 .progress-bar .bar {
-    -fx-accent: #FF0000;
-    -fx-padding: 1px;
-    -fx-background-insets: 0;
+  -fx-accent: #ff0000;
+  -fx-control-inner-background: #303030;
+  -fx-padding: 1px;
+  -fx-background-insets: 1;
+}
+
+#paneInventaire {
+  -fx-background-image: url("background.png");
 }

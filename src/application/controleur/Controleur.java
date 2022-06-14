@@ -8,7 +8,6 @@ import application.vue.VuePnj;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ListChangeListener;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -20,6 +19,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.util.Duration;
 
@@ -39,6 +39,7 @@ public class Controleur implements Initializable {
     private Timeline gameLoop;
     private int temps;
 
+
     @FXML
     private TilePane tilepane;
 
@@ -49,10 +50,11 @@ public class Controleur implements Initializable {
     private BorderPane borderpane;
 
     @FXML
+    private Pane paneInventaire;
+
+    @FXML
     private Pane pane;
 
-    @FXML 
-    private ImageView background;
 
     @FXML 
     private ProgressBar progressbar;
@@ -74,8 +76,7 @@ public class Controleur implements Initializable {
         vueMap = new VueMap(env, tilepane);
         vueJoueur = new VueJoueur(env.getJoueur(), env, pane, progressbar);
         vuePnj = new VuePnj(env.getEntites(), /*env.getFires(),*/ pane);
-        vueInventaire = new VueInventaire(inventaire, pane, title, background, images, labels);
-
+        vueInventaire = new VueInventaire(inventaire, pane, title, /*background,*/ images, labels, paneInventaire);
         update();
 
         env.getEntites().addListener((ListChangeListener<Entite>) c -> {
@@ -180,8 +181,6 @@ public class Controleur implements Initializable {
 
     @FXML
     public void update () {
-
-       
         borderpane.setOnKeyPressed(e -> {
             if (e.getCode().equals(KeyCode.LEFT) || e.getCode().equals(KeyCode.Q)) {
                 env.getJoueur().setLeft(true);
@@ -194,6 +193,25 @@ public class Controleur implements Initializable {
                     vueInventaire.close();
                 } else {
                     vueInventaire.open();
+                    for (int j=0; j < vueInventaire.getListItemMax().size(); j++) {
+                        final int i = j;
+                        if (i < inventaire.getItems().size()) {
+                            vueInventaire.getListBox().get(i+4).addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+                                if (event.getButton() == MouseButton.PRIMARY) {
+                                    if (!inventaire.isSelect()) {
+                                        inventaire.selectItem(inventaire.getItems().get(i), false);
+                                    }
+                                } else if (event.getButton() == MouseButton.SECONDARY) {
+                                    if (!inventaire.isSelect() && !inventaire.isRemove()) {
+                                        inventaire.selectItem(inventaire.getItems().get(i), true);
+                                        inventaire.removeItem();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                    inventaire.setSelect(false); 
+                    inventaire.setRemove(false);
                 }
             } else if (e.getCode().equals(KeyCode.H)) {
                 try {
@@ -202,41 +220,6 @@ public class Controleur implements Initializable {
                     System.out.println("Limite d'Item atteinte !");
                 }
             }
-            /*
-            switch(e.getCode()) {
-                case LEFT:
-                    env.getJoueur().setLeft(true);
-                    vueJoueur.animationMouvement("LEFT");
-                    break;
-                case Q:
-                    env.getJoueur().setLeft(true);
-                    vueJoueur.animationMouvement("LEFT");
-                    break;
-                case RIGHT:
-                    env.getJoueur().setRight(true);
-                    vueJoueur.animationMouvement("RIGHT");
-                    break;
-                case D:
-                    env.getJoueur().setRight(true);
-                    vueJoueur.animationMouvement("RIGHT");
-                    break;
-                case E: 
-                    if (vueInventaire.isOpen()) {
-                        vueInventaire.close();
-                    } else {
-                        vueInventaire.open();
-                    }
-                    break;
-                case H:
-                    try {
-                        inventaire.addItem(new Epee("Epee"));
-                    } catch (Exception exception) {
-                        System.out.println("Limite d'Item atteinte !");
-                    }
-                    break;
-                default:
-                    break;
-            }*/
         });
 
         borderpane.setOnKeyReleased(e -> {
@@ -250,53 +233,20 @@ public class Controleur implements Initializable {
                     vueJoueur.animationMouvement("UP");
                 }
             }
-            /*
-            switch(e.getCode()) {
-                case LEFT:
-                    env.getJoueur().setLeft(false);
-                    break;
-                case Q:
-                    env.getJoueur().setLeft(false);
-                    break;
-                case RIGHT:
-                    env.getJoueur().setRight(false);
-                    break;
-                case D:
-                    env.getJoueur().setRight(false);
-                    break;
-                case UP:
-                    if (!env.getJoueur().isUp() && env.getJoueur().isCanJump()) {
-                        env.getJoueur().setUp(true);
-                        vueJoueur.animationMouvement("UP");
-                    }
-                    break;
-                case SPACE:
-                    if (!env.getJoueur().isUp() && env.getJoueur().isCanJump()) {
-                        env.getJoueur().setUp(true);
-                        vueJoueur.animationMouvement("UP");
-                    }
-                    break;
-                default:
-                    break;
-            }*/
         });
 
-        borderpane.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(event.getButton() == MouseButton.PRIMARY){
-                    if (vueInventaire.isOpen()) {
-                        inventaire.selectItem((int)event.getX(), (int)event.getY(), false);
-                    } else if (inventaire.getCurrentItem() instanceof Epee) {
+        borderpane.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+            if(event.getButton() == MouseButton.PRIMARY){
+                if (!vueInventaire.isOpen()) {
+                    if (inventaire.getCurrentItem() instanceof Epee) {
                         vueJoueur.animationMouvement("HIT");
                         env.getJoueur().agit();
+                    } else if (inventaire.getCurrentItem() instanceof Bloc) {
+                        env.addBloc((int) event.getX(), (int) event.getY());
+                    } else if (inventaire.getCurrentItem() instanceof Pioche) {
+                        env.deleteBloc((int) event.getX(), (int) event.getY());
                     }
-                } else if (event.getButton() == MouseButton.SECONDARY) {
-                    if (vueInventaire.isOpen()) {
-                        inventaire.selectItem((int)event.getX(), (int)event.getY(), true);
-                        inventaire.removeItem();
-                    }
-                }
+                } 
             }
         });
     }

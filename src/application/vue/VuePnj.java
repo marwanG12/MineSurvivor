@@ -39,7 +39,6 @@ public class VuePnj {
 
         for (ProgressBar pvBar : listBarPv) {
             pane.getChildren().remove(pvBar);
-
         }
     }
 
