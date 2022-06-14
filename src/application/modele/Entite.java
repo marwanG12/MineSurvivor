@@ -1,5 +1,4 @@
 package application.modele;
-import java.util.Random;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;

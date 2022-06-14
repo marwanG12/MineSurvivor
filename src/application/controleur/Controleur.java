@@ -14,12 +14,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.util.Duration;
 
@@ -76,7 +74,7 @@ public class Controleur implements Initializable {
         vueMap = new VueMap(env, tilepane);
         vueJoueur = new VueJoueur(env.getJoueur(), env, pane, progressbar);
         vuePnj = new VuePnj(env.getEntites(), /*env.getFires(),*/ pane);
-        vueInventaire = new VueInventaire(inventaire, pane, title, /*background,*/ images, labels, paneInventaire);
+        vueInventaire = new VueInventaire(inventaire, pane, title, images, labels, paneInventaire);
         update();
 
         env.getEntites().addListener((ListChangeListener<Entite>) c -> {
@@ -242,9 +240,9 @@ public class Controleur implements Initializable {
                         vueJoueur.animationMouvement("HIT");
                         env.getJoueur().agit();
                     } else if (inventaire.getCurrentItem() instanceof Bloc) {
-                        env.addBloc((int) event.getX(), (int) event.getY());
+                        vueMap.editTile(env.addBloc((int) event.getX(), (int) event.getY()), 0);
                     } else if (inventaire.getCurrentItem() instanceof Pioche) {
-                        env.deleteBloc((int) event.getX(), (int) event.getY());
+                        vueMap.editTile(env.deleteBloc((int) event.getX(), (int) event.getY()), 60);
                     }
                 } 
             }
