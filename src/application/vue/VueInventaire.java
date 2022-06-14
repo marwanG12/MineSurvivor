@@ -145,7 +145,7 @@ public class VueInventaire {
         for (int i = 0; i < (nColonne*nLigne); i++){
             listBox.get(i+sizeMini).setVisible(true);
             if (i < inventaire.getItems().size()) {
-                createImage(inventaire.getItems().get(i).getX() + 5, inventaire.getItems().get(i).getY() + 5, box_size - 14, box_size - 14, listItemMax, inventaire.getItems().get(i).getUrl(), paneInventaire);
+                createImage(inventaire.getItems().get(i).getX() + 5, inventaire.getItems().get(i).getY() + 10, box_size - 22, box_size - 22, listItemMax, inventaire.getItems().get(i).getUrl(), paneInventaire);
             }
         }
         isOpen = true;

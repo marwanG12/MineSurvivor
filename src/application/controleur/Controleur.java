@@ -29,7 +29,6 @@ import java.util.ResourceBundle;
 
 public class Controleur implements Initializable {
     private Environnement env;
-    private Inventaire inventaire;
     private VueMap vueMap;
     private VueJoueur vueJoueur;
     private VueInventaire vueInventaire;
@@ -39,13 +38,10 @@ public class Controleur implements Initializable {
 
 
     @FXML
-    private TilePane tilepane;
-
-    @FXML
-    private Label title;
-
-    @FXML
     private BorderPane borderpane;
+
+    @FXML
+    private TilePane tilepane;
 
     @FXML
     private Pane paneInventaire;
@@ -53,6 +49,8 @@ public class Controleur implements Initializable {
     @FXML
     private Pane pane;
 
+    @FXML
+    private Label title;
 
     @FXML 
     private ProgressBar progressbar;
@@ -69,7 +67,7 @@ public class Controleur implements Initializable {
     public void initialize (URL location, ResourceBundle resources) {
         images.add(image1); images.add(image2); images.add(image3); images.add(image4);
         labels.add(label1); labels.add(label2); labels.add(label3); labels.add(label4);
-        inventaire = new Inventaire();
+        Inventaire inventaire = new Inventaire();
         env = new Environnement(inventaire);
         vueMap = new VueMap(env, tilepane);
         vueJoueur = new VueJoueur(env.getJoueur(), env, pane, progressbar);
@@ -80,12 +78,10 @@ public class Controleur implements Initializable {
         env.getEntites().addListener((ListChangeListener<Entite>) c -> {
             while (c.next()) {
                 for (Entite e : c.getAddedSubList()) {
-                    vuePnj.clearImages();
-                    vuePnj.initializeEntite();
+                    vuePnj.addImage(e);
                 }
                 for (Entite e : c.getRemoved()) {
-                    vuePnj.clearImages();
-                    vuePnj.initializeEntite();            
+                    vuePnj.removeImage(e);         
                 }
             }
         });
@@ -113,20 +109,10 @@ public class Controleur implements Initializable {
         inventaire.getRessources().addListener((ListChangeListener<Ressource>) c -> {
             while (c.next()) {
                 for (Ressource item : c.getAddedSubList()) {
-                    if (vueInventaire.isOpen()) {
-                        vueInventaire.close();
-                        vueInventaire.open();
-                    } else {
-                        vueInventaire.refresh();
-                    }
+                    vueInventaire.refresh();
                 }
                 for (Ressource item : c.getRemoved()) {
-                    if (vueInventaire.isOpen()) {
-                        vueInventaire.close();
-                        vueInventaire.open();
-                    } else {
-                        vueInventaire.refresh();
-                    }
+                    vueInventaire.refresh();
                 }
             }
         });
@@ -179,6 +165,7 @@ public class Controleur implements Initializable {
 
     @FXML
     public void update () {
+        Inventaire inventaire = env.getJoueur().getInventaire();
         borderpane.setOnKeyPressed(e -> {
             if (e.getCode().equals(KeyCode.LEFT) || e.getCode().equals(KeyCode.Q)) {
                 env.getJoueur().setLeft(true);

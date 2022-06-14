@@ -89,7 +89,6 @@ public class Inventaire {
             checkId();
         }
         select = true;
-        System.out.println("Current Item : " + currentItem);
     }
     
     public boolean isSelect() {

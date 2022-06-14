@@ -100,7 +100,6 @@ public class Environnement {
         int codeTuile = map.get((y / 32) * 30 + (x / 32));
         if (codeTuile != 0) {
             map.set((y / 32) * 30 + (x / 32), 0);
-            deleteBloc = true;
             return Integer.valueOf(y / 32) * 30 + (x / 32);
         }
         return null;
@@ -110,7 +109,6 @@ public class Environnement {
         int codeTuile = map.get((y / 32) * 30 + (x / 32));
         if (codeTuile == 0) {
             map.set((y / 32) * 30 + (x / 32), 60);
-            addBloc = true;
             return Integer.valueOf(y / 32) * 30 + (x / 32);
         }
         return null;
@@ -122,21 +120,5 @@ public class Environnement {
 
     public int getHeight() {
         return height;
-    }
-
-    public boolean isAddBloc() {
-        return addBloc;
-    }
-
-    public boolean isDeleteBloc() {
-        return deleteBloc;
-    }
-
-    public void setAddBloc(boolean addBloc) {
-        this.addBloc = addBloc;
-    }
-
-    public void setDeleteBloc(boolean deleteBloc) {
-        this.deleteBloc = deleteBloc;
     }
 }
