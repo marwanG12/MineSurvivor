@@ -3,7 +3,6 @@ package application.vue;
 import application.modele.Entite;
 import application.modele.Environnement;
 import javafx.animation.AnimationTimer;
-import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;

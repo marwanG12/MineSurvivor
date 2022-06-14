@@ -5,10 +5,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
-
-import javax.lang.model.element.ElementVisitor;
-
 public class Environnement {
 
     private ObservableList<Integer> map = FXCollections.observableArrayList (
@@ -101,7 +97,6 @@ public class Environnement {
 
     public Integer deleteBloc(int x, int y) {
         int codeTuile = map.get((y / 32) * 30 + (x / 32));
-        System.out.println("x=" + x + "y"+y);
         if (codeTuile != 0) {
             map.set((y / 32) * 30 + (x / 32), 0);
             deleteBloc = true;
@@ -112,8 +107,6 @@ public class Environnement {
 
     public Integer addBloc(int x, int y){
         int codeTuile = map.get((y / 32) * 30 + (x / 32));
-        System.out.println("X= " + x + "Y= " + y);
-        System.out.println("code tuile : " + codeTuile);
         if (codeTuile == 0) {
             map.set((y / 32) * 30 + (x / 32), 60);
             addBloc = true;

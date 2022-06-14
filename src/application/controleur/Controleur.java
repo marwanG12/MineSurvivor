@@ -14,12 +14,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.util.Duration;
 
@@ -76,7 +74,7 @@ public class Controleur implements Initializable {
         vueMap = new VueMap(env, tilepane);
         vueJoueur = new VueJoueur(env.getJoueur(), env, pane, progressbar);
         vuePnj = new VuePnj(env.getEntites(), /*env.getFires(),*/ pane);
-        vueInventaire = new VueInventaire(inventaire, pane, title, /*background,*/ images, labels, paneInventaire);
+        vueInventaire = new VueInventaire(inventaire, pane, title, images, labels, paneInventaire);
         update();
 
         env.getEntites().addListener((ListChangeListener<Entite>) c -> {
