@@ -3,14 +3,10 @@ package application.vue;
 import java.util.ArrayList;
 
 import application.modele.Inventaire;
-import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -26,8 +22,8 @@ public class VueInventaire {
     private ArrayList<Label> listLabel;
     private Rectangle borderCurrentItem;
 
-    private Pane pane;
-    private Pane paneInventaire;
+    private Pane pane; //Pane d'ensemble
+    private Pane paneInventaire; //Pane de l'inventaire
     private boolean isOpen = false;
     private Label title;
 
@@ -59,7 +55,7 @@ public class VueInventaire {
         return isOpen;
     }
 
-    public void initBackground(int x, int y, int width, int height) {
+    public void initBackground() {
         paneInventaire.setVisible(true);
         paneInventaire.getStylesheets().add("application/vue/style.css");
         title.setVisible(true);
@@ -144,7 +140,7 @@ public class VueInventaire {
     }
 
     public void open() { //Open le grand inventaire
-        initBackground(290, 110, 400, 400);
+        initBackground();
         borderCurrentItem.setVisible(true);
         for (int i = 0; i < (nColonne*nLigne); i++){
             listBox.get(i+sizeMini).setVisible(true);
