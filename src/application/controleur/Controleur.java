@@ -242,9 +242,9 @@ public class Controleur implements Initializable {
                         vueJoueur.animationMouvement("HIT");
                         env.getJoueur().agit();
                     } else if (inventaire.getCurrentItem() instanceof Bloc) {
-                        env.addBloc((int) event.getX(), (int) event.getY());
+                        vueMap.editTile(env.addBloc((int) event.getX(), (int) event.getY()), 0);
                     } else if (inventaire.getCurrentItem() instanceof Pioche) {
-                        env.deleteBloc((int) event.getX(), (int) event.getY());
+                        vueMap.editTile(env.deleteBloc((int) event.getX(), (int) event.getY()), 60);
                     }
                 } 
             }

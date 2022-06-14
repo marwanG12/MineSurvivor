@@ -11,7 +11,7 @@ import javax.lang.model.element.ElementVisitor;
 
 public class Environnement {
 
-    private int[] map = {
+    private ObservableList<Integer> map = FXCollections.observableArrayList (
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -32,7 +32,7 @@ public class Environnement {
             17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19,
             17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19,
             33, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 35
-    };
+    );
 
     private int width = 960;
     private int height = 640;
@@ -73,11 +73,11 @@ public class Environnement {
 
     public void addEntite(Entite a){ pnj.add(a); }
 
-    public int getNbTiles() { return map.length; }
+    public int getNbTiles() { return map.size(); }
 
-    public int[] getTiles() { return map; }
+    public ObservableList<Integer> getTiles() { return map; }
 
-    public int getTile(int code) { return map[code]; }
+    public Integer getTile(int code) { return map.get(code); }
 
     public Entite getEntite(int id) {
         for(Entite a : this.pnj) {
@@ -99,24 +99,29 @@ public class Environnement {
         }
     }
 
-    public void deleteBloc(int x, int y) {
-        int codeTuile = map[(y / 32) * 30 + (x / 32)];
+    public Integer deleteBloc(int x, int y) {
+        int codeTuile = map.get((y / 32) * 30 + (x / 32));
         System.out.println("x=" + x + "y"+y);
         if (codeTuile != 0) {
-            map[(y / 32) * 30 + (x / 32)] = 0;
+            map.set((y / 32) * 30 + (x / 32), 0);
             deleteBloc = true;
+            return Integer.valueOf(y / 32) * 30 + (x / 32);
         }
+        return null;
     }
 
-    public void addBloc(int x, int y){
-        int codeTuile = map[(y / 32) * 30 + (x / 32)];
+    public Integer addBloc(int x, int y){
+        int codeTuile = map.get((y / 32) * 30 + (x / 32));
         System.out.println("X= " + x + "Y= " + y);
         System.out.println("code tuile : " + codeTuile);
         if (codeTuile == 0) {
-            map[(y / 32) * 30 + (x / 32)] = 60;
+            map.set((y / 32) * 30 + (x / 32), 60);
             addBloc = true;
+            return Integer.valueOf(y / 32) * 30 + (x / 32);
         }
+        return null;
     }
+
     public int getWidth() {
         return width;
     }
