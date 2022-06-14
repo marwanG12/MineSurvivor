@@ -1,10 +1,22 @@
 .progress-bar .bar {
   -fx-accent: #ff0000;
-  -fx-control-inner-background: #303030;
   -fx-padding: 1px;
   -fx-background-insets: 1;
 }
 
+#progressbar > .bar {
+  -fx-accent: #ff0000;
+  -fx-padding: 0px;
+  -fx-background-insets: 0;
+  -fx-background-radius: 5px;
+}
+
+#progressbar > .track {
+  -fx-background-color: dark;
+  -fx-background-radius: 5px;
+}
+
 #paneInventaire {
-  -fx-background-image: url("background.png");
+  -fx-background-image: url("background-inventaire.png");
+  -fx-background-size: 400 400;
 }

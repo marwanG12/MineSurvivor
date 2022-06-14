@@ -38,7 +38,6 @@ public class Environnement {
     private Inventaire inventaire;
     private Joueur joueur;
     private IntegerProperty nbTours;
-    private boolean addBloc = false, deleteBloc = false;
 
     public Environnement(Inventaire inventaire) {
         this.nbTours = new SimpleIntegerProperty(0);
@@ -100,6 +99,15 @@ public class Environnement {
         int codeTuile = map.get((y / 32) * 30 + (x / 32));
         if (codeTuile != 0) {
             map.set((y / 32) * 30 + (x / 32), 0);
+            if (codeTuile == 1) { //Bois pas encore integré dans la map
+            inventaire.addRessource(1);
+            } else {
+                if (Joueur.reussitProba(20)) {
+                    inventaire.addRessource(3);
+                } else {
+                    inventaire.addRessource(0);
+                }
+            }
             return Integer.valueOf(y / 32) * 30 + (x / 32);
         }
         return null;

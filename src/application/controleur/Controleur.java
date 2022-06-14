@@ -56,7 +56,7 @@ public class Controleur implements Initializable {
     private ProgressBar progressbar;
 
     @FXML
-    private ImageView image1, image2, image3, image4;
+    private ImageView image1, image2, image3, image4, image5;
     private ArrayList<ImageView> images = new ArrayList<ImageView>();
 
     @FXML
@@ -72,7 +72,7 @@ public class Controleur implements Initializable {
         vueMap = new VueMap(env, tilepane);
         vueJoueur = new VueJoueur(env.getJoueur(), env, pane, progressbar);
         vuePnj = new VuePnj(env.getEntites(), /*env.getFires(),*/ pane);
-        vueInventaire = new VueInventaire(inventaire, pane, title, images, labels, paneInventaire);
+        vueInventaire = new VueInventaire(inventaire, pane, title, images, image5, labels, paneInventaire);
         update();
 
         env.getEntites().addListener((ListChangeListener<Entite>) c -> {

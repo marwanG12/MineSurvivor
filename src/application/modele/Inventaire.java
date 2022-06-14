@@ -90,6 +90,38 @@ public class Inventaire {
         }
         select = true;
     }
+
+    public void craftItem(Item item) {
+        if (item instanceof Epee) {
+            if (ressources.get(1).getNombre() >= 2 && ressources.get(0).getNombre() >= 4) {
+                try {
+                    addItem(item);
+                    ressources.get(1).setNombre(ressources.get(1).getNombre()-2);
+                    ressources.get(0).setNombre(ressources.get(0).getNombre()-4);
+                } catch (Exception e) {
+                    System.out.println("limite d'item atteinte");
+                }
+            }
+        } else if (item instanceof Bloc) {
+            if (ressources.get(0).getNombre() >= 4) {
+                try {
+                    addItem(item);
+                    ressources.get(0).setNombre(ressources.get(0).getNombre()-4);
+                } catch (Exception e) {
+                    System.out.println("limite d'item atteinte");
+                }
+            }
+        } else if (item instanceof Pioche) {
+            if (ressources.get(0).getNombre() >= 4) {
+                try {
+                    addItem(item);
+                    ressources.get(0).setNombre(ressources.get(0).getNombre()-4);
+                } catch (Exception e) {
+                    System.out.println("limite d'item atteinte");
+                }
+            }
+        }
+    }
     
     public boolean isSelect() {
         return select;
