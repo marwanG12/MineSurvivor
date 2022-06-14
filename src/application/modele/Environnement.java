@@ -85,14 +85,15 @@ public class Environnement {
     }
 
     public void oneRound() {
-        for (Entite e : pnj) {
-            if (e.isDead()) {
-                pnj.remove(e);
-                inventaire.getRessources().get(2).setNombre(inventaire.getRessources().get(2).getNombre()+1);;
+        for (int i=0; i < pnj.size(); i++) {
+            if (pnj.get(i).isDead()) {
+                pnj.remove(i);
+                inventaire.addRessource(2);
             } else {
-                e.agit();
+                pnj.get(i).agit();
             }
         }
+
     }
 
     public Integer deleteBloc(int x, int y) {

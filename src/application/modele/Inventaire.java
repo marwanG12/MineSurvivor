@@ -63,10 +63,10 @@ public class Inventaire {
         }
     }
 
-    public void addRessource(Ressource r) {
-        for (Ressource ressource : ressources) {
-            if (r == ressource) {
-                r.setNombre(r.getNombre()+1);
+    public void addRessource(int index) {
+        for (int i=0; i < ressources.size(); i++) {
+            if (i == index) {
+                ressources.get(i).setNombre(ressources.get(i).getNombre()+1);
             }
         }
     }
