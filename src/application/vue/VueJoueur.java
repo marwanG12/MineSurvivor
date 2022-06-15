@@ -44,7 +44,7 @@ public class VueJoueur {
         viewperso.yProperty().bind(joueur.getYProperty());
         viewperso.setViewport(new Rectangle2D(20, 150, 32, 45));
         viewperso.setFitHeight(joueur.getHeight());
-        pane.getChildren().add(viewperso);
+        pane.getChildren().add(1, viewperso);
     }
 
     public void affichePV() {

@@ -14,6 +14,7 @@ public class Inventaire {
     private int ligne = 2;
     private int colonne = 5;
     private boolean select = false;
+    private boolean craft = false;
     private boolean remove = false;
 
     public Inventaire(){
@@ -63,10 +64,10 @@ public class Inventaire {
         }
     }
 
-    public void addRessource(Ressource r) {
-        for (Ressource ressource : ressources) {
-            if (r == ressource) {
-                r.setNombre(r.getNombre()+1);
+    public void addRessource(int index) {
+        for (int i=0; i < ressources.size(); i++) {
+            if (i == index) {
+                ressources.get(i).setNombre(ressources.get(i).getNombre()+1);
             }
         }
     }
@@ -89,7 +90,51 @@ public class Inventaire {
             checkId();
         }
         select = true;
-        System.out.println("Current Item : " + currentItem);
+    }
+
+    public void craftItem(Item item) {
+        craft = true;
+        if (item instanceof Epee) {
+            if (ressources.get(1).getNombre() >= 2 && ressources.get(0).getNombre() >= 2) {
+                try {
+                    addItem(item);
+                    ressources.get(1).setNombre(ressources.get(1).getNombre()-2);
+                    ressources.get(0).setNombre(ressources.get(0).getNombre()-2);
+                } catch (Exception e) {
+                    System.out.println("limite d'item atteinte");
+                }
+            }
+        } else if (item instanceof Bloc) {
+            if (ressources.get(0).getNombre() >= 10 && ressources.get(3).getNombre() >= 1) {
+                try {
+                    addItem(item);
+                    ressources.get(0).setNombre(ressources.get(0).getNombre()-10);
+                    ressources.get(3).setNombre(ressources.get(3).getNombre()-1);
+                } catch (Exception e) {
+                    System.out.println("limite d'item atteinte");
+                }
+            }
+        } else if (item instanceof Pioche) {
+            if (ressources.get(0).getNombre() >= 3 && ressources.get(1).getNombre() >= 2) {
+                try {
+                    addItem(item);
+                    ressources.get(0).setNombre(ressources.get(0).getNombre()-3);
+                    ressources.get(1).setNombre(ressources.get(1).getNombre()-2);
+                } catch (Exception e) {
+                    System.out.println("limite d'item atteinte");
+                }
+            }
+        } else if (item instanceof Potion) {
+            if (ressources.get(2).getNombre() >= 1) {
+                try {
+                    addItem(item);
+                    ressources.get(2).setNombre(ressources.get(2).getNombre()-1);
+                } catch (Exception e) {
+                    System.out.println("limite d'item atteinte");
+                }
+            }
+        }
+
     }
     
     public boolean isSelect() {
@@ -106,5 +151,9 @@ public class Inventaire {
 
     public void setRemove(boolean remove) {
         this.remove = remove;
-    }    
+    }
+
+    public boolean isCraft() { return craft; }
+
+    public void setCraft(boolean craft) { this.craft = craft; }
 }

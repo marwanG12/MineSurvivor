@@ -38,7 +38,6 @@ public class Environnement {
     private Inventaire inventaire;
     private Joueur joueur;
     private IntegerProperty nbTours;
-    private boolean addBloc = false, deleteBloc = false;
 
     public Environnement(Inventaire inventaire) {
         this.nbTours = new SimpleIntegerProperty(0);
@@ -85,21 +84,30 @@ public class Environnement {
     }
 
     public void oneRound() {
-        for (Entite e : pnj) {
-            if (e.isDead()) {
-                pnj.remove(e);
-                inventaire.getRessources().get(2).setNombre(inventaire.getRessources().get(2).getNombre()+1);;
+        for (int i=0; i < pnj.size(); i++) {
+            if (pnj.get(i).isDead()) {
+                pnj.remove(i);
+                inventaire.addRessource(2);
             } else {
-                e.agit();
+                pnj.get(i).agit();
             }
         }
+
     }
 
     public Integer deleteBloc(int x, int y) {
         int codeTuile = map.get((y / 32) * 30 + (x / 32));
         if (codeTuile != 0) {
             map.set((y / 32) * 30 + (x / 32), 0);
-            deleteBloc = true;
+            if (codeTuile == 1) { //Bois pas encore integré dans la map
+            inventaire.addRessource(1);
+            } else {
+                if (Joueur.reussitProba(20)) {
+                    inventaire.addRessource(3);
+                } else {
+                    inventaire.addRessource(0);
+                }
+            }
             return Integer.valueOf(y / 32) * 30 + (x / 32);
         }
         return null;
@@ -109,7 +117,6 @@ public class Environnement {
         int codeTuile = map.get((y / 32) * 30 + (x / 32));
         if (codeTuile == 0) {
             map.set((y / 32) * 30 + (x / 32), 60);
-            addBloc = true;
             return Integer.valueOf(y / 32) * 30 + (x / 32);
         }
         return null;
@@ -121,21 +128,5 @@ public class Environnement {
 
     public int getHeight() {
         return height;
-    }
-
-    public boolean isAddBloc() {
-        return addBloc;
-    }
-
-    public boolean isDeleteBloc() {
-        return deleteBloc;
-    }
-
-    public void setAddBloc(boolean addBloc) {
-        this.addBloc = addBloc;
-    }
-
-    public void setDeleteBloc(boolean deleteBloc) {
-        this.deleteBloc = deleteBloc;
     }
 }

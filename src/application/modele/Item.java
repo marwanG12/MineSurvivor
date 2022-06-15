@@ -25,6 +25,8 @@ public class Item {
         y = 100 + (ligne * 70);
     }
 
+    public void addPv(Joueur joueur) {}
+
     public double getDegats(){
         return 0;
     }

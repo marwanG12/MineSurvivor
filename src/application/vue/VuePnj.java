@@ -16,6 +16,7 @@ public class VuePnj {
     private ArrayList<ImageView> listImagesPnj;
     //private ArrayList<ImageView> listImagesFire;
     private ArrayList<ProgressBar> listBarPv;
+    private ProgressBar bar;
     private Pane pane;
 
     public VuePnj(ObservableList<Entite> listPnj, /*ObservableList<Fire> listFire,*/ Pane pane) {
@@ -42,10 +43,44 @@ public class VuePnj {
         }
     }
 
+    public void removeImage(Entite pnj) {
+        for (int i=0; i < listImagesPnj.size(); i++) {
+            if (i == pnj.getId()) {
+                pane.getChildren().remove(listImagesPnj.get(i));
+                pane.getChildren().remove(listBarPv.get(i));
+            }
+        }
+
+    }
+
+    public void addImage(Entite pnj) {
+        for (int i=0; i < listImagesPnj.size(); i++) {
+            if (i == pnj.getId()) {
+                listImagesPnj.add(new ImageView(new Image(pnj.getUrl())));
+                listImagesPnj.get(i).setFitHeight(pnj.getHeight());
+                listImagesPnj.get(i).setFitWidth(pnj.getWidth());
+                listImagesPnj.get(i).xProperty().bind(pnj.getXProperty());
+                listImagesPnj.get(i).yProperty().bind(pnj.getYProperty());
+
+                bar = new ProgressBar();
+                bar.setPrefWidth(pnj.getWidth());
+                bar.setPrefHeight(4);
+                bar.layoutXProperty().bind(pnj.getXProperty());
+                bar.layoutYProperty().bind(pnj.getYProperty().subtract(10));
+                bar.getStylesheets().add("application/vue/style.css");
+                bar.progressProperty().bind(pnj.getPvProperty().divide(2));
+                listBarPv.add(bar);
+            
+                pane.getChildren().add(1, listImagesPnj.get(i));
+                pane.getChildren().add(1, listBarPv.get(i));
+            }
+        }
+    }
+
     public void initializeEntite() {        
         for (Entite pnj : listPnj) { 
             listImagesPnj.add(new ImageView(new Image(pnj.getUrl())));
-            ProgressBar bar = new ProgressBar();
+            bar = new ProgressBar();
             bar.setPrefWidth(pnj.getWidth());
             bar.setPrefHeight(4);
             bar.layoutXProperty().bind(pnj.getXProperty());
@@ -53,7 +88,7 @@ public class VuePnj {
             bar.getStylesheets().add("application/vue/style.css");
             bar.progressProperty().bind(pnj.getPvProperty().divide(2));
             listBarPv.add(bar);
-            pane.getChildren().add(bar);
+            pane.getChildren().add(1, bar);
         }
 
 
@@ -67,7 +102,7 @@ public class VuePnj {
                 listImagesPnj.get(i).setFitWidth(listPnj.get(i).getWidth());
                 listImagesPnj.get(i).xProperty().bind(listPnj.get(i).getXProperty());
                 listImagesPnj.get(i).yProperty().bind(listPnj.get(i).getYProperty());
-                pane.getChildren().add(listImagesPnj.get(i));
+                pane.getChildren().add(1, listImagesPnj.get(i));
             }
         }
 

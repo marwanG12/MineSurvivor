@@ -5,7 +5,6 @@ public class Ressource {
     private int id = 0;
     private String nom;
     private int nombre;
-    private int x, y;
     private String url;
 
     public Ressource(String nom, int nombre, String url) {

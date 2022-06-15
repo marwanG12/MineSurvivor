@@ -279,6 +279,9 @@ public class Entite {
         this.dead = true;
     }
 
+    public DoubleProperty pvProperty() { return pv; }
+
+    public void setPv(double pv) { this.pv.set(pv); }
 
     @Override
     public String toString() {

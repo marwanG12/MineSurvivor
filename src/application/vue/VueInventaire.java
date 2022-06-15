@@ -3,9 +3,11 @@ package application.vue;
 import java.util.ArrayList;
 
 import application.modele.Inventaire;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -17,24 +19,31 @@ public class VueInventaire {
     private int sizeMini = 4; //Nombre de case pour le petit inventaire
     private int nLigne = 2, nColonne = 5;
     private int box_size = 64;
-    private ArrayList<ImageView> listItemMini, listItemMax, listRessource; //Image des items du petit inventaire et grand inventaire
+    private ArrayList<ImageView> listItemMini, listItemMax, listRessource; //Image des items, ressources du petit inventaire et grand inventaire
+    private ArrayList<ImageView> listItemCraft, listButton;
     private ArrayList<ImageView> listBox; //Images des cases des inventaires
+    private ImageView image;
     private ArrayList<Label> listLabel;
-    private Rectangle borderCurrentItem;
+    private ArrayList<HBox> boxcraft;
 
-    private Pane pane; //Pane d'ensemble
-    private Pane paneInventaire; //Pane de l'inventaire
+    private Pane pane, paneInventaire, paneCraft;
     private boolean isOpen = false;
-    private Label title;
+    private Label title, title2;
 
-    public VueInventaire(Inventaire inventaire, Pane pane, Label title, ArrayList<ImageView> listRessources, ArrayList<Label> listLabel, Pane paneInventaire) {
+    public VueInventaire(Inventaire inventaire, Pane pane, Label title, Label title2, ArrayList<ImageView> listRessources, ImageView image, ArrayList<Label> listLabel, ArrayList<HBox> boxs, ArrayList<ImageView> listitem, ArrayList<ImageView> listButton, Pane paneInventaire, Pane paneCraft) {
 
         this.inventaire = inventaire;
         this.pane = pane;
-        this.title = title;
+        this.paneCraft = paneCraft;
         this.paneInventaire = paneInventaire;
+        this.title = title;
+        this.title2 = title2;
         this.listRessource = listRessources;
+        this.image = image;
+        this.listItemCraft = listitem;
         this.listLabel = listLabel;
+        this.boxcraft = boxs;
+        this.listButton = listButton;
     
         listItemMini = new ArrayList<ImageView>();
         listItemMax = new ArrayList<ImageView>();
@@ -48,7 +57,10 @@ public class VueInventaire {
 
         for (ImageView ressource : listRessource) { ressource.setImage(new Image(inventaire.getRessources().get(listRessource.indexOf(ressource)).getUrl())); ressource.setVisible(false); }
         for (Label label : this.listLabel) label.setVisible(false);
+        for (HBox box : this.boxcraft) box.setVisible(false);
         title.setVisible(false);
+        title2.setVisible(false);
+        image.setVisible(false);
     }
 
     public boolean isOpen() {
@@ -57,14 +69,21 @@ public class VueInventaire {
 
     public void initBackground() {
         paneInventaire.setVisible(true);
+        paneCraft.setVisible(true);
         paneInventaire.getStylesheets().add("application/vue/style.css");
+        paneCraft.getStylesheets().add("application/vue/style.css");
         title.setVisible(true);
+        title2.setVisible(true);
+        image.setVisible(true);
         for (ImageView ressource : listRessource) ressource.setVisible(true);
+        for (HBox box : boxcraft) box.setVisible(true);
+        for (ImageView image : listItemCraft) image.setVisible(true);
         for (Label label : listLabel) {
             label.setVisible(true);
             label.setText(": " + inventaire.getRessources().get(listLabel.indexOf(label)).getNombre());
         }
     }
+
 
     public void createImage(int x, int y, int width, int height, ArrayList<ImageView> list, String url, Pane p) {
         ImageView image = new ImageView(new Image(url));
@@ -90,43 +109,41 @@ public class VueInventaire {
 
     public void refresh() { //Ferme les 2 inventaire puis ouvre le mini inventaire
         title.setVisible(false);
+        image.setVisible(false);
         paneInventaire.setVisible(false);
-        borderCurrentItem.setVisible(false);
+        paneCraft.setVisible(false);
         for (ImageView ressource : listRessource) ressource.setVisible(false);
+        for (HBox box : boxcraft) box.setVisible(false);
         for (Label label : listLabel) label.setVisible(false);
+        for (ImageView image : listItemCraft) image.setVisible(false);
         for (ImageView box : listBox) box.setVisible(false);
         clear(listItemMax, paneInventaire);
         clear(listItemMini, pane);
         initialize();
     }
 
-    public void addBorder() { //Creer 2 bordure pour les 2 inventaires pour le currentItem
-        Rectangle borderCurrentItemMini = new Rectangle(10, 11, 30, 30);
-        borderCurrentItemMini.setFill(Color.TRANSPARENT);
-        borderCurrentItemMini.setStroke(Color.web("B48347"));
-        borderCurrentItemMini.setStrokeWidth(3);
-
-        borderCurrentItem = new Rectangle(31, 102, 60, 60);
-        borderCurrentItem.setFill(Color.TRANSPARENT);
-        borderCurrentItem.setStroke(Color.web("B48347"));
-        borderCurrentItem.setStrokeWidth(4);
-        this.paneInventaire.getChildren().add(borderCurrentItem);
-        this.pane.getChildren().add(borderCurrentItemMini);
-        borderCurrentItem.setVisible(false);
-        for (ImageView box : listBox) box.setVisible(false);
-    }
-
     public void addBox() { //Ajoutes les differentes cases des 2 inventaires avec le contour du currentItem
-        String url = "application/images/case.jpg";
         for (int i = 0; i < sizeMini; i++){
-            createImage((10 + (28*i)), 10, 32, 32, listBox, url, pane);
+            String url = "application/images/case.png";
+            if (i == 0) {
+                url = "application/images/currentItem.png";
+                createImage((15 + (28*i)), 45, 32, 32, listBox, url, pane);
+            } else {
+                createImage((15 + (28*i)), 45, 32, 32, listBox, url, pane);
+            }
         }
         for (int l = 0; l < nLigne; l++) {
             for (int c = 0; c < nColonne; c++) {
-                createImage((30 + (70*c)), (100 + (70 * l)), box_size, box_size, listBox, url, paneInventaire);
+                String url = "application/images/case.png";
+                if (l == 0 && c == 0) {
+                    url = "application/images/currentItem.png";
+                    createImage((30 + (70*c)), (100 + (70 * l)), box_size, box_size, listBox, url, paneInventaire);
+                } else {
+                    createImage((30 + (70*c)), (100 + (70 * l)), box_size, box_size, listBox, url, paneInventaire);
+                }
             }
         }
-        addBorder();
+        for (ImageView box : listBox) box.setVisible(false);
     }
 
 
@@ -134,20 +151,20 @@ public class VueInventaire {
         for (int i = 0; i < sizeMini; i++){
             listBox.get(i).setVisible(true);
             if (i < inventaire.getItems().size()) {
-                createImage((12 + (28*i)), 12, 28, 28, listItemMini, inventaire.getItems().get(i).getUrl(), pane);
+                createImage((21 + (28*i)), 52, 20, 20, listItemMini, inventaire.getItems().get(i).getUrl(), pane);
             }
         }
     }
 
     public void open() { //Open le grand inventaire
         initBackground();
-        borderCurrentItem.setVisible(true);
         for (int i = 0; i < (nColonne*nLigne); i++){
             listBox.get(i+sizeMini).setVisible(true);
             if (i < inventaire.getItems().size()) {
-                createImage(inventaire.getItems().get(i).getX() + 5, inventaire.getItems().get(i).getY() + 5, box_size - 14, box_size - 14, listItemMax, inventaire.getItems().get(i).getUrl(), paneInventaire);
+                createImage(inventaire.getItems().get(i).getX() + 5, inventaire.getItems().get(i).getY() + 10, box_size - 22, box_size - 22, listItemMax, inventaire.getItems().get(i).getUrl(), paneInventaire);
             }
         }
+
         isOpen = true;
     }
     
@@ -168,4 +185,7 @@ public class VueInventaire {
         return listBox;
     }
 
+    public ArrayList<ImageView> getListButton() {
+        return listButton;
+    }
 }
