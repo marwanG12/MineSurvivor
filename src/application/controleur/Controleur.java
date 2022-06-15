@@ -64,8 +64,10 @@ public class Controleur implements Initializable {
     private ArrayList<HBox> boxcraft = new ArrayList<HBox>();
 
     @FXML
-    private ImageView image1, image2, image3, image4, image5;
+    private ImageView image1, image2, image3, image4, image5, imagecraft1, imagecraft2, imagecraft3, imagecraft4, button1, button2, button3, button4;
     private ArrayList<ImageView> images = new ArrayList<ImageView>();
+    private ArrayList<ImageView> imagescraft = new ArrayList<ImageView>();
+    private ArrayList<ImageView> listbutton = new ArrayList<ImageView>();
 
     @FXML
     private Label label1, label2, label3, label4;
@@ -76,12 +78,14 @@ public class Controleur implements Initializable {
         images.add(image1); images.add(image2); images.add(image3); images.add(image4);
         labels.add(label1); labels.add(label2); labels.add(label3); labels.add(label4);
         boxcraft.add(box1); boxcraft.add(box2); boxcraft.add(box3); boxcraft.add(box4);
+        listbutton.add(button1); listbutton.add(button2); listbutton.add(button3); listbutton.add(button4);
+        imagescraft.add(imagecraft1); imagescraft.add(imagecraft2); imagescraft.add(imagecraft3); imagescraft.add(imagecraft4);
         Inventaire inventaire = new Inventaire();
         env = new Environnement(inventaire);
         vueMap = new VueMap(env, tilepane);
         vueJoueur = new VueJoueur(env.getJoueur(), env, pane, progressbar);
         vuePnj = new VuePnj(env.getEntites(), /*env.getFires(),*/ pane);
-        vueInventaire = new VueInventaire(inventaire, pane, title, title2, images, image5, labels, boxcraft, paneInventaire, paneCraft);
+        vueInventaire = new VueInventaire(inventaire, pane, title, title2, images, image5, labels, boxcraft, imagescraft, listbutton, paneInventaire, paneCraft);
         update();
 
         env.getEntites().addListener((ListChangeListener<Entite>) c -> {
@@ -190,7 +194,7 @@ public class Controleur implements Initializable {
                     for (int j=0; j < vueInventaire.getListItemMax().size(); j++) {
                         final int i = j;
                         if (i < inventaire.getItems().size()) {
-                            vueInventaire.getListBox().get(i+4).addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+                            vueInventaire.getListBox().get(i + 4).addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
                                 if (event.getButton() == MouseButton.PRIMARY) {
                                     if (!inventaire.isSelect()) {
                                         inventaire.selectItem(inventaire.getItems().get(i), false);
@@ -204,8 +208,31 @@ public class Controleur implements Initializable {
                             });
                         }
                     }
-                    inventaire.setSelect(false); 
+                    inventaire.setSelect(false);
                     inventaire.setRemove(false);
+                    for (int j=0; j < 4; j++) {
+                        final int i = j;
+                        vueInventaire.getListButton().get(i).addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+                            if (event.getButton() == MouseButton.PRIMARY) {
+                                if (!inventaire.isCraft()) {
+                                    try {
+                                        if (i == 0) {
+                                            inventaire.craftItem(new Epee("Epee"));
+                                        } else if (i == 1) {
+                                            inventaire.craftItem(new Pioche("Pioche", 1, 1));
+                                        } else if (i == 2) {
+                                            inventaire.craftItem(new Bloc("Bloc"));
+                                        } else if (i == 3) {
+                                            inventaire.craftItem(new Potion("Potion"));
+                                        }
+                                    } catch (Exception exception) {
+                                        System.out.println("Limite d'item à craft atteint !");
+                                    }
+                                }
+                            }
+                        });
+                    }
+                    inventaire.setCraft(false);
                 }
             } else if (e.getCode().equals(KeyCode.H)) {
                 try {
@@ -239,6 +266,9 @@ public class Controleur implements Initializable {
                         vueMap.editTile(env.addBloc((int) event.getX(), (int) event.getY()), 0);
                     } else if (inventaire.getCurrentItem() instanceof Pioche) {
                         vueMap.editTile(env.deleteBloc((int) event.getX(), (int) event.getY()), 60);
+                    } else if (inventaire.getCurrentItem() instanceof Potion) {
+                        inventaire.getCurrentItem().addPv(env.getJoueur());
+                        inventaire.getItems().remove(inventaire.getCurrentItem());
                     }
                 } 
             }

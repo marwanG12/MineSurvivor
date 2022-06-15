@@ -3,6 +3,7 @@ package application.vue;
 import java.util.ArrayList;
 
 import application.modele.Inventaire;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,7 +19,8 @@ public class VueInventaire {
     private int sizeMini = 4; //Nombre de case pour le petit inventaire
     private int nLigne = 2, nColonne = 5;
     private int box_size = 64;
-    private ArrayList<ImageView> listItemMini, listItemMax, listRessource; //Image des items du petit inventaire et grand inventaire
+    private ArrayList<ImageView> listItemMini, listItemMax, listRessource; //Image des items, ressources du petit inventaire et grand inventaire
+    private ArrayList<ImageView> listItemCraft, listButton;
     private ArrayList<ImageView> listBox; //Images des cases des inventaires
     private ImageView image;
     private ArrayList<Label> listLabel;
@@ -28,7 +30,7 @@ public class VueInventaire {
     private boolean isOpen = false;
     private Label title, title2;
 
-    public VueInventaire(Inventaire inventaire, Pane pane, Label title, Label title2, ArrayList<ImageView> listRessources, ImageView image, ArrayList<Label> listLabel, ArrayList<HBox> boxs, Pane paneInventaire, Pane paneCraft) {
+    public VueInventaire(Inventaire inventaire, Pane pane, Label title, Label title2, ArrayList<ImageView> listRessources, ImageView image, ArrayList<Label> listLabel, ArrayList<HBox> boxs, ArrayList<ImageView> listitem, ArrayList<ImageView> listButton, Pane paneInventaire, Pane paneCraft) {
 
         this.inventaire = inventaire;
         this.pane = pane;
@@ -38,8 +40,10 @@ public class VueInventaire {
         this.title2 = title2;
         this.listRessource = listRessources;
         this.image = image;
+        this.listItemCraft = listitem;
         this.listLabel = listLabel;
         this.boxcraft = boxs;
+        this.listButton = listButton;
     
         listItemMini = new ArrayList<ImageView>();
         listItemMax = new ArrayList<ImageView>();
@@ -73,11 +77,13 @@ public class VueInventaire {
         image.setVisible(true);
         for (ImageView ressource : listRessource) ressource.setVisible(true);
         for (HBox box : boxcraft) box.setVisible(true);
+        for (ImageView image : listItemCraft) image.setVisible(true);
         for (Label label : listLabel) {
             label.setVisible(true);
             label.setText(": " + inventaire.getRessources().get(listLabel.indexOf(label)).getNombre());
         }
     }
+
 
     public void createImage(int x, int y, int width, int height, ArrayList<ImageView> list, String url, Pane p) {
         ImageView image = new ImageView(new Image(url));
@@ -109,6 +115,7 @@ public class VueInventaire {
         for (ImageView ressource : listRessource) ressource.setVisible(false);
         for (HBox box : boxcraft) box.setVisible(false);
         for (Label label : listLabel) label.setVisible(false);
+        for (ImageView image : listItemCraft) image.setVisible(false);
         for (ImageView box : listBox) box.setVisible(false);
         clear(listItemMax, paneInventaire);
         clear(listItemMini, pane);
@@ -157,6 +164,7 @@ public class VueInventaire {
                 createImage(inventaire.getItems().get(i).getX() + 5, inventaire.getItems().get(i).getY() + 10, box_size - 22, box_size - 22, listItemMax, inventaire.getItems().get(i).getUrl(), paneInventaire);
             }
         }
+
         isOpen = true;
     }
     
@@ -177,4 +185,7 @@ public class VueInventaire {
         return listBox;
     }
 
+    public ArrayList<ImageView> getListButton() {
+        return listButton;
+    }
 }

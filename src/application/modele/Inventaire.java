@@ -14,6 +14,7 @@ public class Inventaire {
     private int ligne = 2;
     private int colonne = 5;
     private boolean select = false;
+    private boolean craft = false;
     private boolean remove = false;
 
     public Inventaire(){
@@ -92,6 +93,7 @@ public class Inventaire {
     }
 
     public void craftItem(Item item) {
+        craft = true;
         if (item instanceof Epee) {
             if (ressources.get(1).getNombre() >= 2 && ressources.get(0).getNombre() >= 4) {
                 try {
@@ -120,7 +122,17 @@ public class Inventaire {
                     System.out.println("limite d'item atteinte");
                 }
             }
+        } else if (item instanceof Potion) {
+            if (ressources.get(0).getNombre() >= 1) {
+                try {
+                    addItem(item);
+                    ressources.get(2).setNombre(ressources.get(2).getNombre()-1);
+                } catch (Exception e) {
+                    System.out.println("limite d'item atteinte");
+                }
+            }
         }
+
     }
     
     public boolean isSelect() {
@@ -137,5 +149,9 @@ public class Inventaire {
 
     public void setRemove(boolean remove) {
         this.remove = remove;
-    }    
+    }
+
+    public boolean isCraft() { return craft; }
+
+    public void setCraft(boolean craft) { this.craft = craft; }
 }
