@@ -95,20 +95,21 @@ public class Inventaire {
     public void craftItem(Item item) {
         craft = true;
         if (item instanceof Epee) {
-            if (ressources.get(1).getNombre() >= 2 && ressources.get(0).getNombre() >= 4) {
+            if (ressources.get(1).getNombre() >= 2 && ressources.get(0).getNombre() >= 2) {
                 try {
                     addItem(item);
                     ressources.get(1).setNombre(ressources.get(1).getNombre()-2);
-                    ressources.get(0).setNombre(ressources.get(0).getNombre()-4);
+                    ressources.get(0).setNombre(ressources.get(0).getNombre()-2);
                 } catch (Exception e) {
                     System.out.println("limite d'item atteinte");
                 }
             }
         } else if (item instanceof Bloc) {
-            if (ressources.get(0).getNombre() >= 4) {
+            if (ressources.get(0).getNombre() >= 10 && ressources.get(3).getNombre() >= 1) {
                 try {
                     addItem(item);
-                    ressources.get(0).setNombre(ressources.get(0).getNombre()-4);
+                    ressources.get(0).setNombre(ressources.get(0).getNombre()-10);
+                    ressources.get(3).setNombre(ressources.get(3).getNombre()-1);
                 } catch (Exception e) {
                     System.out.println("limite d'item atteinte");
                 }
@@ -117,13 +118,14 @@ public class Inventaire {
             if (ressources.get(0).getNombre() >= 3 && ressources.get(1).getNombre() >= 2) {
                 try {
                     addItem(item);
-                    ressources.get(0).setNombre(ressources.get(0).getNombre()-4);
+                    ressources.get(0).setNombre(ressources.get(0).getNombre()-3);
+                    ressources.get(1).setNombre(ressources.get(1).getNombre()-2);
                 } catch (Exception e) {
                     System.out.println("limite d'item atteinte");
                 }
             }
         } else if (item instanceof Potion) {
-            if (ressources.get(0).getNombre() >= 1) {
+            if (ressources.get(2).getNombre() >= 1) {
                 try {
                     addItem(item);
                     ressources.get(2).setNombre(ressources.get(2).getNombre()-1);

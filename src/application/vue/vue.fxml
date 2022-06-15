@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
@@ -21,7 +14,7 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderpane" prefHeight="640.0" prefWidth="960.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.Controleur">
+<BorderPane fx:id="borderpane" prefHeight="640.0" prefWidth="960.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.Controleur">
    <center>
       <Pane fx:id="pane" focusTraversable="true" prefHeight="640.0" prefWidth="960.0" BorderPane.alignment="CENTER">
          <children>
@@ -42,12 +35,12 @@
                            <stops>
                               <Stop>
                                  <color>
-                                    <Color green="0.699999988079071" red="1.0" />
+                                    <Color red="1.0" green="0.699999988079071" />
                                  </color>
                               </Stop>
                               <Stop offset="1.0">
                                  <color>
-                                    <Color green="0.3245614171028137" red="0.4868420958518982" />
+                                    <Color red="0.4868420958518982" green="0.3245614171028137" />
                                  </color>
                               </Stop>
                            </stops>
@@ -122,12 +115,12 @@
                            <stops>
                               <Stop>
                                  <color>
-                                    <Color green="0.699999988079071" red="1.0" />
+                                    <Color red="1.0" green="0.699999988079071" />
                                  </color>
                               </Stop>
                               <Stop offset="1.0">
                                  <color>
-                                    <Color green="0.3245614171028137" red="0.4868420958518982" />
+                                    <Color red="0.4868420958518982" green="0.3245614171028137" />
                                  </color>
                               </Stop>
                            </stops>
@@ -233,7 +226,7 @@
                               <Insets left="10.0" top="15.0" />
                            </HBox.margin>
                         </ImageView>
-                        <Label opacity="0.75" prefHeight="42.0" prefWidth="88.0" text="COÛT EN BOIS : 0&#10;COÛT EN PIERRE : 0" textFill="WHITE">
+                        <Label opacity="0.75" prefHeight="42.0" prefWidth="88.0" text="COÛT EN PIECE : 1" textFill="WHITE">
                            <font>
                               <Font name="System Bold Italic" size="7.0" />
                            </font>
