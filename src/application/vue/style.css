@@ -12,11 +12,16 @@
 }
 
 #progressbar > .track {
-  -fx-background-color: dark;
+  -fx-background-color: #000000;
   -fx-background-radius: 5px;
 }
 
 #paneInventaire {
   -fx-background-image: url("background-inventaire.png");
   -fx-background-size: 400 400;
+}
+
+#paneCraft {
+  -fx-background-image: url("background-craft.png");
+  -fx-background-size: 200 400;
 }

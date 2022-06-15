@@ -6,6 +6,7 @@ import application.modele.Inventaire;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -21,21 +22,24 @@ public class VueInventaire {
     private ArrayList<ImageView> listBox; //Images des cases des inventaires
     private ImageView image;
     private ArrayList<Label> listLabel;
+    private ArrayList<HBox> boxcraft;
 
-    private Pane pane; //Pane d'ensemble
-    private Pane paneInventaire; //Pane de l'inventaire
+    private Pane pane, paneInventaire, paneCraft;
     private boolean isOpen = false;
-    private Label title;
+    private Label title, title2;
 
-    public VueInventaire(Inventaire inventaire, Pane pane, Label title, ArrayList<ImageView> listRessources, ImageView image, ArrayList<Label> listLabel, Pane paneInventaire) {
+    public VueInventaire(Inventaire inventaire, Pane pane, Label title, Label title2, ArrayList<ImageView> listRessources, ImageView image, ArrayList<Label> listLabel, ArrayList<HBox> boxs, Pane paneInventaire, Pane paneCraft) {
 
         this.inventaire = inventaire;
         this.pane = pane;
-        this.title = title;
+        this.paneCraft = paneCraft;
         this.paneInventaire = paneInventaire;
+        this.title = title;
+        this.title2 = title2;
         this.listRessource = listRessources;
         this.image = image;
         this.listLabel = listLabel;
+        this.boxcraft = boxs;
     
         listItemMini = new ArrayList<ImageView>();
         listItemMax = new ArrayList<ImageView>();
@@ -49,7 +53,9 @@ public class VueInventaire {
 
         for (ImageView ressource : listRessource) { ressource.setImage(new Image(inventaire.getRessources().get(listRessource.indexOf(ressource)).getUrl())); ressource.setVisible(false); }
         for (Label label : this.listLabel) label.setVisible(false);
+        for (HBox box : this.boxcraft) box.setVisible(false);
         title.setVisible(false);
+        title2.setVisible(false);
         image.setVisible(false);
     }
 
@@ -59,10 +65,14 @@ public class VueInventaire {
 
     public void initBackground() {
         paneInventaire.setVisible(true);
+        paneCraft.setVisible(true);
         paneInventaire.getStylesheets().add("application/vue/style.css");
+        paneCraft.getStylesheets().add("application/vue/style.css");
         title.setVisible(true);
+        title2.setVisible(true);
         image.setVisible(true);
         for (ImageView ressource : listRessource) ressource.setVisible(true);
+        for (HBox box : boxcraft) box.setVisible(true);
         for (Label label : listLabel) {
             label.setVisible(true);
             label.setText(": " + inventaire.getRessources().get(listLabel.indexOf(label)).getNombre());
@@ -95,8 +105,9 @@ public class VueInventaire {
         title.setVisible(false);
         image.setVisible(false);
         paneInventaire.setVisible(false);
-        //borderCurrentItem.setVisible(false);
+        paneCraft.setVisible(false);
         for (ImageView ressource : listRessource) ressource.setVisible(false);
+        for (HBox box : boxcraft) box.setVisible(false);
         for (Label label : listLabel) label.setVisible(false);
         for (ImageView box : listBox) box.setVisible(false);
         clear(listItemMax, paneInventaire);
@@ -140,7 +151,6 @@ public class VueInventaire {
 
     public void open() { //Open le grand inventaire
         initBackground();
-        //borderCurrentItem.setVisible(true);
         for (int i = 0; i < (nColonne*nLigne); i++){
             listBox.get(i+sizeMini).setVisible(true);
             if (i < inventaire.getItems().size()) {

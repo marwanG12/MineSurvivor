@@ -112,7 +112,7 @@ public class Inventaire {
                 }
             }
         } else if (item instanceof Pioche) {
-            if (ressources.get(0).getNombre() >= 4) {
+            if (ressources.get(0).getNombre() >= 3 && ressources.get(1).getNombre() >= 2) {
                 try {
                     addItem(item);
                     ressources.get(0).setNombre(ressources.get(0).getNombre()-4);

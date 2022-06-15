@@ -17,6 +17,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.util.Duration;
@@ -50,10 +51,17 @@ public class Controleur implements Initializable {
     private Pane pane;
 
     @FXML
-    private Label title;
+    private Pane paneCraft;
+
+    @FXML
+    private Label title, title2;
 
     @FXML 
     private ProgressBar progressbar;
+
+    @FXML 
+    private HBox box1, box2, box3, box4;
+    private ArrayList<HBox> boxcraft = new ArrayList<HBox>();
 
     @FXML
     private ImageView image1, image2, image3, image4, image5;
@@ -67,12 +75,13 @@ public class Controleur implements Initializable {
     public void initialize (URL location, ResourceBundle resources) {
         images.add(image1); images.add(image2); images.add(image3); images.add(image4);
         labels.add(label1); labels.add(label2); labels.add(label3); labels.add(label4);
+        boxcraft.add(box1); boxcraft.add(box2); boxcraft.add(box3); boxcraft.add(box4);
         Inventaire inventaire = new Inventaire();
         env = new Environnement(inventaire);
         vueMap = new VueMap(env, tilepane);
         vueJoueur = new VueJoueur(env.getJoueur(), env, pane, progressbar);
         vuePnj = new VuePnj(env.getEntites(), /*env.getFires(),*/ pane);
-        vueInventaire = new VueInventaire(inventaire, pane, title, images, image5, labels, paneInventaire);
+        vueInventaire = new VueInventaire(inventaire, pane, title, title2, images, image5, labels, boxcraft, paneInventaire, paneCraft);
         update();
 
         env.getEntites().addListener((ListChangeListener<Entite>) c -> {
