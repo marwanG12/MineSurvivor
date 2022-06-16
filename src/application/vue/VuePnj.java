@@ -12,19 +12,15 @@ import javafx.scene.layout.Pane;
 
 public class VuePnj {
     private ObservableList<Entite> listPnj;
-    //private ObservableList<Fire> listFire;
     private ArrayList<ImageView> listImagesPnj;
-    //private ArrayList<ImageView> listImagesFire;
     private ArrayList<ProgressBar> listBarPv;
     private ProgressBar bar;
     private Pane pane;
 
-    public VuePnj(ObservableList<Entite> listPnj, /*ObservableList<Fire> listFire,*/ Pane pane) {
+    public VuePnj(ObservableList<Entite> listPnj, Pane pane) {
         this.listPnj = listPnj;
-        //this.listFire = listFire;
         this.pane = pane;
         listImagesPnj = new ArrayList<ImageView>();
-        //listImagesFire = new ArrayList<ImageView>();
         listBarPv = new ArrayList<ProgressBar>();
         initializeEntite();
     }

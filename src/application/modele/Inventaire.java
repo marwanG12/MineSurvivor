@@ -49,6 +49,7 @@ public class Inventaire {
     public void checkId() {
         for (Item item : items) {
             if (items.indexOf(item) != item.getId()) {
+                Item.setCount(Item.getCount()-1);
                 item.setId(items.indexOf(item));
                 item.initPosition();
             }

@@ -11,7 +11,7 @@ public class Potion extends Item{
     }
 
     public void addPv(Joueur joueur) {
-        joueur.setPv(joueur.getPv() + 20);
+        joueur.setPv(joueur.getPv() + pv);
     }
 
     public double getPv(){

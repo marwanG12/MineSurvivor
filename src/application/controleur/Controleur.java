@@ -5,6 +5,7 @@ import application.vue.VueInventaire;
 import application.vue.VueJoueur;
 import application.vue.VueMap;
 import application.vue.VuePnj;
+import application.vue.VueProjectile;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ListChangeListener;
@@ -34,6 +35,7 @@ public class Controleur implements Initializable {
     private VueJoueur vueJoueur;
     private VueInventaire vueInventaire;
     private VuePnj vuePnj;
+    private VueProjectile vueProjectile;
     private Timeline gameLoop;
     private int temps;
 
@@ -84,7 +86,8 @@ public class Controleur implements Initializable {
         env = new Environnement(inventaire);
         vueMap = new VueMap(env, tilepane);
         vueJoueur = new VueJoueur(env.getJoueur(), env, pane, progressbar);
-        vuePnj = new VuePnj(env.getEntites(), /*env.getFires(),*/ pane);
+        vuePnj = new VuePnj(env.getEntites(), pane);
+        vueProjectile = new VueProjectile(env.getFires(), pane);
         vueInventaire = new VueInventaire(inventaire, pane, title, title2, images, image5, labels, boxcraft, imagescraft, listbutton, paneInventaire, paneCraft);
         update();
 
@@ -95,6 +98,17 @@ public class Controleur implements Initializable {
                 }
                 for (Entite e : c.getRemoved()) {
                     vuePnj.removeImage(e);         
+                }
+            }
+        });
+
+        env.getFires().addListener((ListChangeListener<Fire>) c -> {
+            while (c.next()) {
+                for (Fire fire : c.getAddedSubList()) {
+                    vueProjectile.addImage(fire);
+                }
+                for (Fire fire : c.getRemoved()) {
+                    vueProjectile.removeImage(fire);         
                 }
             }
         });
@@ -269,6 +283,7 @@ public class Controleur implements Initializable {
                     } else if (inventaire.getCurrentItem() instanceof Potion) {
                         inventaire.getCurrentItem().addPv(env.getJoueur());
                         inventaire.getItems().remove(inventaire.getCurrentItem());
+                        inventaire.checkId();
                     }
                 } 
             }

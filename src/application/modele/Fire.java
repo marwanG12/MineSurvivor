@@ -2,51 +2,60 @@ package application.modele;
 
 import javafx.beans.property.IntegerProperty;
 
-public class Fire extends Entite {
+public class Fire {
 
     private static String url = "application/images/fire.png";
+    private static int count=0;
+    private int id;
     private IntegerProperty x,y;
-    private int width=8, height=8;
+    private int width=32, height=32;
+    private Environnement env;
     private Necromancer necromancer;
     private double degat;
     private boolean touch;
 
     public Fire(Necromancer necromancer, double degat, Environnement env) {
-        super(1, necromancer.getX(), necromancer.getY()+12, env, "fire", url);
+        this.id = count++;
         this.necromancer = necromancer;
+        this.env = env;
         this.degat = degat;
     }
 
-    public void checkDirection() {
-        if (necromancer.isPosL()) {
-            super.setLeft(true);
-            super.setRight(false);
-        } else if (necromancer.isPosR()) {
-            super.setRight(false);
-            super.setRight(true);
-        }  
+    public int getWidth() { return width; }
+
+    public int getHeight() { return height; }
+
+    public int getX() { return x.getValue(); }
+
+    public int getY() { return y.getValue(); }
+
+    public IntegerProperty getXProperty() { return x; }
+
+    public IntegerProperty getYProperty() { return y; }
+
+    public int getId() { return id; }
+
+    public static String getUrl() { return url; }
+
+    public Entite checkZone() {
+        if ((this.getX() - 1 <= env.getJoueur().getX()) && (env.getJoueur().getX() <= this.getX() + 1)  && (env.getJoueur().getY() == this.getY())) {
+            return env.getJoueur();
+        }
+        return null;
     }
 
-    
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    @Override
     public void agit() {
-        this.seDeplace();
-        Entite e = this.checkZone(1);
+        x = necromancer.getXProperty();
+        y = necromancer.getYProperty();
+        Entite e = this.checkZone();
         if (e instanceof Joueur) {
-            this.meurt();
-            env.getJoueur().decrementerPv(1);
+            env.getFires().remove(this);
+            env.getJoueur().decrementerPv(degat);
             if (env.getJoueur().getPv() == 0) {
                 env.getJoueur().meurt();
             }
+        } else if (e == null) {
+            this.x.setValue(this.getX()+1);
         }
     }
 }

@@ -14,19 +14,26 @@ public class Necromancer extends Entite {
         verifGravite();
         Entite e = this.checkZone(100);
         if (e instanceof Joueur) {
-            /*Fire fire = new Fire(this, 1, env);
-            env.getFires().add(fire);
-            int compteur = 0;
-            while (fire != null || compteur != 5) {
-                fire.agit();
-                compteur++;
-            }*/
+            if (env.getEntites().size() >= env.getFires().size()) {
+                Fire fire = new Fire(this, 1, env);
+                env.getFires().add(fire);
+                int compteur = 0;
+                long timer = System.currentTimeMillis();
+                int delay = 2000;
+                while (compteur != 5 && System.currentTimeMillis() - timer < delay) {
+                    fire.agit();
+                    compteur++;
+                    System.out.println("Fire x = " + fire.getX());
+                    System.out.println("Fire y = " + fire.getY());
+                }
+            } 
+            /* 
             if (reussitProba(20)) {
                 env.getJoueur().decrementerPv(0.25);
             }
             if (env.getJoueur().getPv() == 0) {
                 env.getJoueur().meurt();
-            }
+            }*/
         }
         
     }
