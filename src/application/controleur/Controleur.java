@@ -280,6 +280,7 @@ public class Controleur implements Initializable {
                         vueMap.editTile(env.addBloc((int) event.getX(), (int) event.getY()), 0);
                     } else if (inventaire.getCurrentItem() instanceof Pioche) {
                         vueMap.editTile(env.deleteBloc((int) event.getX(), (int) event.getY()), 60);
+
                     } else if (inventaire.getCurrentItem() instanceof Potion) {
                         inventaire.getCurrentItem().addPv(env.getJoueur());
                         inventaire.getItems().remove(inventaire.getCurrentItem());

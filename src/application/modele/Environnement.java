@@ -96,27 +96,31 @@ public class Environnement {
 
     public Integer deleteBloc(int x, int y) {
         int codeTuile = map.get((y / 32) * 30 + (x / 32));
-        if (codeTuile != 0) {
-            map.set((y / 32) * 30 + (x / 32), 0);
-            if (codeTuile == 1) { //Bois pas encore integré dans la map
-            inventaire.addRessource(1);
-            } else {
-                if (Joueur.reussitProba(20)) {
-                    inventaire.addRessource(3);
+        if (Math.abs(joueur.getY()-y)<2*32 && Math.abs(joueur.getX()-x)<2*32 ) {
+            if (codeTuile != 0) {
+                map.set((y / 32) * 30 + (x / 32), 0);
+                if (codeTuile == 1) { //Bois pas encore integré dans la map
+                    inventaire.addRessource(1);
                 } else {
-                    inventaire.addRessource(0);
+                    if (Joueur.reussitProba(20)) {
+                        inventaire.addRessource(3);
+                    } else {
+                        inventaire.addRessource(0);
+                    }
                 }
+                return Integer.valueOf(y / 32) * 30 + (x / 32);
             }
-            return Integer.valueOf(y / 32) * 30 + (x / 32);
         }
         return null;
     }
 
     public Integer addBloc(int x, int y){
         int codeTuile = map.get((y / 32) * 30 + (x / 32));
-        if (codeTuile == 0) {
-            map.set((y / 32) * 30 + (x / 32), 60);
-            return Integer.valueOf(y / 32) * 30 + (x / 32);
+        if (Math.abs(joueur.getY()-y)<2*32 && Math.abs(joueur.getX()-x)<2*32 && (joueur.getX()/32 != x/32 || joueur.getY()/32 != y/32)) {
+            if (codeTuile == 0) {
+                map.set((y / 32) * 30 + (x / 32), 60);
+                return Integer.valueOf(y / 32) * 30 + (x / 32);
+            }
         }
         return null;
     }
