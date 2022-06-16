@@ -16,6 +16,8 @@ public class Necromancer extends Entite {
         if (e instanceof Joueur) {
             if (env.getEntites().size() >= env.getFires().size()) {
                 Fire fire = new Fire(this, 1, env);
+                fire.setRight(super.isRight());
+                fire.setLeft(super.isLeft());
                 env.getFires().add(fire);
                 int compteur = 0;
                 long timer = System.currentTimeMillis();
