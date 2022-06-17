@@ -20,26 +20,25 @@ public class VueProjectile {
     }
 
     public void addImage(Fire fire) {
-        for (int i=0; i < listImagesFire.size(); i++) {
-            if (i == fire.getId()) {
-                listImagesFire.add(new ImageView(new Image(fire.getUrl())));
-                listImagesFire.get(i).setFitHeight(fire.getHeight());
-                listImagesFire.get(i).setFitWidth(fire.getWidth());
-                listImagesFire.get(i).xProperty().bind(fire.getXProperty());
-                listImagesFire.get(i).yProperty().bind(fire.getYProperty());
-                pane.getChildren().add(1, listImagesFire.get(i));
-            }
+        int i = fire.getId();
+        System.out.println(fire.toString());
+        if (fire != null) {
+            listImagesFire.add(new ImageView(new Image(fire.getUrl())));
+            listImagesFire.get(i).setFitHeight(fire.getHeight());
+            listImagesFire.get(i).setFitWidth(fire.getWidth());
+            listImagesFire.get(i).xProperty().bind(fire.getXProperty());
+            listImagesFire.get(i).yProperty().bind(fire.getYProperty());
+            pane.getChildren().add(1, listImagesFire.get(i));
         }
     }
 
     public void removeImage(Fire fire) {
-        for (int i=0; i < listImagesFire.size(); i++) {
-            if (i == fire.getId()) {
-                pane.getChildren().remove(listImagesFire.get(i));
-                listImagesFire.remove(listImagesFire.get(i));
-            }
+        int i = fire.getId();
+        if (fire != null) {
+            pane.getChildren().remove(listImagesFire.get(i));
+            listImagesFire.remove(listImagesFire.get(i));
         }
-
+        
     }
 
 }
