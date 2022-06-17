@@ -38,7 +38,6 @@ public class VueProjectile {
             pane.getChildren().remove(listImagesFire.get(i));
             listImagesFire.remove(listImagesFire.get(i));
         }
-        
     }
 
 }

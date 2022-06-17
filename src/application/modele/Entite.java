@@ -22,8 +22,8 @@ public class Entite {
     private boolean terreR = false, terreL = false, terreU = false;
     private boolean ciel = false;
     private boolean canJump = true;
+    private boolean found = false;
     private String limitemap;
-    private boolean limitemap2;
     private String url;
 
     public Entite(int pv, int x, int y, Environnement env, String nom, String url) {
@@ -81,11 +81,6 @@ public class Entite {
 
     public void setUp(boolean up) { this.up = up; }
 
-    public void setLimitemap(String limitemap) { this.limitemap = limitemap; }
-    public void setLimitemap(boolean limitemap) { this.limitemap2 = limitemap; }
-
-    public String isLimitemap() { return limitemap; }
-    public boolean isLimitemap2() { return limitemap2; }
     public String getUrl() { return url; }
 
 
@@ -229,11 +224,14 @@ public class Entite {
     }
 
     public void seDeplaceAlea(){
-		if(reussitProba(5)){
-			tirerDirection();
-		}
-        seDeplace();
-	}
+        if (!found) {
+            if (reussitProba(5)) {
+                tirerDirection();
+            }
+            seDeplace();
+        }
+        found = false;
+    }
 
     public void agit() {
     }
@@ -246,6 +244,18 @@ public class Entite {
                 } else if ((e.getX() - (this.getX()+this.width) >= (-distance)) && (e.getX() - (this.getX()+this.width) <= 0) && posL && (e.getY() == this.getY())) {
                     return e;
                 }
+            }
+        } else if (this instanceof Necromancer) {
+            if ((env.getJoueur().getX() - this.getX() <= distance) && (env.getJoueur().getX() - this.getX() >= 0) && posR && (env.getJoueur().getY() == this.getY())) {
+                this.found = true;
+                right = true;
+                left = false;
+                return env.getJoueur();
+            } else if ((env.getJoueur().getX() - (this.getX()+this.width) >= (-distance)) && (env.getJoueur().getX() - (this.getX()+this.width) <= 0) && posL && (env.getJoueur().getY() == this.getY())) {
+                this.found = true;
+                right = false;
+                left = true;
+                return env.getJoueur();
             }
         } else {
             if ((this.getX() - distance <= env.getJoueur().getX()) && (env.getJoueur().getX() <= this.getX() + distance)  && (env.getJoueur().getY() == this.getY())) {

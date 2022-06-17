@@ -9,12 +9,12 @@ public class Fire {
     private static int count=0;
     private int id;
     private IntegerProperty x, y;
-    private int width=32, height=32;
+    private int width=8, height=8;
     private Environnement env;
     private Necromancer necromancer;
     private double degat;
     private boolean right = false, left = false;
-    private boolean active = false;
+    private boolean active = true;
     private static int loop = 0;
 
     public Fire(Necromancer necromancer, double degat, Environnement env) {
@@ -23,10 +23,12 @@ public class Fire {
         this.env = env;
         this.degat = degat;
         this.x = new SimpleIntegerProperty(necromancer.getX());
-        this.y = new SimpleIntegerProperty(necromancer.getY());
+        this.y = new SimpleIntegerProperty(necromancer.getY()+12);
     }
 
     public int getWidth() { return width; }
+
+    public double getDegat() { return degat; }
 
     public int getHeight() { return height; }
 
@@ -55,7 +57,7 @@ public class Fire {
     public void setActive(boolean active) { this.active = active; }
 
     public Entite checkZone() {
-        if ((this.getX() - 5 <= env.getJoueur().getX()) && (env.getJoueur().getX() <= this.getX() + width)  && (env.getJoueur().getY() == this.getY())) {
+        if ((this.getX() - 1 <= env.getJoueur().getX()) && (env.getJoueur().getX() <= this.getX() + width)  && (env.getJoueur().getY() == this.getY()-12)) {
             return env.getJoueur();
         }
         return null;
@@ -75,23 +77,21 @@ public class Fire {
         if (active) {
             Entite e = this.checkZone();
             if (e instanceof Joueur) {
-                env.getJoueur().decrementerPv(degat);
+                env.getJoueur().decrementerPv(1);
                 if (env.getJoueur().getPv() == 0) {
                     env.getJoueur().meurt();
                 }
                 active = false;
                 count--;
-                env.getFires().remove(this);
-            } else if (e == null) {
+                necromancer.removeFire();
+            } else {
                 loop++;
                 seDeplace();
-                System.out.println("x" + x);
-                System.out.println("y" + y);
-                if (loop != 10) {
+                if (loop == 30) {
                     active = false;
                     loop = 0;
                     count--;
-                    env.getFires().remove(this);
+                    necromancer.removeFire();
                 }
             }
         }
@@ -101,5 +101,12 @@ public class Fire {
         return loop;
     }
 
-    
+    @Override
+    public String toString() {
+        return "Fire{" +
+                "id=" + id +
+                ", x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }

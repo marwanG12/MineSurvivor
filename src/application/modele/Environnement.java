@@ -92,6 +92,15 @@ public class Environnement {
             }
         }
 
+        for (int i=0; i < fires.size(); i++) {
+            System.out.println(fires.get(i));
+            if (!fires.get(i).isActive()) {
+                fires.remove(i);
+            } else {
+                fires.get(i).agit();
+            }
+        }
+
     }
 
     public Integer deleteBloc(int x, int y) {

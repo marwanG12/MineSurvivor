@@ -180,14 +180,7 @@ public class Controleur implements Initializable {
                         env.getJoueur().seDeplace();
                     }
 
-                    if (temps%50 == 0 ) {
-                        for (Fire fire : env.getFires()) {
-                            fire.agit();
-                        }
-                    }
 
-
-                    
                     if (temps%30 == 0) {
                         env.oneRound();
                     }
