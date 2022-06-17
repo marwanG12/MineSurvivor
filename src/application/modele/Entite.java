@@ -1,7 +1,9 @@
 package application.modele;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -11,6 +13,7 @@ public class Entite {
     private String nom;
     private IntegerProperty x,y;
     private DoubleProperty pv;
+    private BooleanProperty pos;
     private int width=32, height=32;
     protected Environnement env;
     public static int count=0;
@@ -30,12 +33,16 @@ public class Entite {
         this.pv = new SimpleDoubleProperty(pv);
         this.nom = nom;
         this.x = new SimpleIntegerProperty(x);
+        this.pos = new SimpleBooleanProperty(true);
         this.y = new SimpleIntegerProperty(y);
         this.env = env;
         this.url = url;
         this.id= count++;
     }
 
+
+    
+    public BooleanProperty getPos() { return pos; }
 
     public double getPv() { return pv.getValue(); }
 
@@ -213,9 +220,11 @@ public class Entite {
         if (alea < 0.5) {
             right = false;
             left = true;
+            pos.setValue(false);
         } else {
             left = false;
             right = true;
+            pos.setValue(true);
         } 
         /* 
         if (reussitProba(20)) {
@@ -246,15 +255,17 @@ public class Entite {
                 }
             }
         } else if (this instanceof Necromancer) {
-            if ((env.getJoueur().getX() - this.getX() <= distance) && (env.getJoueur().getX() - this.getX() >= 0) && posR && (env.getJoueur().getY() == this.getY())) {
+            if ((env.getJoueur().getX() - this.getX() <= distance) && (env.getJoueur().getX() - this.getX() >= 0) && (env.getJoueur().getY() == this.getY())) {
                 this.found = true;
                 right = true;
                 left = false;
+                pos.setValue(true);
                 return env.getJoueur();
-            } else if ((env.getJoueur().getX() - (this.getX()+this.width) >= (-distance)) && (env.getJoueur().getX() - (this.getX()+this.width) <= 0) && posL && (env.getJoueur().getY() == this.getY())) {
+            } else if ((env.getJoueur().getX() - (this.getX()+this.width) >= (-distance)) && (env.getJoueur().getX() - (this.getX()+this.width) <= 0) && (env.getJoueur().getY() == this.getY())) {
                 this.found = true;
                 right = false;
                 left = true;
+                pos.setValue(false);
                 return env.getJoueur();
             }
         } else {

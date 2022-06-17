@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -89,7 +90,9 @@ public class Controleur implements Initializable {
         vuePnj = new VuePnj(env.getEntites(), pane);
         vueProjectile = new VueProjectile(env.getFires(), pane);
         vueInventaire = new VueInventaire(inventaire, pane, title, title2, images, image5, labels, boxcraft, imagescraft, listbutton, paneInventaire, paneCraft);
+        
         update();
+        
 
         env.getEntites().addListener((ListChangeListener<Entite>) c -> {
             while (c.next()) {
@@ -102,6 +105,21 @@ public class Controleur implements Initializable {
             }
         });
 
+        for (Entite pnj : env.getEntites()) {
+            pnj.getPos().addListener(((o, oldVal, newVal) -> {
+                if (newVal) {
+                    if (pnj instanceof Skeleton)
+                        vuePnj.scaleImage(pnj, newVal);
+                    else 
+                        vuePnj.scaleImage(pnj, !newVal);
+                } else {
+                    if (pnj instanceof Skeleton)
+                        vuePnj.scaleImage(pnj, newVal);
+                    else 
+                        vuePnj.scaleImage(pnj, !newVal);                
+                }
+            }));
+        }
         env.getFires().addListener((ListChangeListener<Fire>) c -> {
             while (c.next()) {
                 for (Fire fire : c.getAddedSubList()) {
@@ -143,7 +161,7 @@ public class Controleur implements Initializable {
                 }
             }
         });
-
+        
         env.getJoueur().verifGravite();
         for (Entite pnj : env.getEntites()) {
             pnj.verifGravite();
@@ -160,31 +178,39 @@ public class Controleur implements Initializable {
                 // on définit le FPS (nbre de frame par seconde)
                 Duration.seconds(0.003),
                 (ev ->{
-                    if (env.getJoueur().isCanJump()) {
-                        env.getJoueur().verifGravite();
+                    if (env.getJoueur() != null) {
+                        if (env.getJoueur().isCanJump()) {
+                            env.getJoueur().verifGravite();
 
-                    }
-                    if (env.getJoueur().isCiel() == true) {
-                        env.getJoueur().setY(env.getJoueur().getY()+1);
-                        env.getJoueur().verifGravite();
-                    }
-                    
-                    for (Entite pnj : env.getEntites()) {
-                        if (pnj.isCiel() == true) {
-                            pnj.setY(pnj.getY()+1);
-                            pnj.verifGravite();
                         }
-                    }
+                        if (env.getJoueur().isCiel() == true) {
+                            env.getJoueur().setY(env.getJoueur().getY()+1);
+                            env.getJoueur().verifGravite();
+                        }
+                        
+                        for (Entite pnj : env.getEntites()) {
+                            if (pnj.isCiel() == true) {
+                                pnj.setY(pnj.getY()+1);
+                                pnj.verifGravite();
+                            }
+                        }
 
-                    if (temps%15 == 0 ) {
-                        env.getJoueur().seDeplace();
-                    }
+                        if (temps%15 == 0 ) {
+                            env.getJoueur().seDeplace();
+                        }
 
 
-                    if (temps%30 == 0) {
-                        env.oneRound();
-                    }
+                        if (temps%30 == 0) {
+                            env.oneRound();
+                        }
                     temps++;
+                    } else {
+                        gameLoop.stop();
+                        ImageView gameover = new ImageView(new Image("application/images/gameover.jpeg"));
+                        gameover.setFitHeight(env.getHeight());
+                        gameover.setFitWidth(env.getWidth());
+                        pane.getChildren().add(gameover);
+                    }
                 })
         );
         gameLoop.getKeyFrames().add(kf);
@@ -284,8 +310,9 @@ public class Controleur implements Initializable {
                     } else if (inventaire.getCurrentItem() instanceof Potion) {
                         inventaire.getCurrentItem().addPv(env.getJoueur());
                         inventaire.getItems().remove(inventaire.getCurrentItem());
-                        inventaire.checkId();
                     }
+                    inventaire.setCurrentItem(inventaire.getItems().get(0));
+                    inventaire.checkId();
                 } 
             }
         });

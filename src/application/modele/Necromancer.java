@@ -1,17 +1,13 @@
 package application.modele;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.util.Duration;
-
 public class Necromancer extends Entite {
 
     private static String url = "application/images/Necromancier.png";
     private Fire fire;
+
     public Necromancer(int x, int y, Environnement env, String nom) {
         super(2, x, y, env, nom, url);
     }
-
 
     public void generateFire() {
         if (fire == null) {
@@ -25,7 +21,6 @@ public class Necromancer extends Entite {
     public void checkId() {
         for (Fire fire : env.getFires()) {
             if (env.getFires().indexOf(fire) != fire.getId()) {
-                Fire.setCount(Fire.getCount()-1);
                 fire.setId(env.getFires().indexOf(fire));
             }
         }
@@ -33,7 +28,7 @@ public class Necromancer extends Entite {
 
     public void removeFire() {
         env.getFires().remove(fire);
-        //checkId();
+        checkId();
         fire = null;
     }
 
@@ -45,8 +40,10 @@ public class Necromancer extends Entite {
                 generateFire();
             }
         } else {
-            seDeplaceAlea();
-            verifGravite();
+            if (fire == null) {
+                seDeplaceAlea();
+                verifGravite();
+            }
         }
         
     }

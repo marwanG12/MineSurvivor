@@ -21,7 +21,6 @@ public class VueProjectile {
 
     public void addImage(Fire fire) {
         int i = fire.getId();
-        System.out.println(fire.toString());
         if (fire != null) {
             listImagesFire.add(new ImageView(new Image(fire.getUrl())));
             listImagesFire.get(i).setFitHeight(fire.getHeight());

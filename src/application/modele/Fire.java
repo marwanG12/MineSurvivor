@@ -5,8 +5,9 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 public class Fire {
 
+    private static int count = 0;
+    private int loop = 0; 
     private String url = "application/images/fire.png";
-    private static int count=0;
     private int id;
     private IntegerProperty x, y;
     private int width=8, height=8;
@@ -15,7 +16,6 @@ public class Fire {
     private double degat;
     private boolean right = false, left = false;
     private boolean active = true;
-    private static int loop = 0;
 
     public Fire(Necromancer necromancer, double degat, Environnement env) {
         this.id = count++;
@@ -56,18 +56,10 @@ public class Fire {
 
     public void setActive(boolean active) { this.active = active; }
 
-    public void setId(int id) { this.id = id;}
-
-    public static int getCount() {
-        return count;
-    }
-
-    public static void setCount(int count) {
-        Fire.count = count;
-    }
+    public void setId(int id) { this.id = id; }
 
     public Entite checkZone() {
-        if ((this.getX() - 1 <= env.getJoueur().getX()) && (env.getJoueur().getX() <= this.getX() + width)  && (env.getJoueur().getY() == this.getY()-12)) {
+        if ((this.getX() - width <= env.getJoueur().getX() + 20) && (env.getJoueur().getX() <= this.getX() + width)  && (env.getJoueur().getY() == this.getY()-12)) {
             return env.getJoueur();
         }
         return null;
@@ -87,28 +79,22 @@ public class Fire {
         if (active) {
             Entite e = this.checkZone();
             if (e instanceof Joueur) {
-                env.getJoueur().decrementerPv(1);
+                env.getJoueur().decrementerPv(getDegat());
                 if (env.getJoueur().getPv() == 0) {
                     env.getJoueur().meurt();
                 }
-                active = false;
                 count--;
                 necromancer.removeFire();
             } else {
                 loop++;
                 seDeplace();
                 if (loop == 30) {
-                    active = false;
                     count--;
                     loop = 0;
                     necromancer.removeFire();
                 }
             }
         }
-    }
-
-    public static int getLoop() {
-        return loop;
     }
 
     @Override

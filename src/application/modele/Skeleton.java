@@ -2,6 +2,7 @@ package application.modele;
 
 public class Skeleton extends Entite {
     private static String url = "application/images/Skeleton.png";
+    private int loop; //vitesse attaque
 
 
     public Skeleton (int x, int y, Environnement env, String nom) {
@@ -16,8 +17,10 @@ public class Skeleton extends Entite {
     public void agit() {
         Entite e = this.checkZone(16);
         if (e instanceof Joueur) {
-            if (reussitProba(20)) {
-                env.getJoueur().decrementerPv(0.25);
+            loop++;
+            if (loop == 10) {
+                env.getJoueur().decrementerPv(1);
+                loop = 0;
             }
             if (env.getJoueur().getPv() == 0) {
                 env.getJoueur().meurt();

@@ -29,9 +29,23 @@ public class Inventaire {
 
     public int getColonne() { return colonne; }
 
+    public void setCurrentItem(Item currentItem) { this.currentItem = currentItem; }
+
     public ObservableList<Item> getItems() { return items; }
 
     public ObservableList<Ressource> getRessources() { return ressources; }
+
+    public boolean isSelect() { return select; }
+
+    public void setSelect(boolean select) { this.select = select; }
+
+    public boolean isRemove() { return remove; }
+
+    public void setRemove(boolean remove) { this.remove = remove; }
+
+    public boolean isCraft() { return craft; }
+
+    public void setCraft(boolean craft) { this.craft = craft; }
 
     public void initialize() {
         items.setAll(
@@ -72,7 +86,7 @@ public class Inventaire {
             }
         }
     }
-    
+ 
     public void removeItem(){
         if (currentItem != null && select) {
             items.remove(currentItem);
@@ -82,7 +96,6 @@ public class Inventaire {
         }
         System.out.println(items.toString());
     }
-
 
     public void selectItem(Item i, boolean remove) {
         currentItem = i;
@@ -138,23 +151,4 @@ public class Inventaire {
 
     }
     
-    public boolean isSelect() {
-        return select;
-    }
-
-    public void setSelect(boolean select) {
-        this.select = select;
-    }
-
-    public boolean isRemove() {
-        return remove;
-    }
-
-    public void setRemove(boolean remove) {
-        this.remove = remove;
-    }
-
-    public boolean isCraft() { return craft; }
-
-    public void setCraft(boolean craft) { this.craft = craft; }
 }

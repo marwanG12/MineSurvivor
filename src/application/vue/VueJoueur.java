@@ -29,16 +29,6 @@ public class VueJoueur {
         affichePV();
     }
 
-    public ImageView viewperso() {
-        return viewperso;
-    }
-
-    
-
-    public int getFps() {
-        return fps;
-    }
-
     public void initializePerso(Pane pane) {
         viewperso.xProperty().bind(joueur.getXProperty());
         viewperso.yProperty().bind(joueur.getYProperty());
