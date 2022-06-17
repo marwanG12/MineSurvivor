@@ -51,6 +51,9 @@ public class Environnement {
         pnj.add(new Necromancer(200, 32, this, "necromancier"));
         pnj.add(new Necromancer(400, 32, this, "necromancier"));
         pnj.add(new Necromancer(300, 32, this, "necromancier"));
+        pnj.add(new Skeleton(208,48,this,"Skeleton"));
+        pnj.add(new Skeleton(330,90,this,"Skeleton"));
+        pnj.add(new Skeleton(440,60,this,"Skeleton"));
         joueur = new Joueur(208, 400, this, inventaire);
     }
 

@@ -22,8 +22,18 @@ public class Necromancer extends Entite {
         }
     }
 
+    public void checkId() {
+        for (Fire fire : env.getFires()) {
+            if (env.getFires().indexOf(fire) != fire.getId()) {
+                Fire.setCount(Fire.getCount()-1);
+                fire.setId(env.getFires().indexOf(fire));
+            }
+        }
+    }
+
     public void removeFire() {
         env.getFires().remove(fire);
+        //checkId();
         fire = null;
     }
 
@@ -34,13 +44,6 @@ public class Necromancer extends Entite {
             if (fire == null) {
                 generateFire();
             }
-            /*
-            if (reussitProba(20)) {
-                env.getJoueur().decrementerPv(0.25);
-            }
-            if (env.getJoueur().getPv() == 0) {
-                env.getJoueur().meurt();
-            }*/
         } else {
             seDeplaceAlea();
             verifGravite();

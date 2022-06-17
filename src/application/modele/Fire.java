@@ -56,6 +56,16 @@ public class Fire {
 
     public void setActive(boolean active) { this.active = active; }
 
+    public void setId(int id) { this.id = id;}
+
+    public static int getCount() {
+        return count;
+    }
+
+    public static void setCount(int count) {
+        Fire.count = count;
+    }
+
     public Entite checkZone() {
         if ((this.getX() - 1 <= env.getJoueur().getX()) && (env.getJoueur().getX() <= this.getX() + width)  && (env.getJoueur().getY() == this.getY()-12)) {
             return env.getJoueur();
@@ -89,8 +99,8 @@ public class Fire {
                 seDeplace();
                 if (loop == 30) {
                     active = false;
-                    loop = 0;
                     count--;
+                    loop = 0;
                     necromancer.removeFire();
                 }
             }
