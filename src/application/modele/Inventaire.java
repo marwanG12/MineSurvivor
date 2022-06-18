@@ -49,8 +49,6 @@ public class Inventaire {
 
     public void initialize() {
         items.setAll(
-            new Epee("Epee"), 
-            new Bloc("Bloc"), 
             new Pioche("Pioche", 1, 1));
         ressources.setAll(
             new Pierre("Pierre", 0),

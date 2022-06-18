@@ -38,6 +38,7 @@ public class Controleur implements Initializable {
     private VuePnj vuePnj;
     private VueProjectile vueProjectile;
     private Timeline gameLoop;
+    private boolean gameover = false;
     private int temps;
 
 
@@ -91,7 +92,9 @@ public class Controleur implements Initializable {
         vueProjectile = new VueProjectile(env.getFires(), pane);
         vueInventaire = new VueInventaire(inventaire, pane, title, title2, images, image5, labels, boxcraft, imagescraft, listbutton, paneInventaire, paneCraft);
         
-        update();
+        if (!gameover) {
+            update();
+        }
         
 
         env.getEntites().addListener((ListChangeListener<Entite>) c -> {
@@ -206,10 +209,8 @@ public class Controleur implements Initializable {
                     temps++;
                     } else {
                         gameLoop.stop();
-                        ImageView gameover = new ImageView(new Image("application/images/gameover.jpeg"));
-                        gameover.setFitHeight(env.getHeight());
-                        gameover.setFitWidth(env.getWidth());
-                        pane.getChildren().add(gameover);
+                        gameover = true;
+                        pane.getChildren().add(vueMap.gameover());
                     }
                 })
         );

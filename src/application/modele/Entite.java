@@ -133,15 +133,15 @@ public class Entite {
 
         int posY = getY()/32;
 
-        int tile = (posY * 30) + minX + 30;
-        int tileSuivante = (posY * 30) + maxX + 30; //Si le personnage se trouve entre les 2 tuiles
+        int tile = (posY * 45) + minX + 45;
+        int tileSuivante = (posY * 45) + maxX + 45; //Si le personnage se trouve entre les 2 tuiles
 
         if (left) { //Selon la direction du joueur sa largeur change car le joueur ne prend pas toute l'image
             minX = (getX() + 8)/32;
             maxX = (getX() + 32)/32;
 
-            tile = (posY * 30) + minX + 30;
-            tileSuivante = (posY * 30) + maxX + 30;
+            tile = (posY * 45) + minX + 45;
+            tileSuivante = (posY * 45) + maxX + 45;
         }
 
         if (env.getTile(tile) == 00 && env.getTile(tileSuivante) == 00) {
@@ -158,15 +158,15 @@ public class Entite {
         int maxX = (getX() + 24)/32;
         int posY = getY()/32;
         int maxY = (getY() + 32)/32;
-        int tileR = (posY * 30) + posX + 1; //Tuile à droite de l'entite
-        int tileRB = (maxY * 30) + posX + 1; //Tuile en bas à droite de l'entite
-        int tileL = (posY * 30) + posX; //Tuile à gauche de l'entite
-        int tileLB = (maxY * 30) + posX; //Tuile en bas à gauche de l'entite
-        int tileU = (posY * 30) + posX - 30; //Tuile en haut de l'entite
-        int tileUB =  (posY * 30) + maxX - 30;
+        int tileR = (posY * 45) + posX + 1; //Tuile à droite de l'entite
+        int tileRB = (maxY * 45) + posX + 1; //Tuile en bas à droite de l'entite
+        int tileL = (posY * 45) + posX; //Tuile à gauche de l'entite
+        int tileLB = (maxY * 45) + posX; //Tuile en bas à gauche de l'entite
+        int tileU = (posY * 45) + posX - 45; //Tuile en haut de l'entite
+        int tileUB =  (posY * 45) + maxX - 45;
 
-        int yTileR = (tileR/30) * 32;
-        int yTileL = (tileL/30) * 32;
+        int yTileR = (tileR/45) * 32;
+        int yTileL = (tileL/45) * 32;
 
 
         if (env.getTile(tileR) != 0 || (yTileR < getY()  && env.getTile(tileRB) != 0 && env.getTile(tileR) == 0)) {
@@ -184,8 +184,8 @@ public class Entite {
         if (left) {
             posX = (getX() + 8)/32;
             maxX = (getX() + 32)/32;
-            tileU = (posY * 30) + posX - 30;
-            tileUB = (posY * 30) + maxX - 30;
+            tileU = (posY * 45) + posX - 45;
+            tileUB = (posY * 45) + maxX - 45;
         }
 
         if (env.getTile(tileU) != 0 || env.getTile(tileUB) != 0) {
