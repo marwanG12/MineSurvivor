@@ -12,19 +12,15 @@ import javafx.scene.layout.Pane;
 
 public class VuePnj {
     private ObservableList<Entite> listPnj;
-    //private ObservableList<Fire> listFire;
     private ArrayList<ImageView> listImagesPnj;
-    //private ArrayList<ImageView> listImagesFire;
     private ArrayList<ProgressBar> listBarPv;
     private ProgressBar bar;
     private Pane pane;
 
-    public VuePnj(ObservableList<Entite> listPnj, /*ObservableList<Fire> listFire,*/ Pane pane) {
+    public VuePnj(ObservableList<Entite> listPnj, Pane pane) {
         this.listPnj = listPnj;
-        //this.listFire = listFire;
         this.pane = pane;
         listImagesPnj = new ArrayList<ImageView>();
-        //listImagesFire = new ArrayList<ImageView>();
         listBarPv = new ArrayList<ProgressBar>();
         initializeEntite();
     }
@@ -33,10 +29,6 @@ public class VuePnj {
         for (ImageView imagePnj : listImagesPnj) {
             pane.getChildren().remove(imagePnj);
         }
-
-        /*for (ImageView imageFire : listImagesFire) {
-            pane.getChildren().remove(imageFire);
-        }*/
 
         for (ProgressBar pvBar : listBarPv) {
             pane.getChildren().remove(pvBar);
@@ -50,7 +42,15 @@ public class VuePnj {
                 pane.getChildren().remove(listBarPv.get(i));
             }
         }
+    }
 
+    public void scaleImage(Entite pnj, boolean pos) {
+        int i = pnj.getId();
+        if (pos) {
+            listImagesPnj.get(i).setScaleX(-1);
+        } else {
+            listImagesPnj.get(i).setScaleX(1);
+        }
     }
 
     public void addImage(Entite pnj) {
@@ -91,11 +91,6 @@ public class VuePnj {
             pane.getChildren().add(1, bar);
         }
 
-
-        /*for (Entite fire : listFire) { 
-            listImagesFire.add(new ImageView(new Image(fire.getUrl())));
-        }*/
-
         for (int i=0; i < listImagesPnj.size(); i++) { 
             if (i < listPnj.size()) {
                 listImagesPnj.get(i).setFitHeight(listPnj.get(i).getHeight());
@@ -105,15 +100,5 @@ public class VuePnj {
                 pane.getChildren().add(1, listImagesPnj.get(i));
             }
         }
-
-        /*for (int i=0; i < listImagesFire.size(); i++) { 
-            if (i < listFire.size()) {
-                listImagesFire.get(i).setFitHeight(listFire.get(i).getHeight());
-                listImagesFire.get(i).setFitWidth(listFire.get(i).getWidth());
-                listImagesFire.get(i).xProperty().bind(listFire.get(i).getXProperty());
-                listImagesFire.get(i).yProperty().bind(listFire.get(i).getYProperty());
-                pane.getChildren().add(listImagesFire.get(i));
-            }
-        }*/
     }
 }

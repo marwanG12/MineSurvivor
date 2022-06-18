@@ -13,4 +13,5 @@ public class Pioche extends Armes{
     public double getEfficacité() {
         return efficacité;
     }
+
 }

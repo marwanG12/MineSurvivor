@@ -1,7 +1,9 @@
 package application.modele;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -11,6 +13,7 @@ public class Entite {
     private String nom;
     private IntegerProperty x,y;
     private DoubleProperty pv;
+    private BooleanProperty pos;
     private int width=32, height=32;
     protected Environnement env;
     public static int count=0;
@@ -22,20 +25,24 @@ public class Entite {
     private boolean terreR = false, terreL = false, terreU = false;
     private boolean ciel = false;
     private boolean canJump = true;
+    private boolean found = false;
     private String limitemap;
-    private boolean limitemap2;
     private String url;
 
     public Entite(int pv, int x, int y, Environnement env, String nom, String url) {
         this.pv = new SimpleDoubleProperty(pv);
         this.nom = nom;
         this.x = new SimpleIntegerProperty(x);
+        this.pos = new SimpleBooleanProperty(true);
         this.y = new SimpleIntegerProperty(y);
         this.env = env;
         this.url = url;
         this.id= count++;
     }
 
+
+    
+    public BooleanProperty getPos() { return pos; }
 
     public double getPv() { return pv.getValue(); }
 
@@ -81,11 +88,6 @@ public class Entite {
 
     public void setUp(boolean up) { this.up = up; }
 
-    public void setLimitemap(String limitemap) { this.limitemap = limitemap; }
-    public void setLimitemap(boolean limitemap) { this.limitemap2 = limitemap; }
-
-    public String isLimitemap() { return limitemap; }
-    public boolean isLimitemap2() { return limitemap2; }
     public String getUrl() { return url; }
 
 
@@ -131,15 +133,15 @@ public class Entite {
 
         int posY = getY()/32;
 
-        int tile = (posY * 30) + minX + 30;
-        int tileSuivante = (posY * 30) + maxX + 30; //Si le personnage se trouve entre les 2 tuiles
+        int tile = (posY * 45) + minX + 45;
+        int tileSuivante = (posY * 45) + maxX + 45; //Si le personnage se trouve entre les 2 tuiles
 
         if (left) { //Selon la direction du joueur sa largeur change car le joueur ne prend pas toute l'image
             minX = (getX() + 8)/32;
             maxX = (getX() + 32)/32;
 
-            tile = (posY * 30) + minX + 30;
-            tileSuivante = (posY * 30) + maxX + 30;
+            tile = (posY * 45) + minX + 45;
+            tileSuivante = (posY * 45) + maxX + 45;
         }
 
         if (env.getTile(tile) == 00 && env.getTile(tileSuivante) == 00) {
@@ -156,15 +158,15 @@ public class Entite {
         int maxX = (getX() + 24)/32;
         int posY = getY()/32;
         int maxY = (getY() + 32)/32;
-        int tileR = (posY * 30) + posX + 1; //Tuile à droite de l'entite
-        int tileRB = (maxY * 30) + posX + 1; //Tuile en bas à droite de l'entite
-        int tileL = (posY * 30) + posX; //Tuile à gauche de l'entite
-        int tileLB = (maxY * 30) + posX; //Tuile en bas à gauche de l'entite
-        int tileU = (posY * 30) + posX - 30; //Tuile en haut de l'entite
-        int tileUB =  (posY * 30) + maxX - 30;
+        int tileR = (posY * 45) + posX + 1; //Tuile à droite de l'entite
+        int tileRB = (maxY * 45) + posX + 1; //Tuile en bas à droite de l'entite
+        int tileL = (posY * 45) + posX; //Tuile à gauche de l'entite
+        int tileLB = (maxY * 45) + posX; //Tuile en bas à gauche de l'entite
+        int tileU = (posY * 45) + posX - 45; //Tuile en haut de l'entite
+        int tileUB =  (posY * 45) + maxX - 45;
 
-        int yTileR = (tileR/30) * 32;
-        int yTileL = (tileL/30) * 32;
+        int yTileR = (tileR/45) * 32;
+        int yTileL = (tileL/45) * 32;
 
 
         if (env.getTile(tileR) != 0 || (yTileR < getY()  && env.getTile(tileRB) != 0 && env.getTile(tileR) == 0)) {
@@ -182,8 +184,8 @@ public class Entite {
         if (left) {
             posX = (getX() + 8)/32;
             maxX = (getX() + 32)/32;
-            tileU = (posY * 30) + posX - 30;
-            tileUB = (posY * 30) + maxX - 30;
+            tileU = (posY * 45) + posX - 45;
+            tileUB = (posY * 45) + maxX - 45;
         }
 
         if (env.getTile(tileU) != 0 || env.getTile(tileUB) != 0) {
@@ -218,9 +220,11 @@ public class Entite {
         if (alea < 0.5) {
             right = false;
             left = true;
+            pos.setValue(false);
         } else {
             left = false;
             right = true;
+            pos.setValue(true);
         } 
         /* 
         if (reussitProba(20)) {
@@ -229,11 +233,14 @@ public class Entite {
     }
 
     public void seDeplaceAlea(){
-		if(reussitProba(5)){
-			tirerDirection();
-		}
-        seDeplace();
-	}
+        if (!found) {
+            if (reussitProba(5)) {
+                tirerDirection();
+            }
+            seDeplace();
+        }
+        found = false;
+    }
 
     public void agit() {
     }
@@ -246,6 +253,20 @@ public class Entite {
                 } else if ((e.getX() - (this.getX()+this.width) >= (-distance)) && (e.getX() - (this.getX()+this.width) <= 0) && posL && (e.getY() == this.getY())) {
                     return e;
                 }
+            }
+        } else if (this instanceof Necromancer) {
+            if ((env.getJoueur().getX() - this.getX() <= distance) && (env.getJoueur().getX() - this.getX() >= 0) && (env.getJoueur().getY() == this.getY())) {
+                this.found = true;
+                right = true;
+                left = false;
+                pos.setValue(true);
+                return env.getJoueur();
+            } else if ((env.getJoueur().getX() - (this.getX()+this.width) >= (-distance)) && (env.getJoueur().getX() - (this.getX()+this.width) <= 0) && (env.getJoueur().getY() == this.getY())) {
+                this.found = true;
+                right = false;
+                left = true;
+                pos.setValue(false);
+                return env.getJoueur();
             }
         } else {
             if ((this.getX() - distance <= env.getJoueur().getX()) && (env.getJoueur().getX() <= this.getX() + distance)  && (env.getJoueur().getY() == this.getY())) {

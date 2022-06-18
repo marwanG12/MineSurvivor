@@ -29,14 +29,26 @@ public class Inventaire {
 
     public int getColonne() { return colonne; }
 
+    public void setCurrentItem(Item currentItem) { this.currentItem = currentItem; }
+
     public ObservableList<Item> getItems() { return items; }
 
     public ObservableList<Ressource> getRessources() { return ressources; }
 
+    public boolean isSelect() { return select; }
+
+    public void setSelect(boolean select) { this.select = select; }
+
+    public boolean isRemove() { return remove; }
+
+    public void setRemove(boolean remove) { this.remove = remove; }
+
+    public boolean isCraft() { return craft; }
+
+    public void setCraft(boolean craft) { this.craft = craft; }
+
     public void initialize() {
         items.setAll(
-            new Epee("Epee"), 
-            new Bloc("Bloc"), 
             new Pioche("Pioche", 1, 1));
         ressources.setAll(
             new Pierre("Pierre", 0),
@@ -49,6 +61,7 @@ public class Inventaire {
     public void checkId() {
         for (Item item : items) {
             if (items.indexOf(item) != item.getId()) {
+                Item.setCount(Item.getCount()-1);
                 item.setId(items.indexOf(item));
                 item.initPosition();
             }
@@ -71,7 +84,7 @@ public class Inventaire {
             }
         }
     }
-    
+ 
     public void removeItem(){
         if (currentItem != null && select) {
             items.remove(currentItem);
@@ -81,7 +94,6 @@ public class Inventaire {
         }
         System.out.println(items.toString());
     }
-
 
     public void selectItem(Item i, boolean remove) {
         currentItem = i;
@@ -137,23 +149,4 @@ public class Inventaire {
 
     }
     
-    public boolean isSelect() {
-        return select;
-    }
-
-    public void setSelect(boolean select) {
-        this.select = select;
-    }
-
-    public boolean isRemove() {
-        return remove;
-    }
-
-    public void setRemove(boolean remove) {
-        this.remove = remove;
-    }
-
-    public boolean isCraft() { return craft; }
-
-    public void setCraft(boolean craft) { this.craft = craft; }
 }
