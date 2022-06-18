@@ -38,7 +38,6 @@ public class Controleur implements Initializable {
     private VuePnj vuePnj;
     private VueProjectile vueProjectile;
     private Timeline gameLoop;
-    private boolean gameover = false;
     private int temps;
 
 
@@ -92,7 +91,7 @@ public class Controleur implements Initializable {
         vueProjectile = new VueProjectile(env.getFires(), pane);
         vueInventaire = new VueInventaire(inventaire, pane, title, title2, images, image5, labels, boxcraft, imagescraft, listbutton, paneInventaire, paneCraft);
         
-        if (!gameover) {
+        if (!env.getGameover()) {
             update();
         }
         
@@ -181,7 +180,7 @@ public class Controleur implements Initializable {
                 // on définit le FPS (nbre de frame par seconde)
                 Duration.seconds(0.003),
                 (ev ->{
-                    if (env.getJoueur() != null) {
+                    if (!env.getGameover()) {
                         if (env.getJoueur().isCanJump()) {
                             env.getJoueur().verifGravite();
 
@@ -209,8 +208,8 @@ public class Controleur implements Initializable {
                     temps++;
                     } else {
                         gameLoop.stop();
-                        gameover = true;
-                        pane.getChildren().add(vueMap.gameover());
+                        vueJoueur.remove();
+                        borderpane.getChildren().add(vueMap.gameover());
                     }
                 })
         );

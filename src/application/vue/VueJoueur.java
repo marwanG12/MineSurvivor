@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 public class VueJoueur {
+    private Pane pane;
     private Entite joueur;
     private Image perso;
     private ImageView viewperso;
@@ -21,15 +22,16 @@ public class VueJoueur {
 
     public VueJoueur(Entite joueur, Environnement env, Pane pane, ProgressBar pvBar) {
         this.joueur = joueur;
+        this.pane = pane;
+        this.pvBar = pvBar;
         perso = new Image(joueur.getUrl());
         viewperso = new ImageView(perso);
-        this.pvBar = pvBar;
         pvBar.getStylesheets().add("application/vue/style.css");
-        initializePerso(pane);
+        initializePerso();
         affichePV();
     }
 
-    public void initializePerso(Pane pane) {
+    public void initializePerso() {
         viewperso.xProperty().bind(joueur.getXProperty());
         viewperso.yProperty().bind(joueur.getYProperty());
         viewperso.setViewport(new Rectangle2D(20, 150, 32, 45));
@@ -39,6 +41,10 @@ public class VueJoueur {
 
     public void affichePV() {
         pvBar.progressProperty().bind(joueur.getPvProperty().divide(10));
+    }
+
+    public void remove() {
+        pane.getChildren().remove(viewperso);
     }
 
     public void updatePerso(String action) {

@@ -45,6 +45,7 @@ public class Environnement {
     private ObservableList<Fire> fires;
     private Inventaire inventaire;
     private Joueur joueur;
+    private Boolean gameover = false;
     private IntegerProperty nbTours;
 
     public Environnement(Inventaire inventaire) {
@@ -67,6 +68,8 @@ public class Environnement {
 
     
     public ObservableList<Fire> getFires() { return fires; }
+
+    public Boolean getGameover() { return gameover; }
 
     public Joueur getJoueur() { return joueur; }
 
@@ -112,7 +115,7 @@ public class Environnement {
         }
 
         if  (joueur.getPv() == 0) {
-            joueur = null;
+            gameover = true;
         }
 
     }
